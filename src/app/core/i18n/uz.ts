@@ -3,7 +3,9 @@
  * A text with several forms (Russian plurals) is written `one|few|many` and read with `I18n.plural`.
  * `{name}` is a placeholder.
  */
-export const uz = {
+import { uzPages } from './uz-pages';
+
+const uzBase = {
   'site.name': 'I-Rieltor',
   'site.tagline': 'Ko‘chmas mulk auksionlari',
   'site.description':
@@ -145,6 +147,8 @@ export const uz = {
   'map.open': 'Xaritada ochish',
   'map.coordinates': 'Koordinatalar',
 } as const;
+
+export const uz = { ...uzBase, ...uzPages } as const;
 
 export type TextKey = keyof typeof uz;
 export type Dictionary = Record<TextKey, string>;

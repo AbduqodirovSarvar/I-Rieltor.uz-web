@@ -1,0 +1,63 @@
+<div class="container page">
+  <h1>{{ 'about.title' | t }}</h1>
+
+  @if (company.isLoading()) {
+    <p class="muted" role="status">{{ 'common.loading' | t }}</p>
+  } @else if (data(); as c) {
+    <div class="intro">
+      @if (logo()) {
+        <img
+          class="logo"
+          [src]="logo()"
+          [alt]="c.logo.alt || c.name || ''"
+          width="160"
+          height="160"
+        />
+      }
+      <div>
+        @if (c.name) {
+          <h2>{{ c.name }}</h2>
+        }
+        @if (c.description) {
+          <p class="text">{{ c.description }}</p>
+        }
+      </div>
+    </div>
+
+    @if (c.mission) {
+      <section>
+        <h2>{{ 'about.mission' | t }}</h2>
+        <p class="text">{{ c.mission }}</p>
+      </section>
+    }
+
+    <section>
+      <h2>{{ 'about.contacts' | t }}</h2>
+      <dl class="contacts">
+        @if (c.address) {
+          <dt>{{ 'about.address' | t }}</dt>
+          <dd>{{ c.address }}</dd>
+        }
+        @if (c.phoneNumber) {
+          <dt>{{ 'about.phone' | t }}</dt>
+          <dd>
+            <a [href]="phoneHref(c.phoneNumber)">{{ formatPhone(c.phoneNumber) }}</a>
+            @if (c.phoneNumber2) {
+              ·
+              <a [href]="phoneHref(c.phoneNumber2)">{{ formatPhone(c.phoneNumber2) }}</a>
+            }
+          </dd>
+        }
+        @if (c.email) {
+          <dt>{{ 'about.email' | t }}</dt>
+          <dd>
+            <a [href]="'mailto:' + c.email">{{ c.email }}</a>
+          </dd>
+        }
+      </dl>
+      <app-map-link [latitude]="c.latitude" [longitude]="c.longitude" />
+    </section>
+  } @else {
+    <app-empty-state [title]="'about.empty.title' | t" [text]="'about.empty.text' | t" />
+  }
+</div>

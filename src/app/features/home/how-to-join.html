@@ -1,0 +1,23 @@
+<section class="container block" aria-labelledby="how-title">
+  <h2 id="how-title">{{ 'how.title' | t }}</h2>
+  <ol class="steps">
+    @for (step of steps; track step.title) {
+      <li class="card card-body step">
+        <h3>{{ step.title | t }}</h3>
+        <p class="muted">{{ step.text | t }}</p>
+      </li>
+    }
+  </ol>
+</section>
+
+<section class="container block" aria-labelledby="faq-title">
+  <h2 id="faq-title">{{ 'faq.title' | t }}</h2>
+  <div class="faq">
+    @for (item of questions; track item.q) {
+      <details class="card item">
+        <summary>{{ item.q | t }}</summary>
+        <p class="muted">{{ item.a | t }}</p>
+      </details>
+    }
+  </div>
+</section>

@@ -1,0 +1,65 @@
+.block {
+  margin-top: var(--s-7);
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-2);
+  margin-bottom: var(--s-3);
+
+  h2 {
+    margin: 0;
+  }
+}
+
+// Without slides the top of the page is a plain banner; while they load it keeps the height, so nothing jumps.
+.hero-fallback {
+  padding-block: var(--s-8);
+  background: var(--c-primary);
+  color: var(--c-on-primary);
+
+  .title {
+    margin: 0 0 var(--s-2);
+    font-size: var(--fs-3xl);
+    font-weight: 700;
+  }
+
+  .btn {
+    background: var(--c-on-primary);
+    border-color: var(--c-on-primary);
+    color: var(--c-primary);
+  }
+}
+
+.hero-placeholder {
+  min-height: 22rem;
+  background: var(--c-surface-2);
+}
+
+.categories {
+  display: grid;
+  gap: var(--s-3);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cat-link {
+  font-weight: 650;
+  font-size: var(--fs-lg);
+  text-decoration: none;
+}
+
+.children {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1) var(--s-3);
+  margin: var(--s-2) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-sm);
+}

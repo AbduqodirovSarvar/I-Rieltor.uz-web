@@ -1,6 +1,7 @@
+import { ruPages } from './ru-pages';
 import type { Dictionary } from './uz';
 
-export const ru: Dictionary = {
+const ruBase = {
   'site.name': 'I-Rieltor',
   'site.tagline': 'Аукционы недвижимости',
   'site.description':
@@ -142,3 +143,5 @@ export const ru: Dictionary = {
   'map.open': 'Открыть на карте',
   'map.coordinates': 'Координаты',
 };
+
+export const ru: Dictionary = { ...ruBase, ...ruPages };

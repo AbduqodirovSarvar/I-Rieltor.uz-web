@@ -1,0 +1,108 @@
+/** Texts of the pages (home, about, rules, catalog), Uzbek. Joined with the shared texts in `uz.ts`. */
+export const uzPages = {
+  'home.slider': 'Asosiy e’lonlar',
+  'home.play': 'Slaydlarni davom ettirish',
+  'home.pause': 'Slaydlarni to‘xtatish',
+  'home.goTo': '{n}-slaydga o‘tish',
+  'home.heroTitle': 'Ko‘chmas mulk auksionlari',
+  'home.heroText': 'Obyektlarni ko‘ring, ariza bering va onlayn savdoda ishtirok eting.',
+  'home.categories': 'Toifalar',
+  'home.ongoing': 'Hozir savdo ketmoqda',
+  'home.upcoming': 'Tez orada boshlanadi',
+  'home.newest': 'Yangi obyektlar',
+  'home.viewAll': 'Hammasini ko‘rish',
+  'home.noOngoing': 'Hozir faol savdolar yo‘q.',
+  'home.noUpcoming': 'Yaqin vaqtda boshlanadigan savdolar yo‘q.',
+  'home.noNewest': 'Hozircha obyektlar yo‘q.',
+  'home.loadFailed': 'Ma’lumotni yuklab bo‘lmadi.',
+
+  'how.title': 'Qanday ishtirok etiladi',
+  'how.1.title': 'Ro‘yxatdan o‘ting',
+  'how.1.text': 'Hisob oching va elektron pochtangizni tasdiqlang.',
+  'how.2.title': 'E-IMZO ni ulang',
+  'how.2.text': 'Shaxsingiz E-IMZO kaliti orqali tasdiqlanadi.',
+  'how.3.title': 'Ariza va zakalat',
+  'how.3.text': 'Auksionga ariza bering va zakalatni to‘lang.',
+  'how.4.title': 'Taklif bering',
+  'how.4.text': 'Savdo boshlangach narxni oshirib, taklif bering.',
+
+  'faq.title': 'Ko‘p so‘raladigan savollar',
+  'faq.1.q': 'Kim auksionda ishtirok eta oladi?',
+  'faq.1.a':
+    'E-IMZO kaliti orqali tasdiqlangan jismoniy va yuridik shaxslar. Obyektlarni va savdolarni ko‘rish uchun ro‘yxatdan o‘tish shart emas.',
+  'faq.2.q': 'Zakalat nima?',
+  'faq.2.a':
+    'Ishtirok uchun oldindan to‘lanadigan kafolat summasi. Savdo qoidalariga ko‘ra, yutmagan ishtirokchilarga qaytariladi.',
+  'faq.3.q': 'Taklif qanday beriladi?',
+  'faq.3.a':
+    'Arizangiz tasdiqlanib, zakalat to‘langach, savdo boshlanganda joriy narxdan kamida belgilangan qadamga oshirib taklif berasiz.',
+  'faq.4.q': 'G‘olib nima qiladi?',
+  'faq.4.a':
+    'Savdo tugagach g‘olib belgilangan muddatda yakuniy to‘lovni amalga oshiradi. To‘lamasa, obyekt keyingi o‘rindagi ishtirokchiga taklif qilinishi mumkin.',
+  'faq.5.q': 'Savdo vaqti qanday hisoblanadi?',
+  'faq.5.a':
+    'Barcha vaqt Toshkent bo‘yicha ko‘rsatiladi. Savdo tugashiga oz qolganda taklif berilsa, tugash vaqti uzaytirilishi mumkin.',
+
+  'about.title': 'Biz haqimizda',
+  'about.mission': 'Missiyamiz',
+  'about.contacts': 'Aloqa',
+  'about.address': 'Manzil',
+  'about.phone': 'Telefon',
+  'about.email': 'Elektron pochta',
+  'about.empty.title': 'Ma’lumot hali kiritilmagan',
+  'about.empty.text': 'Kompaniya haqidagi ma’lumot tez orada shu yerda paydo bo‘ladi.',
+
+  'legal.rules': 'Qoidalar',
+  'legal.privacy': 'Maxfiylik siyosati',
+  'legal.updated': 'Namunaviy matn. Yakuniy matn tasdiqlangach almashtiriladi.',
+  'rules.1.title': 'Umumiy qoidalar',
+  'rules.1.text':
+    'Auksionda ishtirok etish uchun E-IMZO orqali tasdiqlangan hisob, auksionga tasdiqlangan ariza va to‘langan zakalat kerak.',
+  'rules.2.title': 'Takliflar',
+  'rules.2.text':
+    'Har bir yangi taklif joriy narxdan kamida auksion qadamiga ortiq bo‘lishi kerak. Berilgan taklifni qaytarib olib bo‘lmaydi.',
+  'rules.3.title': 'Yakun',
+  'rules.3.text':
+    'Savdo tugagach eng yuqori taklif bergan ishtirokchi g‘olib hisoblanadi va belgilangan muddatda to‘lovni amalga oshiradi.',
+  'privacy.1.title': 'Qanday ma’lumot yig‘iladi',
+  'privacy.1.text':
+    'Ro‘yxatdan o‘tishda kiritilgan ma’lumotlar (F.I.O., telefon, elektron pochta) va E-IMZO orqali tasdiqlangan identifikatorlar.',
+  'privacy.2.title': 'Brauzerda saqlanadigan ma’lumot',
+  'privacy.2.text':
+    'Sayt faqat kirish sessiyasi va tanlangan mavzuni brauzer xotirasida saqlaydi. Reklama cookie-fayllari ishlatilmaydi.',
+  'privacy.3.title': 'Ma’lumotni himoya qilish',
+  'privacy.3.text':
+    'Shaxsiy ma’lumotlar faqat auksionni o‘tkazish uchun ishlatiladi va uchinchi shaxslarga berilmaydi.',
+
+  'nav.search': 'Obyektlarni qidirish',
+  'nav.searchPlaceholder': 'Qidirish…',
+
+  'catalog.title': 'Katalog',
+  'catalog.found': 'Topildi: {count}',
+  'catalog.filters': 'Filtrlar',
+  'catalog.search': 'Qidirish',
+  'catalog.searchPlaceholder': 'Nomi, manzili yoki kadastr raqami',
+  'catalog.category': 'Toifa',
+  'catalog.anyCategory': 'Barcha toifalar',
+  'catalog.region': 'Viloyat',
+  'catalog.district': 'Tuman',
+  'catalog.area': 'Maydon, m²',
+  'catalog.rooms': 'Xonalar (kamida)',
+  'catalog.anyRooms': 'Farqi yo‘q',
+  'catalog.price': 'Narx, so‘m',
+  'catalog.from': 'dan',
+  'catalog.to': 'gacha',
+  'catalog.onlyAuction': 'Faqat auksiondagilar',
+  'catalog.includeSold': 'Sotilganlarni ham ko‘rsatish',
+  'catalog.sort': 'Tartib',
+  'catalog.sort.newest': 'Yangilari oldin',
+  'catalog.sort.price_asc': 'Narx: arzonidan',
+  'catalog.sort.price_desc': 'Narx: qimmatidan',
+  'catalog.sort.area_asc': 'Maydon: kichigidan',
+  'catalog.sort.area_desc': 'Maydon: kattasidan',
+  'catalog.sort.auction_soon': 'Savdosi yaqinlari oldin',
+  'catalog.emptyTitle': 'Hech narsa topilmadi',
+  'catalog.emptyText': 'Filtrlarni o‘zgartirib yoki tozalab ko‘ring.',
+  'catalog.resultsLabel': 'Obyektlar ro‘yxati',
+  'catalog.metaDescription': 'Auksiondagi va sotuvdagi ko‘chmas mulk obyektlari katalogi.',
+} as const;

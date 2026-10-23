@@ -1,0 +1,90 @@
+<section
+  class="hero"
+  role="region"
+  aria-roledescription="carousel"
+  [attr.aria-label]="'home.slider' | t"
+  (mouseenter)="hold(true)"
+  (mouseleave)="hold(false)"
+  (focusin)="hold(true)"
+  (focusout)="hold(false)"
+  (keydown)="onKey($event)"
+>
+  <div class="slides" [attr.aria-live]="stopped() ? 'polite' : 'off'">
+    @for (slide of slides(); track slide.id; let i = $index) {
+      <div
+        class="slide"
+        role="group"
+        aria-roledescription="slide"
+        [attr.aria-label]="i + 1 + ' / ' + count()"
+        [hidden]="i !== current()"
+      >
+        @if (src(slide)) {
+          <img
+            [src]="src(slide)"
+            [alt]="slide.image.alt || ''"
+            width="1600"
+            height="700"
+            [attr.loading]="i === 0 ? 'eager' : 'lazy'"
+            [attr.fetchpriority]="i === 0 ? 'high' : null"
+            decoding="async"
+          />
+        }
+        <div class="caption">
+          <div class="container">
+            @if (slide.title) {
+              <h2>{{ slide.title }}</h2>
+            }
+            @if (slide.subtitle) {
+              <p class="subtitle">{{ slide.subtitle }}</p>
+            }
+            @if (slide.content) {
+              <p class="content">{{ slide.content }}</p>
+            }
+            <a class="btn" [routerLink]="'/katalog' | link">{{ 'nav.catalog' | t }}</a>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  @if (count() > 1) {
+    <div class="controls">
+      <button
+        type="button"
+        class="btn btn-icon ctl"
+        [attr.aria-label]="'gallery.previous' | t"
+        (click)="go(current() - 1)"
+      >
+        <span aria-hidden="true">‹</span>
+      </button>
+      <button
+        type="button"
+        class="btn btn-icon ctl"
+        [attr.aria-label]="(stopped() ? 'home.play' : 'home.pause') | t"
+        (click)="toggle()"
+      >
+        <span aria-hidden="true">{{ stopped() ? '▶' : '❚❚' }}</span>
+      </button>
+      <button
+        type="button"
+        class="btn btn-icon ctl"
+        [attr.aria-label]="'gallery.next' | t"
+        (click)="go(current() + 1)"
+      >
+        <span aria-hidden="true">›</span>
+      </button>
+      <div class="dots">
+        @for (slide of slides(); track slide.id; let i = $index) {
+          <button
+            type="button"
+            class="dot"
+            [class.active]="i === current()"
+            [attr.aria-label]="'home.goTo' | t: { n: i + 1 }"
+            [attr.aria-current]="i === current() ? 'true' : null"
+            (click)="go(i)"
+          ></button>
+        }
+      </div>
+    </div>
+  }
+</section>

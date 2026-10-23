@@ -1,0 +1,122 @@
+<h1 class="visually-hidden">{{ 'home.heroTitle' | t }}</h1>
+
+@if (slideList(); as list) {
+  @if (list.length > 0) {
+    <app-hero-slider [slides]="list" />
+  } @else {
+    <section class="hero-fallback">
+      <div class="container">
+        <p class="title">{{ 'home.heroTitle' | t }}</p>
+        <p>{{ 'home.heroText' | t }}</p>
+        <a class="btn" [routerLink]="catalogLink()">{{ 'nav.catalog' | t }}</a>
+      </div>
+    </section>
+  }
+} @else if (!slides.isLoading()) {
+  <section class="hero-fallback">
+    <div class="container">
+      <p class="title">{{ 'home.heroTitle' | t }}</p>
+      <p>{{ 'home.heroText' | t }}</p>
+      <a class="btn" [routerLink]="catalogLink()">{{ 'nav.catalog' | t }}</a>
+    </div>
+  </section>
+} @else {
+  <div class="hero-placeholder" aria-hidden="true"></div>
+}
+
+@if (tree(); as tree) {
+  @if (tree.length > 0) {
+    <section class="container block" aria-labelledby="cat-title">
+      <h2 id="cat-title">{{ 'home.categories' | t }}</h2>
+      <ul class="categories">
+        @for (node of tree; track node.category.id) {
+          <li class="card card-body">
+            <a
+              class="cat-link"
+              [routerLink]="catalogLink()"
+              [queryParams]="categoryQuery(node.category.id)"
+              >{{ node.category.name }}</a
+            >
+            @if (node.children.length > 0) {
+              <ul class="children">
+                @for (child of node.children; track child.id) {
+                  <li>
+                    <a [routerLink]="catalogLink()" [queryParams]="categoryQuery(child.id)">{{
+                      child.name
+                    }}</a>
+                  </li>
+                }
+              </ul>
+            }
+          </li>
+        }
+      </ul>
+    </section>
+  }
+}
+
+<section class="container block" aria-labelledby="ongoing-title">
+  <div class="head">
+    <h2 id="ongoing-title">{{ 'home.ongoing' | t }}</h2>
+    <a [routerLink]="catalogLink()" [queryParams]="{ auction: 1, sort: 'auction_soon' }">{{
+      'home.viewAll' | t
+    }}</a>
+  </div>
+  @if (auctions.isLoading()) {
+    <app-skeleton-cards [count]="3" />
+  } @else if (auctions.error()) {
+    <p class="notice notice-warning">{{ 'home.loadFailed' | t }}</p>
+  } @else if (ongoing().length === 0) {
+    <p class="muted">{{ 'home.noOngoing' | t }}</p>
+  } @else {
+    <div class="grid">
+      @for (p of ongoing(); track p.id; let i = $index) {
+        <app-property-card [property]="p" [eager]="i < 3" />
+      }
+    </div>
+  }
+</section>
+
+<section class="container block" aria-labelledby="upcoming-title">
+  <div class="head">
+    <h2 id="upcoming-title">{{ 'home.upcoming' | t }}</h2>
+    <a [routerLink]="catalogLink()" [queryParams]="{ auction: 1, sort: 'auction_soon' }">{{
+      'home.viewAll' | t
+    }}</a>
+  </div>
+  @if (auctions.isLoading()) {
+    <app-skeleton-cards [count]="3" />
+  } @else if (!auctions.error()) {
+    @if (upcoming().length === 0) {
+      <p class="muted">{{ 'home.noUpcoming' | t }}</p>
+    } @else {
+      <div class="grid">
+        @for (p of upcoming(); track p.id) {
+          <app-property-card [property]="p" />
+        }
+      </div>
+    }
+  }
+</section>
+
+<section class="container block" aria-labelledby="newest-title">
+  <div class="head">
+    <h2 id="newest-title">{{ 'home.newest' | t }}</h2>
+    <a [routerLink]="catalogLink()">{{ 'home.viewAll' | t }}</a>
+  </div>
+  @if (newest.isLoading()) {
+    <app-skeleton-cards [count]="3" />
+  } @else if (newest.error()) {
+    <p class="notice notice-warning">{{ 'home.loadFailed' | t }}</p>
+  } @else if (newestItems().length === 0) {
+    <p class="muted">{{ 'home.noNewest' | t }}</p>
+  } @else {
+    <div class="grid">
+      @for (p of newestItems(); track p.id) {
+        <app-property-card [property]="p" />
+      }
+    </div>
+  }
+</section>
+
+<app-how-to-join />

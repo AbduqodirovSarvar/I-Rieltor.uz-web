@@ -25,6 +25,16 @@
         }
       </nav>
 
+      <form class="search" role="search" (submit)="search($event, q)">
+        <input
+          #q
+          class="input"
+          type="search"
+          [attr.aria-label]="'nav.search' | t"
+          [placeholder]="'nav.searchPlaceholder' | t"
+        />
+      </form>
+
       <div class="tools">
         <a
           class="btn btn-ghost lang"

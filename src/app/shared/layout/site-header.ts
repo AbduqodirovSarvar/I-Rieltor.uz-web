@@ -68,6 +68,15 @@ export class SiteHeader {
     this.menuOpen.update((open) => !open);
   }
 
+  /** The header search opens the catalog with the words typed; an empty search opens the plain catalog. */
+  protected search(event: Event, input: HTMLInputElement): void {
+    event.preventDefault();
+    const q = input.value.trim();
+    void this.router.navigate([this.i18n.link('/katalog')], { queryParams: q ? { q } : {} });
+    input.value = '';
+    this.menuOpen.set(false);
+  }
+
   protected signOut(): void {
     this.auth.signOut().subscribe(() => void this.router.navigateByUrl(this.i18n.link('/')));
   }

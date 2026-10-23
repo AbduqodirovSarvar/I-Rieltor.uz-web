@@ -1,0 +1,72 @@
+.page {
+  padding-block: var(--s-6);
+}
+
+.layout {
+  display: grid;
+  gap: var(--s-5);
+  align-items: start;
+}
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s-3);
+  margin-bottom: var(--s-4);
+}
+
+.count {
+  margin: 0;
+}
+
+.sort {
+  min-width: 14rem;
+}
+
+.range {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  legend {
+    grid-column: 1 / -1;
+    padding: 0;
+    margin-bottom: var(--s-1);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+  }
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: var(--control-h);
+
+  input {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+// While a new page loads, the old cards stay (dimmed) instead of the list jumping to a skeleton.
+.busy {
+  opacity: 0.55;
+  transition: opacity 0.15s;
+}
+
+@media (min-width: 56rem) {
+  .layout {
+    grid-template-columns: 17rem 1fr;
+  }
+
+  .side {
+    position: sticky;
+    top: calc(var(--header-h) + var(--s-4));
+  }
+}

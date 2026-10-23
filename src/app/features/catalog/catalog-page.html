@@ -1,0 +1,165 @@
+<div class="container page">
+  <h1>{{ 'catalog.title' | t }}</h1>
+
+  <div class="layout">
+    <aside class="side">
+      <app-filter-panel [title]="'catalog.filters' | t" [active]="active()" (clear)="clear()">
+        <form class="stack" role="search" (submit)="onSearch($event, q)">
+          <div class="field">
+            <label for="f-q">{{ 'catalog.search' | t }}</label>
+            <input
+              #q
+              id="f-q"
+              class="input"
+              type="search"
+              [value]="filter().q ?? ''"
+              [placeholder]="'catalog.searchPlaceholder' | t"
+              (input)="onType($event)"
+            />
+          </div>
+        </form>
+
+        <div class="field">
+          <label for="f-category">{{ 'catalog.category' | t }}</label>
+          <select id="f-category" class="select" (change)="onCategory($event)">
+            <option value="">{{ 'catalog.anyCategory' | t }}</option>
+            @for (c of categoryOptions(); track c.id) {
+              <option [value]="c.id" [selected]="c.id === filter().category">{{ c.label }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="f-region">{{ 'catalog.region' | t }}</label>
+          <input
+            id="f-region"
+            class="input"
+            [value]="filter().region ?? ''"
+            (change)="onText('region', $event)"
+          />
+        </div>
+
+        <div class="field">
+          <label for="f-district">{{ 'catalog.district' | t }}</label>
+          <input
+            id="f-district"
+            class="input"
+            [value]="filter().district ?? ''"
+            (change)="onText('district', $event)"
+          />
+        </div>
+
+        <fieldset class="range">
+          <legend>{{ 'catalog.area' | t }}</legend>
+          <input
+            class="input"
+            inputmode="decimal"
+            [attr.aria-label]="('catalog.area' | t) + ': ' + ('catalog.from' | t)"
+            [placeholder]="'catalog.from' | t"
+            [value]="filter().minArea ?? ''"
+            (change)="onNumber('minArea', $event)"
+          />
+          <input
+            class="input"
+            inputmode="decimal"
+            [attr.aria-label]="('catalog.area' | t) + ': ' + ('catalog.to' | t)"
+            [placeholder]="'catalog.to' | t"
+            [value]="filter().maxArea ?? ''"
+            (change)="onNumber('maxArea', $event)"
+          />
+        </fieldset>
+
+        <fieldset class="range">
+          <legend>{{ 'catalog.price' | t }}</legend>
+          <input
+            class="input"
+            inputmode="numeric"
+            [attr.aria-label]="('catalog.price' | t) + ': ' + ('catalog.from' | t)"
+            [placeholder]="'catalog.from' | t"
+            [value]="filter().minPrice ?? ''"
+            (change)="onNumber('minPrice', $event)"
+          />
+          <input
+            class="input"
+            inputmode="numeric"
+            [attr.aria-label]="('catalog.price' | t) + ': ' + ('catalog.to' | t)"
+            [placeholder]="'catalog.to' | t"
+            [value]="filter().maxPrice ?? ''"
+            (change)="onNumber('maxPrice', $event)"
+          />
+        </fieldset>
+
+        <div class="field">
+          <label for="f-rooms">{{ 'catalog.rooms' | t }}</label>
+          <select id="f-rooms" class="select" (change)="onNumber('minRooms', $event)">
+            <option value="">{{ 'catalog.anyRooms' | t }}</option>
+            @for (n of roomOptions; track n) {
+              <option [value]="n" [selected]="n === filter().minRooms">{{ n }}+</option>
+            }
+          </select>
+        </div>
+
+        <label class="check">
+          <input
+            type="checkbox"
+            [checked]="!!filter().auction"
+            (change)="onCheck('auction', $event)"
+          />
+          {{ 'catalog.onlyAuction' | t }}
+        </label>
+        <label class="check">
+          <input type="checkbox" [checked]="!!filter().sold" (change)="onCheck('sold', $event)" />
+          {{ 'catalog.includeSold' | t }}
+        </label>
+      </app-filter-panel>
+    </aside>
+
+    <section class="results" [attr.aria-label]="'catalog.resultsLabel' | t">
+      <div class="bar">
+        <p class="muted count" role="status">
+          @if (data(); as r) {
+            {{ 'catalog.found' | t: { count: r.totalCount } }}
+          }
+        </p>
+        <div class="field sort">
+          <label for="f-sort">{{ 'catalog.sort' | t }}</label>
+          <select id="f-sort" class="select" (change)="onSort($event)">
+            @for (s of sorts; track s.value) {
+              <option [value]="s.value" [selected]="s.value === (filter().sort ?? 'newest')">
+                {{ s.label | t }}
+              </option>
+            }
+          </select>
+        </div>
+      </div>
+
+      @if (results.isLoading() && !data()) {
+        <app-skeleton-cards [count]="6" />
+      } @else if (error()) {
+        <app-error-state
+          [kind]="errorKind()"
+          [requestId]="error()?.requestId ?? null"
+          [canRetry]="true"
+          (retry)="results.reload()"
+        />
+      } @else if (data(); as r) {
+        @if (r.items.length === 0) {
+          <app-empty-state [title]="'catalog.emptyTitle' | t" [text]="'catalog.emptyText' | t">
+            @if (active() > 0) {
+              <button type="button" class="btn btn-secondary" (click)="clear()">
+                {{ 'common.clear' | t }}
+              </button>
+            }
+          </app-empty-state>
+        } @else {
+          <div class="grid" [class.busy]="results.isLoading()">
+            @for (p of r.items; track p.id; let i = $index) {
+              <app-property-card [property]="p" [eager]="i < 3" />
+            }
+          </div>
+          <app-pagination [page]="page()" [pageSize]="pageSize" [total]="r.totalCount" />
+        }
+      }
+    </section>
+  </div>
+</div>

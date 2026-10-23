@@ -13,6 +13,25 @@ const pages: Routes = [
     loadComponent: () => import('./features/home/home-page').then((m) => m.HomePage),
   },
   {
+    path: 'katalog',
+    title: 'nav.catalog',
+    loadComponent: () => import('./features/catalog/catalog-page').then((m) => m.CatalogPage),
+  },
+  {
+    path: 'biz-haqida',
+    loadComponent: () => import('./features/about/about-page').then((m) => m.AboutPage),
+  },
+  {
+    path: 'qoidalar',
+    data: { kind: 'rules' },
+    loadComponent: () => import('./features/legal/legal-page').then((m) => m.LegalPage),
+  },
+  {
+    path: 'maxfiylik',
+    data: { kind: 'privacy' },
+    loadComponent: () => import('./features/legal/legal-page').then((m) => m.LegalPage),
+  },
+  {
     path: 'kabinet',
     loadChildren: () => import('./features/cabinet/cabinet.routes').then((m) => m.cabinetRoutes),
   },

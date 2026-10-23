@@ -1,0 +1,10 @@
+<article class="container page">
+  <h1>{{ page().title | t }}</h1>
+  <p class="notice notice-warning">{{ 'legal.updated' | t }}</p>
+  @for (section of page().sections; track section.title; let i = $index) {
+    <section>
+      <h2>{{ i + 1 }}. {{ section.title | t }}</h2>
+      <p>{{ section.text | t }}</p>
+    </section>
+  }
+</article>
