@@ -1,0 +1,17 @@
+<div class="row" role="group" [attr.aria-label]="'share.title' | t">
+  <button type="button" class="btn btn-secondary" (click)="copy()">{{ 'share.copy' | t }}</button>
+  <a
+    class="btn btn-secondary"
+    [href]="links().telegram"
+    target="_blank"
+    rel="noopener noreferrer"
+    >{{ 'share.telegram' | t }}</a
+  >
+  <a
+    class="btn btn-secondary"
+    [href]="links().whatsapp"
+    target="_blank"
+    rel="noopener noreferrer"
+    >{{ 'share.whatsapp' | t }}</a
+  >
+</div>

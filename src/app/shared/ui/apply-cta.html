@@ -1,0 +1,33 @@
+<div class="cta">
+  @if (hydrated.ready()) {
+    @switch (state()) {
+      @case ('apply') {
+        <a class="btn btn-block" [routerLink]="'/auksion/' + auctionId() + '/ariza' | link">{{
+          'cta.apply' | t
+        }}</a>
+      }
+      @case ('sign-in') {
+        <a class="btn btn-block" [routerLink]="'/kirish' | link" [queryParams]="returnTo()">{{
+          'cta.signIn' | t
+        }}</a>
+      }
+      @case ('verify') {
+        <a
+          class="btn btn-block"
+          [routerLink]="'/kabinet/e-imzo' | link"
+          [queryParams]="returnTo()"
+          >{{ 'cta.verify' | t }}</a
+        >
+      }
+      @case ('deadline-passed') {
+        <p class="notice notice-warning">{{ 'cta.deadlinePassed' | t }}</p>
+      }
+      @case ('closed') {
+        <p class="notice">{{ 'cta.closed' | t }}</p>
+      }
+    }
+    @if (state() === 'apply' || state() === 'sign-in' || state() === 'verify') {
+      <p class="muted small">{{ 'cta.deadline' | t: { date: (deadline() | dateTime) } }}</p>
+    }
+  }
+</div>

@@ -18,6 +18,14 @@ const pages: Routes = [
     loadComponent: () => import('./features/catalog/catalog-page').then((m) => m.CatalogPage),
   },
   {
+    path: 'obyekt/:id',
+    loadComponent: () => import('./features/property/property-page').then((m) => m.PropertyPage),
+  },
+  {
+    path: 'auksion/:id',
+    loadComponent: () => import('./features/auction/auction-page').then((m) => m.AuctionPage),
+  },
+  {
     path: 'biz-haqida',
     loadComponent: () => import('./features/about/about-page').then((m) => m.AboutPage),
   },

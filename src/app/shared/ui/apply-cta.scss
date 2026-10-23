@@ -1,0 +1,14 @@
+// Keeps its height before the browser decides what to show, so the page does not jump.
+.cta {
+  min-height: 3.5rem;
+
+  .notice,
+  .small {
+    margin: 0;
+  }
+
+  .small {
+    margin-top: var(--s-2);
+    font-size: var(--fs-sm);
+  }
+}

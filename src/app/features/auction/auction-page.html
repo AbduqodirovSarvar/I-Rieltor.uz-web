@@ -1,0 +1,107 @@
+@if (auction(); as a) {
+  <article class="container page">
+    <header class="head">
+      <div>
+        @if (a.lotNumber) {
+          <p class="muted lot">{{ 'auction.lot' | t: { number: a.lotNumber } }}</p>
+        }
+        <h1>{{ a.propertyTitle || a.title }}</h1>
+      </div>
+      <app-status-badge enum="AuctionStatus" [value]="a.status" />
+    </header>
+
+    <p class="state">{{ statusText() }}</p>
+
+    @if (showLive()) {
+      <p class="live" [attr.data-state]="live.state()" role="status">
+        <span class="dot" aria-hidden="true"></span>
+        <span class="visually-hidden">{{ 'auction.live.label' | t }}: </span>{{ liveText() }}
+      </p>
+    }
+    <p class="visually-hidden" aria-live="polite">{{ announcement() }}</p>
+    @if (extended()) {
+      <p class="notice notice-warning">{{ 'auction.extended' | t }}</p>
+    }
+
+    <div class="layout">
+      <div class="main">
+        @if (headline(); as h) {
+          <section class="card card-body headline" [attr.aria-label]="'auction.prices' | t">
+            <app-price [label]="h.key | t" [amount]="h.amount" [large]="true" />
+            @if (a.status === 'ONGOING') {
+              <app-price [label]="'auction.minNextBid' | t" [amount]="a.minNextBid" />
+            }
+          </section>
+        }
+
+        @if (timers().length > 0) {
+          <section class="card card-body timers" [attr.aria-label]="'auction.timeLeft' | t">
+            @for (timer of timers(); track timer.label) {
+              <p class="timer">
+                <span class="muted">{{ timer.label | t }}</span>
+                <app-countdown [target]="timer.at" (finished)="onZero()" />
+              </p>
+            }
+          </section>
+        }
+
+        <section aria-labelledby="terms-title">
+          <h2 id="terms-title">{{ 'auction.prices' | t }}</h2>
+          <dl class="facts">
+            <dt>{{ 'auction.startingPrice' | t }}</dt>
+            <dd class="num">{{ a.startingPrice | money }}</dd>
+            <dt>{{ 'auction.step' | t }}</dt>
+            <dd class="num">{{ a.minBidStep | money }}</dd>
+            <dt>{{ 'auction.deposit' | t }}</dt>
+            <dd class="num">{{ a.depositAmount | money }}</dd>
+            <dt>{{ 'auction.participants' | t }}</dt>
+            <dd class="num">{{ a.participantCount }}</dd>
+            <dt>{{ 'auction.bids' | t }}</dt>
+            <dd class="num">{{ a.bidCount }}</dd>
+          </dl>
+        </section>
+
+        <section aria-labelledby="dates-title">
+          <h2 id="dates-title">{{ 'auction.dates' | t }}</h2>
+          <dl class="facts">
+            <dt>{{ 'auction.deadline' | t }}</dt>
+            <dd>{{ a.applicationDeadline | dateTime }}</dd>
+            <dt>{{ 'auction.starts' | t }}</dt>
+            <dd>{{ a.startsAt | dateTime }}</dd>
+            <dt>{{ 'auction.ends' | t }}</dt>
+            <dd>{{ a.endsAt | dateTime }}</dd>
+          </dl>
+          <p class="muted small">{{ 'auction.extension' | t: { minutes: a.extensionMinutes } }}</p>
+        </section>
+
+        @if (a.description) {
+          <p class="text">{{ a.description }}</p>
+        }
+      </div>
+
+      <aside class="side">
+        <div class="card card-body stack">
+          <app-apply-cta
+            [auctionId]="a.id"
+            [status]="a.status"
+            [deadline]="a.applicationDeadline"
+          />
+          <a class="btn btn-secondary btn-block" [routerLink]="'/obyekt/' + a.propertyId | link">{{
+            'auction.property' | t
+          }}</a>
+        </div>
+      </aside>
+    </div>
+  </article>
+} @else if (error()) {
+  <app-error-state
+    [kind]="errorKind()"
+    [requestId]="error()?.requestId ?? null"
+    [canRetry]="errorKind() !== 'not-found'"
+    (retry)="reload()"
+  />
+} @else {
+  <div class="container page" role="status">
+    <p class="muted">{{ 'common.loading' | t }}</p>
+  </div>
+}

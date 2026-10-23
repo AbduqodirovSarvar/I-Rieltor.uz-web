@@ -1,0 +1,147 @@
+@if (property(); as p) {
+  <article class="container page">
+    <nav class="crumbs" [attr.aria-label]="'nav.main' | t">
+      <a [routerLink]="'/katalog' | link">{{ 'catalog.title' | t }}</a>
+      <span aria-hidden="true">›</span>
+      <a [routerLink]="'/katalog' | link" [queryParams]="{ category: p.categoryId }">{{
+        p.categoryName
+      }}</a>
+    </nav>
+
+    <header class="head">
+      <h1>{{ p.title }}</h1>
+      <app-status-badge enum="PropertyStatus" [value]="p.status" />
+    </header>
+
+    <div class="layout">
+      <div class="main">
+        @if (gallery().length > 0) {
+          <app-gallery [items]="gallery()" />
+        }
+
+        <section aria-labelledby="facts-title">
+          <h2 id="facts-title">{{ 'object.details' | t }}</h2>
+          <dl class="facts">
+            <dt>{{ 'object.category' | t }}</dt>
+            <dd>{{ p.categoryName }}</dd>
+            <dt>{{ 'object.region' | t }}</dt>
+            <dd>{{ p.region }}</dd>
+            @if (p.district) {
+              <dt>{{ 'object.district' | t }}</dt>
+              <dd>{{ p.district }}</dd>
+            }
+            @if (p.address) {
+              <dt>{{ 'object.address' | t }}</dt>
+              <dd>{{ p.address }}</dd>
+            }
+            @if (p.areaSqm) {
+              <dt>{{ 'object.area' | t }}</dt>
+              <dd class="num">{{ p.areaSqm | area }}</dd>
+            }
+            @if (p.landAreaSotix) {
+              <dt>{{ 'object.landArea' | t }}</dt>
+              <dd class="num">{{ p.landAreaSotix | area: 'sotix' }}</dd>
+            }
+            @if (p.rooms) {
+              <dt>{{ 'object.rooms' | t }}</dt>
+              <dd>{{ p.rooms | rooms }}</dd>
+            }
+            @if (floorText()) {
+              <dt>{{ 'object.floor' | t }}</dt>
+              <dd>{{ floorText() }}</dd>
+            }
+            @if (p.buildYear) {
+              <dt>{{ 'object.buildYear' | t }}</dt>
+              <dd>{{ p.buildYear }}</dd>
+            }
+            @if (p.cadastralNumber) {
+              <dt>{{ 'object.cadastral' | t }}</dt>
+              <dd class="num">{{ p.cadastralNumber }}</dd>
+            }
+            @if (p.estimatedValue) {
+              <dt>{{ 'object.estimated' | t }}</dt>
+              <dd class="num">{{ p.estimatedValue | money }}</dd>
+            }
+            @if (p.sellerName) {
+              <dt>{{ 'object.seller' | t }}</dt>
+              <dd>{{ p.sellerName }}</dd>
+            }
+          </dl>
+        </section>
+
+        @if (p.description) {
+          <section aria-labelledby="desc-title">
+            <h2 id="desc-title">{{ 'object.description' | t }}</h2>
+            <p class="text">{{ p.description }}</p>
+          </section>
+        }
+
+        @if (documents().length > 0) {
+          <section aria-labelledby="docs-title">
+            <h2 id="docs-title">{{ 'object.documents' | t }}</h2>
+            <ul class="docs">
+              @for (d of documents(); track d.file.url) {
+                <li>
+                  <a [href]="fileHref(d.file.url)" target="_blank" rel="noopener noreferrer">{{
+                    d.title || d.file.alt || ('doc.download' | t)
+                  }}</a>
+                </li>
+              }
+            </ul>
+          </section>
+        }
+
+        @if (p.latitude !== null && p.longitude !== null) {
+          <section aria-labelledby="map-title">
+            <h2 id="map-title">{{ 'object.location' | t }}</h2>
+            <app-map-link [latitude]="p.latitude" [longitude]="p.longitude" />
+          </section>
+        }
+      </div>
+
+      <aside class="side">
+        <div class="card card-body stack">
+          @if (p.auction; as auction) {
+            <app-auction-summary [auction]="auction" />
+            <app-apply-cta
+              [auctionId]="auction.id"
+              [status]="auction.status"
+              [deadline]="auction.applicationDeadline"
+            />
+            <a class="btn btn-secondary btn-block" [routerLink]="'/auksion/' + auction.id | link">{{
+              'cta.viewAuction' | t
+            }}</a>
+          } @else {
+            <p class="muted">{{ 'object.noAuction' | t }}</p>
+          }
+        </div>
+        <div class="card card-body stack">
+          <app-share-bar [url]="address()" [title]="p.title ?? ''" />
+          <p class="muted small">{{ views() }}</p>
+        </div>
+      </aside>
+    </div>
+
+    @if (similarItems().length > 0) {
+      <section class="similar" aria-labelledby="similar-title">
+        <h2 id="similar-title">{{ 'object.similar' | t }}</h2>
+        <div class="grid">
+          @for (s of similarItems(); track s.id) {
+            <app-property-card [property]="s" />
+          }
+        </div>
+      </section>
+    }
+  </article>
+} @else if (error()) {
+  <app-error-state
+    [kind]="errorKind()"
+    [requestId]="error()?.requestId ?? null"
+    [canRetry]="errorKind() !== 'not-found'"
+    (retry)="resource.reload()"
+  />
+} @else {
+  <div class="container page" role="status">
+    <p class="muted">{{ 'common.loading' | t }}</p>
+  </div>
+}

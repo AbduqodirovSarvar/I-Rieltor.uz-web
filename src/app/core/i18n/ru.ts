@@ -1,3 +1,4 @@
+import { ruObject } from './ru-object';
 import { ruPages } from './ru-pages';
 import type { Dictionary } from './uz';
 
@@ -144,4 +145,4 @@ const ruBase = {
   'map.coordinates': 'Координаты',
 };
 
-export const ru: Dictionary = { ...ruBase, ...ruPages };
+export const ru: Dictionary = { ...ruBase, ...ruPages, ...ruObject };
