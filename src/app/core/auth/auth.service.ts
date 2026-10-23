@@ -45,6 +45,11 @@ export class AuthService {
     this.store.set(toSession(token));
   }
 
+  /** Keeps a profile the server just returned (after the person edited it). */
+  setUser(user: CurrentUser): void {
+    this.user.set(user);
+  }
+
   /** Loads the profile (name, type, e-mail) of the signed-in user. */
   loadProfile(): Observable<CurrentUser | null> {
     return this.api.get<CurrentUser>('api/Auth/me').pipe(

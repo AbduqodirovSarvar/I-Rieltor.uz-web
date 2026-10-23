@@ -10,3 +10,10 @@ export function saveBlob(blob: Blob, filename: string): void {
   link.remove();
   setTimeout(() => URL.revokeObjectURL(url), 10_000);
 }
+
+/** Opens a blob (a picture, a PDF) in a new tab. Only for types that cannot run code: see `isSafeToPreview`. */
+export function previewBlob(blob: Blob): void {
+  const url = URL.createObjectURL(blob);
+  window.open(url, '_blank', 'noopener');
+  setTimeout(() => URL.revokeObjectURL(url), 60_000);
+}

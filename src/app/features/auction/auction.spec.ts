@@ -7,9 +7,17 @@ import { PublicAuctionDetail } from '../../api/models';
 import { BidPlacedEvent } from '../../core/realtime/auction-live';
 import { HUB_FACTORY } from '../../core/realtime/hub';
 import { FakeHub } from '../../testing/fake-hub';
-import { failure, ok, tick } from '../../testing/http-helpers';
+import { PublicBid } from '../../api/models';
+import { failure, ok, okPage, tick } from '../../testing/http-helpers';
 import { AuctionPage } from './auction-page';
-import { headlinePrice, isLiveStatus, patchFromBid, patchFromStatus } from './auction-view';
+import {
+  bidFromEvent,
+  headlinePrice,
+  isLiveStatus,
+  mergeBids,
+  patchFromBid,
+  patchFromStatus,
+} from './auction-view';
 
 const NBSP = ' ';
 const hours = (h: number) => new Date(Date.now() + h * 3_600_000).toISOString();
@@ -92,6 +100,35 @@ describe('auction view helpers', () => {
   });
 });
 
+describe('bid history helpers', () => {
+  const b = (n: number, amount: number, minutes: number): PublicBid => ({
+    participantNumber: n,
+    amount,
+    placedAt: new Date(Date.UTC(2026, 9, 23, 10, minutes)).toISOString(),
+  });
+
+  it('puts the newest first and shows each bid once, however it arrived', () => {
+    const server = [b(1, 100, 1), b(2, 110, 2)];
+    const live = [b(2, 110, 2), b(3, 120, 3)];
+    expect(mergeBids(server, live).map((x) => x.amount)).toEqual([120, 110, 100]);
+  });
+
+  it('cuts the list to the limit, keeping the newest', () => {
+    const many = Array.from({ length: 30 }, (_, i) => b(1, 100 + i, i));
+    const merged = mergeBids(many, [], 20);
+    expect(merged.length).toBe(20);
+    expect(merged[0].amount).toBe(129);
+  });
+
+  it('turns a live message into a history entry with participant number only', () => {
+    expect(bidFromEvent(bid({ participantNumber: 7, amount: 5 }))).toEqual({
+      participantNumber: 7,
+      amount: 5,
+      placedAt: expect.any(String),
+    });
+  });
+});
+
 describe('AuctionPage', () => {
   let backend: HttpTestingController;
   let hubs: FakeHub[];
@@ -122,7 +159,14 @@ describe('AuctionPage', () => {
   const detail = () => backend.expectOne((r) => r.url === '/api/Auction/public');
   const text = (el: HTMLElement) => (el.textContent ?? '').replace(/ +/g, ' ');
 
-  async function load(data: PublicAuctionDetail | 'fail' | 404 = auction()) {
+  /** Answers the bid list request(s) the page made. */
+  const answerBids = (bids: PublicBid[] = []) =>
+    backend.match((r) => r.url === '/api/Bid/list').forEach((r) => r.flush(okPage(bids)));
+
+  async function load(
+    data: PublicAuctionDetail | 'fail' | 404 = auction(),
+    bids: PublicBid[] = [],
+  ) {
     const fixture = TestBed.createComponent(AuctionPage);
     fixture.componentRef.setInput('id', 'a1');
     fixture.detectChanges();
@@ -131,6 +175,7 @@ describe('AuctionPage', () => {
     else if (data === 404)
       request.flush(failure(404, 'nf'), { status: 404, statusText: 'Not Found' });
     else request.flush(ok(data));
+    answerBids(bids);
     await tick();
     fixture.detectChanges();
     fixture.detectChanges();
@@ -256,6 +301,7 @@ describe('AuctionPage', () => {
     fixture.detectChanges();
     expect(text(fixture.nativeElement)).toContain('Yakunlangan');
     detail().flush(ok(auction({ status: 'FINISHED', outcome: 'SOLD', finalPrice: 520_000_000 })));
+    answerBids();
     await tick();
     fixture.detectChanges();
     expect(text(fixture.nativeElement)).toContain('Obyekt sotildi.');
@@ -278,6 +324,7 @@ describe('AuctionPage', () => {
     fixture.detectChanges();
     await tick();
     detail().flush(ok(auction({ currentPrice: 540_000_000, bidCount: 12 })));
+    answerBids();
     await tick();
     fixture.detectChanges();
     expect(text(fixture.nativeElement)).toContain(`540${NBSP}000${NBSP}000`);
@@ -331,5 +378,43 @@ describe('AuctionPage', () => {
     fixture = await load('fail');
     expect(again.status).toBe(500);
     expect(fixture.nativeElement.querySelector('app-error-state button')).toBeTruthy();
+  });
+
+  it('lists the bids newest first with the participant number, amount and time, and no names', async () => {
+    const fixture = await load(auction(), [
+      { participantNumber: 1, amount: 510_000_000, placedAt: '2026-10-23T09:00:05Z' },
+      { participantNumber: 2, amount: 512_000_000, placedAt: '2026-10-23T09:01:10Z' },
+    ]);
+    const rows = Array.from(
+      fixture.nativeElement.querySelectorAll('.bids tbody tr'),
+    ) as HTMLElement[];
+    expect(rows.length).toBe(2);
+    expect(text(rows[0])).toContain('№ 2');
+    expect(text(rows[0])).toContain(`512${NBSP}000${NBSP}000`);
+    expect(text(rows[0])).toContain('14:01:10');
+    expect(rows[0].classList.contains('top')).toBe(true);
+    expect(text(rows[1])).toContain('№ 1');
+  });
+
+  it('says there are no bids yet', async () => {
+    const fixture = await load(auction({ bidCount: 0 }), []);
+    expect(text(fixture.nativeElement)).toContain('Hali takliflar yo‘q.');
+    expect(fixture.nativeElement.querySelector('.bids')).toBeNull();
+  });
+
+  it('a live bid goes to the top of the history at once', async () => {
+    const fixture = await load(auction(), [
+      { participantNumber: 1, amount: 510_000_000, placedAt: '2026-10-23T09:00:05Z' },
+    ]);
+    await tick();
+    hubs[0].send(
+      'BidPlaced',
+      bid({ participantNumber: 5, amount: 530_000_000, placedAt: '2026-10-23T09:05:00Z' }),
+    );
+    fixture.detectChanges();
+    const rows = Array.from(
+      fixture.nativeElement.querySelectorAll('.bids tbody tr'),
+    ) as HTMLElement[];
+    expect(rows.map((r) => r.querySelector('td')?.textContent?.trim())).toEqual(['№ 5', '№ 1']);
   });
 });

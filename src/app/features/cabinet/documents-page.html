@@ -1,0 +1,75 @@
+<h2>{{ 'docs.title' | t }}</h2>
+<p class="muted">{{ 'docs.intro' | t }}</p>
+
+<form class="card card-body stack" (submit)="$event.preventDefault(); upload()" novalidate>
+  <h3>{{ 'docs.upload' | t }}</h3>
+
+  <div class="field">
+    <label for="doc-purpose">{{ 'docs.purpose' | t }}</label>
+    <select id="doc-purpose" class="select" (change)="setPurpose($event)">
+      @for (p of purposes; track p.value) {
+        <option [value]="p.value" [selected]="p.value === purpose()">{{ p.text | t }}</option>
+      }
+    </select>
+  </div>
+
+  <app-file-upload
+    inputId="doc-file"
+    [label]="'docs.file' | t"
+    [rules]="rules"
+    [typeNames]="'docs.types' | t"
+    (selected)="file.set($event); noFile.set(false)"
+  />
+  @if (noFile()) {
+    <p class="notice notice-warning" role="alert">{{ 'docs.chooseFirst' | t }}</p>
+  }
+
+  <div class="field">
+    <label for="doc-desc"
+      >{{ 'docs.description' | t }} <span class="muted">({{ 'form.optional' | t }})</span></label
+    >
+    <input
+      id="doc-desc"
+      class="input"
+      maxlength="300"
+      [value]="description()"
+      (input)="setDescription($event)"
+    />
+  </div>
+
+  <button type="submit" class="btn" [disabled]="uploading()">{{ 'docs.send' | t }}</button>
+</form>
+
+@if (list.isLoading() && !list.hasValue()) {
+  <p class="muted" role="status">{{ 'common.loading' | t }}</p>
+} @else if (documents().length === 0) {
+  <app-empty-state [title]="'docs.empty' | t" />
+} @else {
+  <ul class="docs">
+    @for (d of documents(); track d.id) {
+      <li class="card doc">
+        <div>
+          <p class="doc-name">{{ d.originalName }}</p>
+          <p class="doc-meta muted">
+            {{ purposeText(d.purpose) | t }} · {{ d.size | fileSize }} ·
+            {{ d.createdAt | dateTime }}
+          </p>
+          @if (d.description) {
+            <p class="doc-meta">{{ d.description }}</p>
+          }
+        </div>
+        <div class="row">
+          <button type="button" class="btn btn-secondary" (click)="open(d)">
+            {{ 'docs.open' | t }}
+          </button>
+          <button type="button" class="btn btn-ghost" (click)="save(d)">
+            {{ 'docs.save' | t }}
+          </button>
+          <button type="button" class="btn btn-ghost" (click)="remove(d)">
+            {{ 'docs.delete' | t }}
+          </button>
+        </div>
+      </li>
+    }
+  </ul>
+}

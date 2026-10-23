@@ -1,0 +1,8 @@
+@if (email(); as address) {
+  <div class="notice notice-warning row banner" role="status">
+    <span>{{ 'auth.banner.unconfirmed' | t: { email: address } }}</span>
+    <button type="button" class="btn btn-secondary" [disabled]="!canSend()" (click)="resend()">
+      {{ 'auth.banner.resend' | t }}{{ wait() > 0 ? ' (' + wait() + ')' : '' }}
+    </button>
+  </div>
+}

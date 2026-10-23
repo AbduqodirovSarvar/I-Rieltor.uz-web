@@ -1,4 +1,4 @@
-import { AuctionStatus, PublicAuctionDetail } from '../../api/models';
+import { AuctionStatus, PublicAuctionDetail, PublicBid } from '../../api/models';
 import { TextKey } from '../../core/i18n/uz';
 import { AuctionStatusChangedEvent, BidPlacedEvent } from '../../core/realtime/auction-live';
 
@@ -62,4 +62,39 @@ export function headlinePrice(a: PublicAuctionDetail): { key: TextKey; amount: n
 /** True while it makes sense to hold a live connection: before the end, not after. */
 export function isLiveStatus(status: AuctionStatus): boolean {
   return status === 'SCHEDULED' || status === 'ONGOING';
+}
+
+/** How many bids the history shows. */
+export const BID_HISTORY_LIMIT = 20;
+
+const bidKey = (b: PublicBid) => `${b.participantNumber}|${b.amount}|${b.placedAt}`;
+
+/**
+ * The bid history: what the server listed plus what arrived live since, newest first, each bid once (a bid can come both
+ * from the list and from the stream), cut to {@link BID_HISTORY_LIMIT}.
+ */
+export function mergeBids(
+  server: PublicBid[],
+  live: PublicBid[],
+  limit = BID_HISTORY_LIMIT,
+): PublicBid[] {
+  const seen = new Set<string>();
+  return [...live, ...server]
+    .filter((b) => {
+      const key = bidKey(b);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .sort((a, b) => Date.parse(b.placedAt) - Date.parse(a.placedAt) || b.amount - a.amount)
+    .slice(0, limit);
+}
+
+/** The history entry a live bid message stands for. */
+export function bidFromEvent(event: BidPlacedEvent): PublicBid {
+  return {
+    participantNumber: event.participantNumber,
+    amount: event.amount,
+    placedAt: event.placedAt,
+  };
 }

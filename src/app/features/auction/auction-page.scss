@@ -118,3 +118,30 @@
     top: calc(var(--header-h) + var(--s-4));
   }
 }
+
+.bids {
+  width: 100%;
+  max-width: 36rem;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: var(--s-2) var(--s-3);
+    text-align: left;
+    border-bottom: 1px solid var(--c-border);
+  }
+
+  th {
+    font-size: var(--fs-sm);
+    color: var(--c-text-muted);
+  }
+
+  .right {
+    text-align: right;
+  }
+
+  // The leading bid is the one that matters.
+  .top td {
+    font-weight: 700;
+  }
+}

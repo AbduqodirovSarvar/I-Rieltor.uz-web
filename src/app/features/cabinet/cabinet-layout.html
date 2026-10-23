@@ -1,0 +1,25 @@
+<div class="container page">
+  <header class="head">
+    <h1>{{ 'cabinet.title' | t }}</h1>
+    <p class="who muted">
+      <strong>{{ auth.displayName() }}</strong>
+      ·
+      <span class="badge" [class.badge-success]="auth.isVerified()">{{
+        (auth.isVerified() ? 'cabinet.verified' : 'cabinet.notVerified') | t
+      }}</span>
+    </p>
+  </header>
+
+  <app-email-banner />
+
+  <div class="layout">
+    <nav class="menu" [attr.aria-label]="'cabinet.nav' | t">
+      @for (s of sections; track s.path) {
+        <a [routerLink]="s.path | link" routerLinkActive="active">{{ s.text | t }}</a>
+      }
+    </nav>
+    <section class="content">
+      <router-outlet />
+    </section>
+  </div>
+</div>

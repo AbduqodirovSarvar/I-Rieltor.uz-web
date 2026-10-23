@@ -1127,6 +1127,49 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/Auth/me/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["UpdateMyProfileCommand"];
+                    "text/json": components["schemas"]["UpdateMyProfileCommand"];
+                    "application/*+json": components["schemas"]["UpdateMyProfileCommand"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["UserViewModelResponseModel"];
+                        "application/json": components["schemas"]["UserViewModelResponseModel"];
+                        "text/json": components["schemas"]["UserViewModelResponseModel"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/Auth/me/password": {
         parameters: {
             query?: never;
@@ -5745,6 +5788,12 @@ export interface components {
             /** Format: int32 */
             totalCount: number | null;
             readonly isPaginated: boolean;
+        };
+        UpdateMyProfileCommand: {
+            fullName: string | null;
+            phone: string | null;
+            secondaryPhone: string | null;
+            address: string | null;
         };
         UploadedFileViewModel: {
             /** Format: uuid */

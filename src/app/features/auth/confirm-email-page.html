@@ -1,0 +1,27 @@
+<div class="container narrow">
+  <h1>{{ 'auth.confirm.title' | t }}</h1>
+
+  @switch (state()) {
+    @case ('working') {
+      <p class="muted" role="status">{{ 'auth.confirm.working' | t }}</p>
+    }
+    @case ('done') {
+      <p class="notice notice-success" role="status">{{ 'auth.confirm.ok' | t }}</p>
+      @if (isSignedIn()) {
+        <a class="btn" [routerLink]="'/kabinet' | link">{{ 'auth.confirm.toCabinet' | t }}</a>
+      } @else {
+        <a class="btn" [routerLink]="'/kirish' | link">{{ 'auth.confirm.signIn' | t }}</a>
+      }
+    }
+    @case ('failed') {
+      <p class="notice notice-danger" role="alert">{{ 'auth.confirm.failed' | t }}</p>
+      <p class="muted">{{ 'auth.confirm.again' | t }}</p>
+      <a class="btn" [routerLink]="(isSignedIn() ? '/kabinet' : '/kirish') | link">{{
+        (isSignedIn() ? 'auth.confirm.toCabinet' : 'auth.confirm.signIn') | t
+      }}</a>
+    }
+    @case ('no-token') {
+      <p class="notice notice-warning" role="alert">{{ 'auth.confirm.noToken' | t }}</p>
+    }
+  }
+</div>

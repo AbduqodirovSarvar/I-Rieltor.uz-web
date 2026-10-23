@@ -74,6 +74,36 @@
           <p class="muted small">{{ 'auction.extension' | t: { minutes: a.extensionMinutes } }}</p>
         </section>
 
+        <section aria-labelledby="bids-title">
+          <h2 id="bids-title">{{ 'auction.bidHistory' | t }}</h2>
+          @if (bids().length === 0) {
+            <p class="muted">{{ 'auction.noBids' | t }}</p>
+          } @else {
+            <table class="bids">
+              <thead>
+                <tr>
+                  <th scope="col">{{ 'auction.bidderCol' | t }}</th>
+                  <th scope="col" class="right">{{ 'auction.bidAmount' | t }}</th>
+                  <th scope="col" class="right">{{ 'auction.bidTime' | t }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (
+                  b of bids();
+                  track b.placedAt + b.participantNumber + b.amount;
+                  let first = $first
+                ) {
+                  <tr [class.top]="first">
+                    <td>№ {{ b.participantNumber }}</td>
+                    <td class="right num">{{ b.amount | money }}</td>
+                    <td class="right num muted">{{ b.placedAt | timeSeconds }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        </section>
+
         @if (a.description) {
           <p class="text">{{ a.description }}</p>
         }

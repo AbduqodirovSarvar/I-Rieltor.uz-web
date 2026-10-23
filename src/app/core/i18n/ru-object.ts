@@ -85,4 +85,10 @@ export const ruObject: Record<keyof typeof uzObject, string> = {
   'auction.live.reconnecting': 'Связь прервана, переподключение…',
   'auction.live.disconnected': 'Трансляция прервана. Обновите страницу, чтобы увидеть новое.',
   'auction.reload': 'Обновить',
+  'auction.bidHistory': 'История ставок',
+  'auction.bidder': 'Участник № {n}',
+  'auction.noBids': 'Ставок пока нет.',
+  'auction.bidAmount': 'Сумма',
+  'auction.bidTime': 'Время',
+  'auction.bidderCol': 'Участник',
 };

@@ -1,0 +1,147 @@
+<div class="container narrow">
+  <h1>{{ 'auth.signUp.title' | t }}</h1>
+
+  <form class="card card-body stack" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <div class="two">
+      <app-field
+        controlId="su-first"
+        [label]="'auth.signUp.firstName' | t"
+        [error]="error('firstName')"
+      >
+        <input
+          id="su-first"
+          class="input"
+          formControlName="firstName"
+          autocomplete="given-name"
+          [attr.aria-invalid]="error('firstName') ? 'true' : null"
+          aria-describedby="su-first-error"
+        />
+      </app-field>
+      <app-field
+        controlId="su-last"
+        [label]="'auth.signUp.lastName' | t"
+        [error]="error('lastName')"
+      >
+        <input
+          id="su-last"
+          class="input"
+          formControlName="lastName"
+          autocomplete="family-name"
+          [attr.aria-invalid]="error('lastName') ? 'true' : null"
+          aria-describedby="su-last-error"
+        />
+      </app-field>
+    </div>
+
+    <app-field
+      controlId="su-middle"
+      [label]="'auth.signUp.middleName' | t"
+      [optional]="true"
+      [error]="error('middleName')"
+    >
+      <input
+        id="su-middle"
+        class="input"
+        formControlName="middleName"
+        autocomplete="additional-name"
+        aria-describedby="su-middle-error"
+      />
+    </app-field>
+
+    <app-field controlId="su-email" [label]="'auth.signUp.email' | t" [error]="error('email')">
+      <input
+        id="su-email"
+        class="input"
+        type="email"
+        formControlName="email"
+        autocomplete="email"
+        autocapitalize="none"
+        spellcheck="false"
+        [attr.aria-invalid]="error('email') ? 'true' : null"
+        aria-describedby="su-email-error"
+      />
+    </app-field>
+
+    <app-field
+      controlId="su-phone"
+      [label]="'auth.signUp.phone' | t"
+      [optional]="true"
+      [hint]="'auth.signUp.phoneHint' | t"
+      [error]="error('phone')"
+    >
+      <input
+        id="su-phone"
+        class="input"
+        type="tel"
+        formControlName="phone"
+        autocomplete="tel"
+        placeholder="+998901234567"
+        [attr.aria-invalid]="error('phone') ? 'true' : null"
+        aria-describedby="su-phone-hint su-phone-error"
+      />
+    </app-field>
+
+    <app-field
+      controlId="su-login"
+      [label]="'auth.signUp.login' | t"
+      [optional]="true"
+      [hint]="'auth.signUp.loginHint' | t"
+      [error]="error('login')"
+    >
+      <input
+        id="su-login"
+        class="input"
+        formControlName="login"
+        autocomplete="username"
+        autocapitalize="none"
+        spellcheck="false"
+        [attr.aria-invalid]="error('login') ? 'true' : null"
+        aria-describedby="su-login-hint su-login-error"
+      />
+    </app-field>
+
+    <app-password-input
+      controlId="su-password"
+      [label]="'auth.signUp.password' | t"
+      [control]="form.controls.password"
+      [hint]="'auth.signUp.passwordHint' | t"
+      autocomplete="new-password"
+    />
+    <app-password-input
+      controlId="su-confirm"
+      [label]="'auth.signUp.confirm' | t"
+      [control]="form.controls.confirm"
+      autocomplete="new-password"
+    />
+
+    @if (conflict()) {
+      <p class="notice notice-danger" role="alert">{{ 'auth.signUp.conflict' | t }}</p>
+    }
+    @if (problems().length > 0) {
+      <div class="notice notice-danger" role="alert">
+        @for (line of problems(); track $index) {
+          <p>{{ line }}</p>
+        }
+      </div>
+    }
+    @if (wait() > 0) {
+      <p class="notice notice-warning" role="alert">
+        {{ 'auth.signIn.wait' | t: { seconds: wait() } }}
+      </p>
+    }
+
+    <button type="submit" class="btn btn-block" [disabled]="!canSubmit()">
+      {{ 'auth.signUp.submit' | t }}
+    </button>
+    <p class="note">{{ 'auth.signUp.next' | t }}</p>
+  </form>
+
+  <p class="alt">
+    {{ 'auth.signUp.haveAccount' | t }}
+    <a
+      [routerLink]="'/kirish' | link"
+      [queryParams]="returnUrl() ? { returnUrl: returnUrl() } : {}"
+      >{{ 'nav.signIn' | t }}</a
+    >
+  </p>
+</div>

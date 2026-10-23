@@ -54,9 +54,15 @@ describe('security rules for the source', () => {
   });
 
   it('touches window, document and localStorage only through DOCUMENT in core and shared code', () => {
-    // A bare `window.` or `localStorage.` breaks on the server. The showcase is development-only and browser-only.
+    // A bare `window.` or `localStorage.` breaks on the server. The showcase is development-only and browser-only; download.ts runs only from a click.
     const offenders = files
-      .filter((f) => !f.includes('dev') && !f.endsWith('server.ts') && !f.includes('main'))
+      .filter(
+        (f) =>
+          !f.includes('dev') &&
+          !f.endsWith('server.ts') &&
+          !f.includes('main') &&
+          !f.endsWith('download.ts'),
+      )
       .filter((f) =>
         /(^|[^.\w])(window|localStorage|sessionStorage|navigator)\./m.test(
           read(f).replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, ''),

@@ -10,9 +10,10 @@ import {
 } from '@angular/core';
 import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
-import { PublicAuctionDetail } from '../../api/models';
+import { map } from 'rxjs';
+import { PublicAuctionDetail, PublicBid } from '../../api/models';
 import { AuctionService } from '../../core/auction/auction.service';
-import { DateTimePipe, MoneyPipe, formatMoney } from '../../core/format/format';
+import { DateTimePipe, MoneyPipe, TimeSecondsPipe, formatMoney } from '../../core/format/format';
 import { ApiError } from '../../core/http/api-error';
 import { I18n } from '../../core/i18n/i18n.service';
 import { LinkPipe, TPipe } from '../../core/i18n/t.pipe';
@@ -28,7 +29,10 @@ import { ErrorState, kindOfError } from '../../shared/ui/error-state';
 import { Price } from '../../shared/ui/price';
 import { StatusBadge } from '../../shared/ui/status-badge';
 import {
+  BID_HISTORY_LIMIT,
   LivePatch,
+  bidFromEvent,
+  mergeBids,
   OUTCOME_TEXT,
   STATUS_TEXT,
   headlinePrice,
@@ -60,6 +64,7 @@ const EXTENDED_NOTE_MS = 8000;
     RouterLink,
     StatusBadge,
     TPipe,
+    TimeSecondsPipe,
   ],
   providers: [AuctionLive],
   templateUrl: './auction-page.html',
@@ -82,6 +87,15 @@ export class AuctionPage {
     params: () => this.id(),
     stream: ({ params }) => this.service.detail(params),
   });
+
+  protected readonly bidList = rxResource({
+    params: () => this.id(),
+    stream: ({ params }) =>
+      this.service.bids(params, BID_HISTORY_LIMIT).pipe(map((page) => page.items)),
+  });
+  /** Bids that arrived live since the list was loaded. */
+  private readonly liveBids = signal<PublicBid[]>([]);
+  protected readonly bids = computed(() => mergeBids(valueOf(this.bidList) ?? [], this.liveBids()));
 
   /** Live changes on top of the loaded auction. */
   private readonly patch = signal<LivePatch>({});
@@ -148,6 +162,10 @@ export class AuctionPage {
       valueOf(this.resource);
       untracked(() => this.patch.set({}));
     });
+    effect(() => {
+      valueOf(this.bidList);
+      untracked(() => this.liveBids.set([]));
+    });
 
     // Live part: only in the browser, only while the auction can still change.
     effect(() => {
@@ -161,6 +179,7 @@ export class AuctionPage {
       const patch = a ? patchFromBid(a.id, a, event) : null;
       if (!patch) return;
       this.patch.update((p) => ({ ...p, ...patch }));
+      this.liveBids.update((list) => [bidFromEvent(event), ...list]);
       this.announcement.set(
         this.i18n.t('auction.newBid', {
           amount: formatMoney(event.amount, this.i18n.t('unit.som')),
@@ -207,6 +226,7 @@ export class AuctionPage {
 
   protected reload(): void {
     this.resource.reload();
+    this.bidList.reload();
   }
 
   private showExtended(): void {

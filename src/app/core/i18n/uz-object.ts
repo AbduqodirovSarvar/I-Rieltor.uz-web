@@ -84,4 +84,10 @@ export const uzObject = {
   'auction.live.reconnecting': 'Aloqa uzildi, qayta ulanmoqda…',
   'auction.live.disconnected': 'Jonli oqim uzildi. Yangi ma’lumot uchun sahifani yangilang.',
   'auction.reload': 'Yangilash',
+  'auction.bidHistory': 'Takliflar tarixi',
+  'auction.bidder': 'Ishtirokchi № {n}',
+  'auction.noBids': 'Hali takliflar yo‘q.',
+  'auction.bidAmount': 'Summa',
+  'auction.bidTime': 'Vaqti',
+  'auction.bidderCol': 'Ishtirokchi',
 } as const;

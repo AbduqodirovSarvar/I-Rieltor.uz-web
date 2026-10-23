@@ -1,0 +1,63 @@
+<h2>{{ 'security.title' | t }}</h2>
+
+<form
+  class="card card-body stack"
+  [formGroup]="passwordForm"
+  (ngSubmit)="changePassword()"
+  novalidate
+>
+  <h3>{{ 'security.password' | t }}</h3>
+  <app-password-input
+    controlId="sc-current"
+    [label]="'security.current' | t"
+    [control]="passwordForm.controls.current"
+    autocomplete="current-password"
+  />
+  @if (wrongCurrent()) {
+    <p class="notice notice-danger" role="alert">{{ 'security.wrongCurrent' | t }}</p>
+  }
+  <app-password-input
+    controlId="sc-new"
+    [label]="'security.new' | t"
+    [control]="passwordForm.controls.next"
+    [hint]="'auth.signUp.passwordHint' | t"
+    autocomplete="new-password"
+  />
+  <app-password-input
+    controlId="sc-confirm"
+    [label]="'security.confirm' | t"
+    [control]="passwordForm.controls.confirm"
+    autocomplete="new-password"
+  />
+  @if (passwordProblems().length > 0) {
+    <div class="notice notice-danger" role="alert">
+      @for (line of passwordProblems(); track $index) {
+        <p>{{ line }}</p>
+      }
+    </div>
+  }
+  <button type="submit" class="btn" [disabled]="changingPassword()">
+    {{ 'security.change' | t }}
+  </button>
+</form>
+
+<form class="card card-body stack" [formGroup]="emailForm" (ngSubmit)="changeEmail()" novalidate>
+  <h3>{{ 'security.email' | t }}</h3>
+  <app-field controlId="sc-email" [label]="'security.newEmail' | t" [error]="emailError()">
+    <input
+      id="sc-email"
+      class="input"
+      type="email"
+      formControlName="email"
+      autocomplete="email"
+      autocapitalize="none"
+      spellcheck="false"
+      [attr.aria-invalid]="emailError() ? 'true' : null"
+      aria-describedby="sc-email-error"
+    />
+  </app-field>
+  <p class="muted small">{{ 'security.emailNote' | t }}</p>
+  <button type="submit" class="btn" [disabled]="sendingEmail()">
+    {{ 'security.emailChange' | t }}
+  </button>
+</form>

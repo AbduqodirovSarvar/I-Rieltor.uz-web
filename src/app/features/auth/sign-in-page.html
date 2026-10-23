@@ -1,0 +1,51 @@
+<div class="container narrow">
+  <h1>{{ 'auth.signIn.title' | t }}</h1>
+
+  @if (reason() === 'expired') {
+    <p class="notice notice-warning">{{ 'auth.signIn.expired' | t }}</p>
+  }
+
+  <form class="card card-body stack" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <app-field controlId="si-login" [label]="'auth.signIn.login' | t" [error]="error('login')">
+      <input
+        id="si-login"
+        class="input"
+        formControlName="login"
+        autocomplete="username"
+        autocapitalize="none"
+        spellcheck="false"
+        [attr.aria-invalid]="error('login') ? 'true' : null"
+        aria-describedby="si-login-error"
+      />
+    </app-field>
+
+    <app-password-input
+      controlId="si-password"
+      [label]="'auth.signIn.password' | t"
+      [control]="form.controls.password"
+      autocomplete="current-password"
+    />
+
+    @if (invalid()) {
+      <p class="notice notice-danger" role="alert">{{ 'auth.signIn.invalid' | t }}</p>
+    }
+    @if (wait() > 0) {
+      <p class="notice notice-warning" role="alert">
+        {{ 'auth.signIn.wait' | t: { seconds: wait() } }}
+      </p>
+    }
+
+    <button type="submit" class="btn btn-block" [disabled]="!canSubmit()">
+      {{ 'auth.signIn.submit' | t }}
+    </button>
+  </form>
+
+  <p class="alt">
+    {{ 'auth.signIn.noAccount' | t }}
+    <a
+      [routerLink]="'/royxatdan-otish' | link"
+      [queryParams]="returnUrl() ? { returnUrl: returnUrl() } : {}"
+      >{{ 'nav.signUp' | t }}</a
+    >
+  </p>
+</div>

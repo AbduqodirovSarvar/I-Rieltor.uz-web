@@ -1,0 +1,26 @@
+.narrow {
+  max-width: 30rem;
+  padding-block: var(--s-7);
+}
+
+.alt {
+  margin-top: var(--s-4);
+  text-align: center;
+}
+
+.two {
+  display: grid;
+  gap: var(--s-4);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 40rem) {
+  .two {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.note {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+}

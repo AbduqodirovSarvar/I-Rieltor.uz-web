@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform, inject } from '@angular/core';
 import { I18n } from '../i18n/i18n.service';
-import { formatDate, formatDateTime } from '../time/tashkent';
+import { formatDate, formatDateTime, formatTimeSeconds } from '../time/tashkent';
 
 const NBSP = ' ';
 
@@ -38,6 +38,13 @@ export function formatPhone(value: string | null | undefined): string {
 /** A `tel:` address that a phone can dial: digits and the leading plus only. */
 export function phoneHref(value: string | null | undefined): string {
   return value ? `tel:${value.replace(/[^\d+]/g, '')}` : '';
+}
+
+/** A personal identifier (PINFL, INN) with the middle hidden: `31234567890123` → `312•••••••••23`. Shown to its owner only. */
+export function maskIdentifier(value: string | null | undefined): string {
+  if (!value) return '';
+  if (value.length <= 5) return '•'.repeat(value.length);
+  return `${value.slice(0, 3)}${'•'.repeat(value.length - 5)}${value.slice(-2)}`;
 }
 
 export interface SizeUnits {
@@ -92,6 +99,14 @@ export class RoomsPipe implements PipeTransform {
 export class DateTimePipe implements PipeTransform {
   transform(value: string | null | undefined): string {
     return formatDateTime(value);
+  }
+}
+
+/** `{{ iso | timeSeconds }}` → `14:05:09` (Tashkent). */
+@Pipe({ name: 'timeSeconds' })
+export class TimeSecondsPipe implements PipeTransform {
+  transform(value: string | null | undefined): string {
+    return formatTimeSeconds(value);
   }
 }
 

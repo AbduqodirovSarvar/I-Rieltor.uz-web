@@ -58,3 +58,10 @@ function tashkentParts(iso: string) {
     minute: pad(shifted.getUTCMinutes()),
   };
 }
+
+/** `HH:mm:ss` in Tashkent time (a bid's moment: bids come seconds apart). */
+export function formatTimeSeconds(iso: string | null | undefined): string {
+  if (!iso) return '';
+  const shifted = new Date(Date.parse(iso) + 5 * 3_600_000);
+  return `${pad(shifted.getUTCHours())}:${pad(shifted.getUTCMinutes())}:${pad(shifted.getUTCSeconds())}`;
+}

@@ -1,0 +1,101 @@
+@if (user(); as u) {
+  <h2>{{ 'profile.title' | t }}</h2>
+
+  <form class="card card-body stack" [formGroup]="form" (ngSubmit)="save()" novalidate>
+    <app-field controlId="pf-name" [label]="'profile.fullName' | t" [error]="error('fullName')">
+      <input
+        id="pf-name"
+        class="input"
+        formControlName="fullName"
+        autocomplete="name"
+        [attr.aria-invalid]="error('fullName') ? 'true' : null"
+        aria-describedby="pf-name-error"
+      />
+    </app-field>
+
+    <app-field
+      controlId="pf-phone"
+      [label]="'profile.phone' | t"
+      [optional]="true"
+      [error]="error('phone')"
+    >
+      <input
+        id="pf-phone"
+        class="input"
+        type="tel"
+        formControlName="phone"
+        autocomplete="tel"
+        placeholder="+998901234567"
+        [attr.aria-invalid]="error('phone') ? 'true' : null"
+        aria-describedby="pf-phone-error"
+      />
+    </app-field>
+
+    <app-field
+      controlId="pf-phone2"
+      [label]="'profile.secondaryPhone' | t"
+      [optional]="true"
+      [error]="error('secondaryPhone')"
+    >
+      <input
+        id="pf-phone2"
+        class="input"
+        type="tel"
+        formControlName="secondaryPhone"
+        placeholder="+998901234567"
+        [attr.aria-invalid]="error('secondaryPhone') ? 'true' : null"
+        aria-describedby="pf-phone2-error"
+      />
+    </app-field>
+
+    <app-field
+      controlId="pf-address"
+      [label]="'profile.address' | t"
+      [optional]="true"
+      [error]="error('address')"
+    >
+      <input
+        id="pf-address"
+        class="input"
+        formControlName="address"
+        autocomplete="street-address"
+        aria-describedby="pf-address-error"
+      />
+    </app-field>
+
+    @if (problems().length > 0) {
+      <div class="notice notice-danger" role="alert">
+        @for (line of problems(); track $index) {
+          <p>{{ line }}</p>
+        }
+      </div>
+    }
+
+    <button type="submit" class="btn" [disabled]="submitting()">{{ 'profile.save' | t }}</button>
+  </form>
+
+  <section class="card card-body">
+    <h3>{{ 'profile.identity' | t }}</h3>
+    <dl class="facts">
+      <dt>{{ 'profile.email' | t }}</dt>
+      <dd>{{ u.email }}</dd>
+      @if (u.login) {
+        <dt>{{ 'profile.login' | t }}</dt>
+        <dd>{{ u.login }}</dd>
+      }
+      <dt>{{ 'profile.type' | t }}</dt>
+      <dd>{{ typeText() | t }}</dd>
+      @if (u.innpinfl) {
+        <dt>{{ 'profile.identifier' | t }}</dt>
+        <dd class="num">{{ identifier() }}</dd>
+      }
+      @if (u.legalName) {
+        <dt>{{ 'profile.legalName' | t }}</dt>
+        <dd>{{ u.legalName }}</dd>
+      }
+    </dl>
+    @if (!canRename()) {
+      <p class="muted small">{{ 'profile.identityNote' | t }}</p>
+    }
+  </section>
+}

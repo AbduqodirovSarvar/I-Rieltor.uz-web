@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { environment } from '../environments/environment';
+import { guestGuard } from './core/auth/auth.guards';
 
 /**
  * The pages of the site. They are mounted twice: at the root (Uzbek) and under `/ru` (Russian), so every address exists in
@@ -38,6 +39,22 @@ const pages: Routes = [
     path: 'maxfiylik',
     data: { kind: 'privacy' },
     loadComponent: () => import('./features/legal/legal-page').then((m) => m.LegalPage),
+  },
+  {
+    path: 'kirish',
+    canActivate: [guestGuard],
+    loadComponent: () => import('./features/auth/sign-in-page').then((m) => m.SignInPage),
+  },
+  {
+    path: 'royxatdan-otish',
+    canActivate: [guestGuard],
+    loadComponent: () => import('./features/auth/sign-up-page').then((m) => m.SignUpPage),
+  },
+  {
+    // The address the e-mailed link opens; fixed by the backend setting EmailConfirmation__LinkBaseUrl.
+    path: 'confirm-email',
+    loadComponent: () =>
+      import('./features/auth/confirm-email-page').then((m) => m.ConfirmEmailPage),
   },
   {
     path: 'kabinet',

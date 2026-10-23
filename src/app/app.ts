@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { watchSession } from './core/auth/session-watcher';
 import { TPipe } from './core/i18n/t.pipe';
 import { ConfirmDialog } from './core/notify/confirm-dialog';
 import { Toasts } from './core/notify/toasts';
@@ -12,4 +13,8 @@ import { SiteHeader } from './shared/layout/site-header';
   imports: [RouterOutlet, SiteHeader, SiteFooter, BackToTop, Toasts, ConfirmDialog, TPipe],
   templateUrl: './app.html',
 })
-export class App {}
+export class App {
+  constructor() {
+    watchSession();
+  }
+}
