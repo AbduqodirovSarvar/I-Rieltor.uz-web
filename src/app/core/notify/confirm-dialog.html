@@ -1,0 +1,21 @@
+<dialog #dialog class="dialog" aria-labelledby="confirm-title" (cancel)="onCancel($event)">
+  @if (confirm.pending(); as pending) {
+    <h2 id="confirm-title">{{ pending.request.title }}</h2>
+    @if (pending.request.message) {
+      <p>{{ pending.request.message }}</p>
+    }
+    <div class="row actions">
+      <button type="button" class="btn btn-secondary" (click)="confirm.answer(false)">
+        {{ pending.request.cancelLabel }}
+      </button>
+      <button
+        type="button"
+        class="btn"
+        [class.btn-danger]="pending.request.danger"
+        (click)="confirm.answer(true)"
+      >
+        {{ pending.request.confirmLabel }}
+      </button>
+    </div>
+  }
+</dialog>

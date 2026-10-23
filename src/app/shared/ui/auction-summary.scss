@@ -1,0 +1,29 @@
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+}
+
+.lot,
+.when {
+  font-size: var(--fs-sm);
+}
+
+.timer,
+.when {
+  margin: 0;
+}
+
+.timer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s-2);
+}

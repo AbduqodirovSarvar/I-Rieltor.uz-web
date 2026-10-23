@@ -7,5 +7,7 @@ import { RenderMode, ServerRoute } from '@angular/ssr';
 export const serverRoutes: ServerRoute[] = [
   { path: 'kabinet', renderMode: RenderMode.Client },
   { path: 'kabinet/**', renderMode: RenderMode.Client },
+  { path: 'ru/kabinet', renderMode: RenderMode.Client },
+  { path: 'ru/kabinet/**', renderMode: RenderMode.Client },
   { path: '**', renderMode: RenderMode.Server },
 ];

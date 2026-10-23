@@ -1,0 +1,47 @@
+<article class="card item">
+  <a
+    class="media"
+    [routerLink]="'/obyekt/' + property().id | link"
+    tabindex="-1"
+    aria-hidden="true"
+  >
+    @if (cover()) {
+      <img
+        [src]="cover()"
+        [alt]="alt()"
+        width="640"
+        height="480"
+        [attr.loading]="eager() ? 'eager' : 'lazy'"
+        [attr.fetchpriority]="eager() ? 'high' : null"
+        decoding="async"
+      />
+    } @else {
+      <span class="placeholder muted">{{ 'card.noPhoto' | t }}</span>
+    }
+  </a>
+  <div class="card-body body">
+    <p class="muted category">{{ property().categoryName }}</p>
+    <h3 class="title">
+      <a [routerLink]="'/obyekt/' + property().id | link">{{ property().title }}</a>
+    </h3>
+    @if (location()) {
+      <p class="muted place">{{ location() }}</p>
+    }
+    <ul class="facts">
+      @if (property().areaSqm) {
+        <li>{{ property().areaSqm | area }}</li>
+      }
+      @if (property().landAreaSotix) {
+        <li>{{ property().landAreaSotix | area: 'sotix' }}</li>
+      }
+      @if (property().rooms) {
+        <li>{{ property().rooms | rooms }}</li>
+      }
+    </ul>
+    @if (property().auction; as auction) {
+      <app-auction-summary [auction]="auction" />
+    } @else {
+      <app-status-badge enum="PropertyStatus" [value]="property().status" />
+    }
+  </div>
+</article>

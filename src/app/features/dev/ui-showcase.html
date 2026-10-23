@@ -79,4 +79,35 @@
       }
     </div>
   </section>
+
+  <section class="stack">
+    <h2>Components</h2>
+    <div class="row">
+      <button type="button" class="btn btn-secondary" (click)="toast('info')">Toast</button>
+      <button type="button" class="btn btn-secondary" (click)="toast('success')">Success</button>
+      <button type="button" class="btn btn-secondary" (click)="toast('error')">Error</button>
+      <button type="button" class="btn btn-secondary" (click)="ask()">Confirm</button>
+    </div>
+    <div class="grid">
+      <app-property-card [property]="sample('ONGOING')" [eager]="true" />
+      <app-property-card [property]="sample('SCHEDULED')" />
+      <app-property-card [property]="sample('FINISHED')" />
+    </div>
+    <app-gallery [items]="gallery" />
+    <app-map-link [latitude]="41.311081" [longitude]="69.240562" />
+    <app-pagination [page]="5" [pageSize]="12" [total]="140" />
+    <app-filter-panel title="Filters" [active]="2">
+      <app-field controlId="demo-q" label="Search">
+        <input id="demo-q" class="input" />
+      </app-field>
+    </app-filter-panel>
+    <app-file-upload
+      inputId="demo-file"
+      label="Receipt"
+      [rules]="rules"
+      typeNames="png, jpeg, pdf"
+    />
+    <app-empty-state title="Nothing found" text="Change the filters." />
+    <app-skeleton-cards [count]="3" />
+  </section>
 </div>

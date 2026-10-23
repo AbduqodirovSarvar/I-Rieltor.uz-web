@@ -2,6 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { I18n } from '../i18n/i18n.service';
 import { AuthService } from './auth.service';
 import { TokenStore } from './token-store';
 
@@ -15,13 +16,17 @@ export const authGuard: CanActivateFn = (_route, state) => {
   const router = inject(Router);
   return inject(TokenStore).session()
     ? true
-    : router.createUrlTree(['/kirish'], { queryParams: { returnUrl: state.url } });
+    : router.createUrlTree([inject(I18n).link('/kirish')], {
+        queryParams: { returnUrl: state.url },
+      });
 };
 
 /** For pages a signed-in user has no reason to see (sign-in, sign-up). */
 export const guestGuard: CanActivateFn = () => {
   if (!inject(DOCUMENT).defaultView) return true;
-  return inject(TokenStore).session() ? inject(Router).createUrlTree(['/kabinet']) : true;
+  return inject(TokenStore).session()
+    ? inject(Router).createUrlTree([inject(I18n).link('/kabinet')])
+    : true;
 };
 
 /**
@@ -30,12 +35,18 @@ export const guestGuard: CanActivateFn = () => {
  */
 export const verifiedGuard: CanActivateFn = async (_route, state) => {
   if (!inject(DOCUMENT).defaultView) return true;
+  // Everything is injected before the first await: after it there is no injection context any more.
   const router = inject(Router);
-  if (!inject(TokenStore).session())
-    return router.createUrlTree(['/kirish'], { queryParams: { returnUrl: state.url } });
+  const i18n = inject(I18n);
   const auth = inject(AuthService);
+  if (!inject(TokenStore).session())
+    return router.createUrlTree([i18n.link('/kirish')], {
+      queryParams: { returnUrl: state.url },
+    });
   if (!auth.currentUser()) await firstValueFrom(auth.loadProfile());
   return auth.isVerified()
     ? true
-    : router.createUrlTree(['/kabinet/e-imzo'], { queryParams: { returnUrl: state.url } });
+    : router.createUrlTree([i18n.link('/kabinet/e-imzo')], {
+        queryParams: { returnUrl: state.url },
+      });
 };

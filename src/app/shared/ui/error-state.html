@@ -1,0 +1,21 @@
+<section class="container error">
+  @if (code()) {
+    <p class="code" aria-hidden="true">{{ code() }}</p>
+  }
+  <h1>{{ keys().title | t }}</h1>
+  <p class="muted">{{ keys().text | t }}</p>
+  @if (requestId()) {
+    <p class="muted small">{{ 'common.requestId' | t }}: {{ requestId() }}</p>
+  }
+  <div class="row actions">
+    @if (canRetry()) {
+      <button type="button" class="btn btn-secondary" (click)="retry.emit()">
+        {{ 'common.retry' | t }}
+      </button>
+    }
+    @if (kind() === 'sign-in-required') {
+      <a class="btn" [routerLink]="'/kirish' | link">{{ 'nav.signIn' | t }}</a>
+    }
+    <a class="btn" [routerLink]="'/' | link">{{ 'error.goHome' | t }}</a>
+  </div>
+</section>

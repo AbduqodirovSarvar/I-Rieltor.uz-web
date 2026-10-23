@@ -1,0 +1,89 @@
+@if (current(); as item) {
+  <section class="gallery" [attr.aria-label]="'gallery.label' | t">
+    <div class="main">
+      @if (item.kind === 'video') {
+        <video [src]="item.url" controls preload="metadata" [attr.aria-label]="item.alt"></video>
+      } @else {
+        <button
+          type="button"
+          class="zoom"
+          [attr.aria-label]="'gallery.open' | t: { n: index() + 1 }"
+          (click)="zoomed.set(true)"
+        >
+          <img [src]="item.url" [alt]="item.alt" width="1280" height="960" decoding="async" />
+        </button>
+      }
+    </div>
+
+    @if (items().length > 1) {
+      <ul class="strip">
+        @for (thumb of items(); track $index) {
+          <li>
+            <button
+              type="button"
+              class="thumb"
+              [class.active]="$index === index()"
+              [attr.aria-current]="$index === index() ? 'true' : null"
+              [attr.aria-label]="thumb.alt || ('gallery.open' | t: { n: $index + 1 })"
+              (click)="select($index)"
+            >
+              @if (thumb.kind === 'video') {
+                <span class="video-badge">▶ {{ 'gallery.video' | t }}</span>
+              } @else {
+                <img [src]="thumb.url" alt="" width="160" height="120" loading="lazy" />
+              }
+            </button>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+
+  <dialog
+    #dialog
+    class="lightbox"
+    [attr.aria-label]="'gallery.label' | t"
+    (close)="onClose()"
+    (touchstart)="onTouchStart($event)"
+    (touchend)="onTouchEnd($event)"
+  >
+    @if (zoomed()) {
+      <div class="stage">
+        @if (item.kind === 'video') {
+          <video [src]="item.url" controls autoplay [attr.aria-label]="item.alt"></video>
+        } @else {
+          <img [src]="item.url" [alt]="item.alt" />
+        }
+      </div>
+      <button
+        type="button"
+        class="btn btn-icon close"
+        [attr.aria-label]="'gallery.close' | t"
+        (click)="zoomed.set(false)"
+      >
+        <span aria-hidden="true">✕</span>
+      </button>
+      @if (items().length > 1) {
+        <button
+          type="button"
+          class="btn btn-icon nav prev"
+          [attr.aria-label]="'gallery.previous' | t"
+          (click)="step(-1)"
+        >
+          <span aria-hidden="true">‹</span>
+        </button>
+        <button
+          type="button"
+          class="btn btn-icon nav next"
+          [attr.aria-label]="'gallery.next' | t"
+          (click)="step(1)"
+        >
+          <span aria-hidden="true">›</span>
+        </button>
+        <p class="counter" aria-live="polite">
+          {{ 'gallery.counter' | t: { n: index() + 1, total: items().length } }}
+        </p>
+      }
+    }
+  </dialog>
+}

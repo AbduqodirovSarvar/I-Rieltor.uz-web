@@ -1,0 +1,16 @@
+<div class="summary">
+  <div class="top">
+    <app-status-badge enum="AuctionStatus" [value]="auction().status" />
+    @if (auction().lotNumber; as lot) {
+      <span class="muted lot">{{ 'card.lot' | t: { number: lot } }}</span>
+    }
+  </div>
+  <app-price [label]="priceLabel()" [amount]="price()" />
+  @if (timer(); as t) {
+    <p class="timer">
+      <span class="muted">{{ t.key | t }}:</span>
+      <app-countdown [target]="t.at" />
+    </p>
+    <p class="muted when">{{ t.at | dateTime }}</p>
+  }
+</div>

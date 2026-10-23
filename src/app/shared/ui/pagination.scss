@@ -1,0 +1,28 @@
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  margin-top: var(--s-5);
+}
+
+.numbers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.current {
+  cursor: default;
+}
+
+.gap {
+  display: inline-block;
+  min-width: var(--control-h);
+  text-align: center;
+  color: var(--c-text-muted);
+}

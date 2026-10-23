@@ -1,0 +1,64 @@
+<header class="header">
+  <div class="container bar">
+    <a class="logo" [routerLink]="'/' | link">{{ 'site.name' | t }}</a>
+
+    <button
+      type="button"
+      class="btn btn-ghost btn-icon burger"
+      [attr.aria-label]="(menuOpen() ? 'nav.closeMenu' : 'nav.menu') | t"
+      [attr.aria-expanded]="menuOpen()"
+      aria-controls="main-nav"
+      (click)="toggleMenu()"
+    >
+      <span aria-hidden="true">{{ menuOpen() ? '✕' : '☰' }}</span>
+    </button>
+
+    <div class="panel" id="main-nav" [class.open]="menuOpen()">
+      <nav class="nav" [attr.aria-label]="'nav.main' | t">
+        @for (link of links; track link.path) {
+          <a
+            [routerLink]="link.path | link"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: link.exact }"
+            >{{ link.text | t }}</a
+          >
+        }
+      </nav>
+
+      <div class="tools">
+        <a
+          class="btn btn-ghost lang"
+          [href]="otherLanguage().href"
+          [attr.hreflang]="otherLanguage().code"
+          [attr.lang]="otherLanguage().code"
+          [attr.aria-label]="'nav.language' | t"
+          >{{ otherLanguage().label }}</a
+        >
+        <button
+          type="button"
+          class="btn btn-ghost theme"
+          [attr.aria-label]="('theme.label' | t) + ': ' + (themeKey() | t)"
+          (click)="theme.next()"
+        >
+          <span aria-hidden="true">{{
+            theme.mode() === 'dark' ? '☾' : theme.mode() === 'light' ? '☀' : '◐'
+          }}</span>
+        </button>
+
+        @if (hydrated.ready()) {
+          @if (auth.isAuthenticated()) {
+            <a class="btn btn-secondary" [routerLink]="'/kabinet' | link">{{
+              'nav.cabinet' | t
+            }}</a>
+            <button type="button" class="btn btn-ghost" (click)="signOut()">
+              {{ 'nav.signOut' | t }}
+            </button>
+          } @else {
+            <a class="btn btn-ghost" [routerLink]="'/kirish' | link">{{ 'nav.signIn' | t }}</a>
+            <a class="btn" [routerLink]="'/royxatdan-otish' | link">{{ 'nav.signUp' | t }}</a>
+          }
+        }
+      </div>
+    </div>
+  </div>
+</header>

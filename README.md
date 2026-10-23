@@ -35,6 +35,11 @@ src/app/
 src/styles/   _tokens.scss (ranglar, o'lchamlar, qorong'i rejim), _base.scss, _components.scss
 ```
 
+## Tillar (uz / ru)
+O'zbek tili prefikssiz (`/katalog`), rus tili `/ru/katalog`. Til manzildan olinadi (SSR va qidiruv tizimlari uchun). Matnlar `core/i18n/uz.ts`
+va `ru.ts` da (kalitlar bir xil bo'lishi kompilyator bilan tekshiriladi). Havola yozishda `[routerLink]="'/katalog' | link"`.
+Yangi sahifa marshrutini `app.routes.ts` dagi `pages` ro'yxatiga qo'shing: u ikkala tilda ham ulanadi.
+
 ## SSR qoidalari
 - Ochiq sahifalar serverda renderlanadi (`app.routes.server.ts`), kabinet (`kabinet/**`) faqat brauzerda.
 - Sessiya `localStorage` da: serverda `TokenStore` doim bo'sh. Shuning uchun **shaxsiy holatga bog'liq ko'rinish serverda chiqmasligi** kerak,

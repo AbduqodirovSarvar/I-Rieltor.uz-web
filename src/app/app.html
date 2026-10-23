@@ -1,1 +1,9 @@
-<router-outlet />
+<a class="skip-link" href="#main">{{ 'nav.skip' | t }}</a>
+<app-site-header />
+<main id="main" tabindex="-1">
+  <router-outlet />
+</main>
+<app-site-footer />
+<app-back-to-top />
+<app-toasts />
+<app-confirm-dialog />

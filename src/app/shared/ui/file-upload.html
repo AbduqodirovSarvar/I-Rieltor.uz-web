@@ -1,0 +1,25 @@
+<div class="field">
+  <label [attr.for]="inputId()">{{ label() }}</label>
+  <input
+    #picker
+    class="input"
+    type="file"
+    [id]="inputId()"
+    [accept]="accept()"
+    [attr.aria-invalid]="problem() ? 'true' : null"
+    [attr.aria-describedby]="inputId() + '-hint ' + inputId() + '-error'"
+    (change)="onChange($event)"
+  />
+  <span class="hint" [id]="inputId() + '-hint'">{{ hint() }}</span>
+  @if (errorText(); as text) {
+    <span class="error" [id]="inputId() + '-error'" role="alert">{{ text }}</span>
+  }
+  @if (file(); as chosen) {
+    <p class="chosen">
+      <span>{{ chosen.name }} ({{ chosen.size | fileSize }})</span>
+      <button type="button" class="btn btn-ghost" (click)="clear(picker)">
+        {{ 'upload.remove' | t }}
+      </button>
+    </p>
+  }
+</div>

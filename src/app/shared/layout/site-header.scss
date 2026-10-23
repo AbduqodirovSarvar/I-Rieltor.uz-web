@@ -1,0 +1,91 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  background: var(--c-surface);
+  border-bottom: 1px solid var(--c-border);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--header-h);
+  gap: var(--s-3);
+}
+
+.logo {
+  font-size: var(--fs-xl);
+  font-weight: 750;
+  color: var(--c-text);
+  text-decoration: none;
+}
+
+.burger {
+  display: inline-flex;
+}
+
+// On a phone the menu is a panel under the bar.
+.panel {
+  display: none;
+  position: absolute;
+  inset: var(--header-h) 0 auto;
+  flex-direction: column;
+  gap: var(--s-4);
+  padding: var(--s-4);
+  background: var(--c-surface);
+  border-bottom: 1px solid var(--c-border);
+
+  &.open {
+    display: flex;
+  }
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+
+  a {
+    padding: var(--s-3) var(--s-2);
+    color: var(--c-text);
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: var(--radius);
+
+    &:hover,
+    &.active {
+      color: var(--c-primary);
+      background: var(--c-surface-2);
+    }
+  }
+}
+
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+@media (min-width: 56rem) {
+  .burger {
+    display: none;
+  }
+
+  .panel {
+    display: flex;
+    position: static;
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 0 var(--s-5);
+    border: 0;
+    background: none;
+  }
+
+  .nav {
+    flex-direction: row;
+  }
+}

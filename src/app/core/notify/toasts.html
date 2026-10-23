@@ -1,0 +1,27 @@
+<div class="toasts" role="region" [attr.aria-label]="'toast.region' | t" aria-live="polite">
+  @for (toast of notify.toasts(); track toast.id) {
+    <div
+      class="toast"
+      [class]="toast.kind"
+      [attr.role]="toast.kind === 'error' ? 'alert' : 'status'"
+    >
+      <div class="body">
+        <p class="message">{{ toast.message }}</p>
+        @for (line of toast.details; track $index) {
+          <p class="detail">{{ line }}</p>
+        }
+        @if (toast.requestId) {
+          <p class="detail">{{ 'common.requestId' | t }}: {{ toast.requestId }}</p>
+        }
+      </div>
+      <button
+        type="button"
+        class="btn btn-ghost btn-icon close"
+        [attr.aria-label]="'toast.close' | t"
+        (click)="notify.dismiss(toast.id)"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+  }
+</div>
