@@ -1,0 +1,82 @@
+<div class="container stack page">
+  <h1>UI</h1>
+  <div class="row" role="group" aria-label="Theme">
+    <button type="button" class="btn btn-secondary" (click)="setTheme('system')">System</button>
+    <button type="button" class="btn btn-secondary" (click)="setTheme('light')">Light</button>
+    <button type="button" class="btn btn-secondary" (click)="setTheme('dark')">Dark</button>
+    <span class="muted">Theme: {{ theme() }}</span>
+  </div>
+
+  <section class="stack">
+    <h2>Buttons</h2>
+    <div class="row">
+      <button type="button" class="btn">Primary</button>
+      <button type="button" class="btn btn-secondary">Secondary</button>
+      <button type="button" class="btn btn-ghost">Ghost</button>
+      <button type="button" class="btn btn-danger">Danger</button>
+      <button type="button" class="btn" disabled>Disabled</button>
+      <button type="button" class="btn btn-icon btn-secondary" aria-label="Close">×</button>
+    </div>
+  </section>
+
+  <section class="stack">
+    <h2>Form</h2>
+    <div class="field">
+      <label for="demo-name">Name</label>
+      <input id="demo-name" class="input" placeholder="Full name" />
+      <span class="hint">As in the passport.</span>
+    </div>
+    <div class="field">
+      <label for="demo-phone">Phone</label>
+      <input
+        id="demo-phone"
+        class="input"
+        value="+998"
+        aria-invalid="true"
+        aria-describedby="demo-phone-error"
+      />
+      <span class="error" id="demo-phone-error">Phone number is not valid.</span>
+    </div>
+    <div class="field">
+      <label for="demo-select">Region</label>
+      <select id="demo-select" class="select">
+        <option>Tashkent</option>
+        <option>Samarkand</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="demo-text">Message</label>
+      <textarea id="demo-text" class="textarea"></textarea>
+    </div>
+  </section>
+
+  <section class="stack">
+    <h2>Badges and notices</h2>
+    <div class="row">
+      <span class="badge">Draft</span>
+      <span class="badge badge-info">Scheduled</span>
+      <span class="badge badge-success">Ongoing</span>
+      <span class="badge badge-warning">Awaiting</span>
+      <span class="badge badge-danger">Cancelled</span>
+    </div>
+    <p class="notice">Information message.</p>
+    <p class="notice notice-warning">Warning message.</p>
+    <p class="notice notice-danger">Error message.</p>
+    <p class="notice notice-success">Success message.</p>
+  </section>
+
+  <section class="stack">
+    <h2>Cards</h2>
+    <div class="grid">
+      @for (n of [1, 2, 3]; track n) {
+        <article class="card">
+          <div class="card-body">
+            <h3>Card {{ n }}</h3>
+            <p class="muted">Short description of the object.</p>
+            <p class="num"><strong>1 250 000 000 so'm</strong></p>
+          </div>
+        </article>
+      }
+    </div>
+  </section>
+</div>

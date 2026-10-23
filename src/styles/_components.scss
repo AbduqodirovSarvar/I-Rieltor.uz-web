@@ -1,0 +1,216 @@
+// Shared look of buttons, form controls, cards, badges and layout helpers. Components use these classes; only
+// component-specific layout lives in the component's own stylesheet.
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--s-4);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.grid {
+  display: grid;
+  gap: var(--s-4);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+}
+
+.muted {
+  color: var(--c-text-muted);
+}
+
+// Buttons
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  min-height: var(--control-h);
+  padding: 0 var(--s-5);
+  border: 1px solid var(--c-primary);
+  border-radius: var(--radius);
+  background: var(--c-primary);
+  color: var(--c-on-primary);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s;
+
+  &:hover:not(:disabled, [aria-disabled='true']) {
+    background: var(--c-primary-hover);
+    border-color: var(--c-primary-hover);
+  }
+
+  &:disabled,
+  &[aria-disabled='true'] {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  &.btn-secondary {
+    background: transparent;
+    color: var(--c-primary);
+    &:hover:not(:disabled, [aria-disabled='true']) {
+      background: var(--c-info-bg);
+    }
+  }
+
+  &.btn-ghost {
+    background: transparent;
+    border-color: transparent;
+    color: var(--c-text);
+    &:hover:not(:disabled, [aria-disabled='true']) {
+      background: var(--c-surface-2);
+    }
+  }
+
+  &.btn-danger {
+    background: var(--c-danger);
+    border-color: var(--c-danger);
+    color: var(--c-on-danger);
+  }
+
+  &.btn-block {
+    width: 100%;
+  }
+
+  &.btn-icon {
+    width: var(--control-h);
+    padding: 0;
+  }
+}
+
+// Form controls
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+
+  > label,
+  .label {
+    font-weight: 600;
+    font-size: var(--fs-sm);
+  }
+
+  .hint {
+    color: var(--c-text-muted);
+    font-size: var(--fs-sm);
+  }
+
+  .error {
+    color: var(--c-danger);
+    font-size: var(--fs-sm);
+  }
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  min-height: var(--control-h);
+  padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  background: var(--c-surface);
+  color: var(--c-text);
+  font: inherit;
+
+  &::placeholder {
+    color: var(--c-text-muted);
+    opacity: 0.8;
+  }
+
+  &[aria-invalid='true'] {
+    border-color: var(--c-danger);
+  }
+}
+
+.textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+
+// Cards
+.card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+  overflow: hidden;
+}
+
+.card-body {
+  padding: var(--s-4);
+}
+
+// Badges (status). The text carries the meaning; colour only supports it.
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem var(--s-3);
+  border-radius: var(--radius-pill);
+  background: var(--c-neutral-bg);
+  color: var(--c-text);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  white-space: nowrap;
+
+  &.badge-success {
+    background: var(--c-success-bg);
+    color: var(--c-success);
+  }
+  &.badge-warning {
+    background: var(--c-warning-bg);
+    color: var(--c-warning);
+  }
+  &.badge-danger {
+    background: var(--c-danger-bg);
+    color: var(--c-danger);
+  }
+  &.badge-info {
+    background: var(--c-info-bg);
+    color: var(--c-info);
+  }
+}
+
+// A message box (info, warning, error) shown inside a page.
+.notice {
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--radius);
+  background: var(--c-info-bg);
+  color: var(--c-text);
+  border-left: 4px solid var(--c-info);
+
+  &.notice-warning {
+    background: var(--c-warning-bg);
+    border-color: var(--c-warning);
+  }
+  &.notice-danger {
+    background: var(--c-danger-bg);
+    border-color: var(--c-danger);
+  }
+  &.notice-success {
+    background: var(--c-success-bg);
+    border-color: var(--c-success);
+  }
+}
+
+// Prices and numbers stay aligned.
+.num {
+  font-variant-numeric: tabular-nums;
+}

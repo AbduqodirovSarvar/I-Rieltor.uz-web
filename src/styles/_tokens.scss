@@ -1,0 +1,113 @@
+// Design tokens. Every colour, size and radius used by a component comes from here, so a brand change (logo, colours,
+// font) is a change to this file only. Dark theme: follows the system unless the user picked one (`data-theme` on <html>).
+
+:root {
+  color-scheme: light dark;
+
+  // Brand
+  --c-primary: #1d4ed8;
+  --c-primary-hover: #1e40af;
+  --c-on-primary: #ffffff;
+  --c-accent: #b45309;
+
+  // Surfaces and text (light)
+  --c-bg: #f6f7f9;
+  --c-surface: #ffffff;
+  --c-surface-2: #eef0f4;
+  --c-border: #d8dce3;
+  --c-text: #14181f;
+  --c-text-muted: #4b5563;
+  --c-link: #1d4ed8;
+  --c-focus: #1d4ed8;
+
+  // Status
+  --c-success: #15803d;
+  --c-success-bg: #dcfce7;
+  --c-warning: #92400e;
+  --c-warning-bg: #fef3c7;
+  --c-danger: #b91c1c;
+  --c-on-danger: #ffffff;
+  --c-danger-bg: #fee2e2;
+  --c-info: #1d4ed8;
+  --c-info-bg: #dbeafe;
+  --c-neutral-bg: #e5e7eb;
+
+  --shadow-1: 0 1px 2px rgb(16 24 40 / 8%), 0 1px 3px rgb(16 24 40 / 10%);
+  --shadow-2: 0 8px 24px rgb(16 24 40 / 14%);
+
+  // Type
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --fs-sm: 0.875rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.125rem;
+  --fs-xl: 1.375rem;
+  --fs-2xl: 1.75rem;
+  --fs-3xl: clamp(1.75rem, 1.2rem + 2.4vw, 2.5rem);
+  --lh: 1.5;
+
+  // Space (4px grid)
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+
+  --radius: 0.5rem;
+  --radius-lg: 0.875rem;
+  --radius-pill: 999px;
+
+  --container: 72rem;
+  --header-h: 3.75rem;
+  --control-h: 2.75rem; // 44px: a comfortable touch target
+  --z-header: 50;
+  --z-overlay: 100;
+  --z-toast: 200;
+}
+
+@mixin dark-tokens {
+  --c-primary: #6b93ff;
+  --c-primary-hover: #8aa9ff;
+  --c-on-primary: #0b1020;
+  --c-accent: #f59e0b;
+  --c-bg: #0d1117;
+  --c-surface: #161b22;
+  --c-surface-2: #1f2630;
+  --c-border: #2f3742;
+  --c-text: #e6e9ee;
+  --c-text-muted: #a3acb9;
+  --c-link: #8aa9ff;
+  --c-focus: #8aa9ff;
+  --c-success: #4ade80;
+  --c-success-bg: #12301d;
+  --c-warning: #fbbf24;
+  --c-warning-bg: #35280c;
+  --c-danger: #f87171;
+  --c-on-danger: #1a0707;
+  --c-danger-bg: #3a1616;
+  --c-info: #8aa9ff;
+  --c-info-bg: #14233f;
+  --c-neutral-bg: #2a313b;
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 40%);
+  --shadow-2: 0 8px 24px rgb(0 0 0 / 50%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    @include dark-tokens;
+  }
+}
+
+:root[data-theme='dark'] {
+  @include dark-tokens;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
