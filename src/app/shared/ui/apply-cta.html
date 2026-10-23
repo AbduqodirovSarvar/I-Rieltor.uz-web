@@ -1,6 +1,27 @@
 <div class="cta">
   @if (hydrated.ready()) {
     @switch (state()) {
+      @case ('applied') {
+        @if (titleKey(); as title) {
+          <p class="notice notice-success" role="status">
+            <strong>{{ title | t }}</strong>
+            @if (textKey(); as text) {
+              <br />{{ text | t }}
+            }
+          </p>
+        }
+        @if (view()?.step === 'pay-deposit') {
+          <a
+            class="btn btn-block"
+            [routerLink]="'/kabinet/tolov/' + auctionId() | link"
+            [queryParams]="{ purpose: 'DEPOSIT' }"
+            >{{ 'apps.payDeposit' | t }}</a
+          >
+        }
+        <a class="btn btn-secondary btn-block" [routerLink]="'/kabinet/arizalar' | link">{{
+          'cabinet.applications' | t
+        }}</a>
+      }
       @case ('apply') {
         <a class="btn btn-block" [routerLink]="'/auksion/' + auctionId() + '/ariza' | link">{{
           'cta.apply' | t

@@ -1,0 +1,88 @@
+<h2>{{ (purposeValue() === 'DEPOSIT' ? 'pay.deposit' : 'pay.final') | t }}</h2>
+
+@if (participations.isLoading() && !participations.hasValue()) {
+  <p class="muted" role="status">{{ 'common.loading' | t }}</p>
+} @else if (!due()) {
+  <p class="notice notice-warning">{{ 'pay.notYours' | t }}</p>
+  <a class="btn btn-secondary" [routerLink]="'/kabinet/arizalar' | link">{{
+    'cabinet.applications' | t
+  }}</a>
+} @else if (due(); as d) {
+  <div class="card card-body stack">
+    <p>
+      <span class="muted">{{ 'pay.amount' | t }}</span
+      ><br />
+      <strong class="amount num">{{ d.amount | money }}</strong>
+    </p>
+    @if (d.until) {
+      <p class="notice notice-warning">{{ 'pay.deadline' | t }}: {{ d.until | dateTime }}</p>
+    }
+
+    @if (d.paid) {
+      <p class="notice notice-success" role="status">{{ 'pay.alreadyPaid' | t }}</p>
+      <a class="btn btn-secondary" [routerLink]="'/kabinet/arizalar' | link">{{
+        'cabinet.applications' | t
+      }}</a>
+    } @else if (checkout(); as c) {
+      <p class="muted">
+        {{ 'pay.paymentId' | t }}: <span class="num">{{ c.paymentId }}</span> ·
+        {{ c.provider | enumLabel: 'PaymentProvider' }}
+      </p>
+
+      @if (providerUrl(); as url) {
+        <a class="btn btn-block" [href]="url">{{
+          'pay.goProvider' | t: { provider: (c.provider | enumLabel: 'PaymentProvider') }
+        }}</a>
+        <p class="muted">{{ 'pay.providerNote' | t }}</p>
+      }
+
+      @if (instructions(); as text) {
+        <h3>{{ 'pay.instructions' | t }}</h3>
+        <p class="instructions">{{ text }}</p>
+        <p class="muted">{{ 'pay.instructionsNote' | t }}</p>
+        @if (receiptSent()) {
+          <p class="notice notice-success" role="status">{{ 'pay.receiptSent' | t }}</p>
+        } @else {
+          <app-receipt-upload
+            [paymentId]="c.paymentId"
+            [auctionId]="auctionId()"
+            (uploaded)="receiptSent.set(true)"
+          />
+        }
+        <a class="btn btn-secondary" [routerLink]="'/kabinet/tolovlar' | link">{{
+          'pay.toPayments' | t
+        }}</a>
+      }
+    } @else {
+      @if (providers.isLoading() && !providers.hasValue()) {
+        <p class="muted" role="status">{{ 'common.loading' | t }}</p>
+      } @else if (methods().length === 0) {
+        <p class="notice notice-warning">{{ 'pay.noMethods' | t }}</p>
+      } @else {
+        <fieldset class="methods">
+          <legend>{{ 'pay.method' | t }}</legend>
+          @for (m of methods(); track m) {
+            <label class="method">
+              <input
+                type="radio"
+                name="provider"
+                [value]="m"
+                [checked]="m === provider()"
+                (change)="choose(m)"
+              />
+              {{ m | enumLabel: 'PaymentProvider' }}
+            </label>
+          }
+        </fieldset>
+        <button
+          type="button"
+          class="btn btn-block"
+          [disabled]="starting() || !provider()"
+          (click)="start()"
+        >
+          {{ 'pay.start' | t }}
+        </button>
+      }
+    }
+  </div>
+}

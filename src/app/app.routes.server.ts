@@ -10,6 +10,8 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'ru/kabinet', renderMode: RenderMode.Client },
   { path: 'ru/kabinet/**', renderMode: RenderMode.Client },
   { path: 'confirm-email', renderMode: RenderMode.Client },
+  { path: 'tolov/natija', renderMode: RenderMode.Client },
+  { path: 'ru/tolov/natija', renderMode: RenderMode.Client },
   { path: 'ru/confirm-email', renderMode: RenderMode.Client },
   { path: '**', renderMode: RenderMode.Server },
 ];

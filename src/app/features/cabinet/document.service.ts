@@ -58,6 +58,16 @@ export class DocumentService {
     return this.api.postForm<PrivateDocument>('api/Document', form);
   }
 
+  /** A payment's check (the bank or card transfer slip): it shows in the payment's receipts and staff confirm the payment by it. */
+  uploadReceipt(file: File, paymentId: string, auctionId: string): Observable<PrivateDocument> {
+    const form = new FormData();
+    form.append('File', file);
+    form.append('Purpose', 'PAYMENT_RECEIPT');
+    form.append('PaymentId', paymentId);
+    form.append('AuctionId', auctionId);
+    return this.api.postForm<PrivateDocument>('api/Document', form);
+  }
+
   delete(id: string): Observable<boolean> {
     return this.api.delete<boolean>('api/Document', { id });
   }

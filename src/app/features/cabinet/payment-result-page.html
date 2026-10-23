@@ -1,0 +1,52 @@
+<div class="container narrow">
+  <h1>{{ 'result.title' | t }}</h1>
+
+  @if (list.isLoading() && !list.hasValue()) {
+    <p class="muted" role="status">{{ 'result.checking' | t }}</p>
+  } @else if (current(); as p) {
+    <div class="card card-body stack">
+      <p class="muted">
+        <span class="num">{{ p.amount | money }}</span>
+      </p>
+      @switch (p.status) {
+        @case ('PAID') {
+          <p class="notice notice-success" role="status">{{ 'result.paid' | t }}</p>
+        }
+        @case ('PENDING') {
+          <p class="notice notice-warning" role="status">
+            {{ (gaveUp() ? 'result.pending' : 'result.checking') | t }}
+          </p>
+        }
+        @case ('CANCELLED') {
+          <p class="notice notice-danger" role="alert">{{ 'result.cancelled' | t }}</p>
+        }
+        @default {
+          <p class="notice notice-danger" role="alert">{{ 'result.failed' | t }}</p>
+        }
+      }
+      <div class="row">
+        @if (p.status === 'PENDING') {
+          <button type="button" class="btn btn-secondary" (click)="refresh()">
+            {{ 'result.refresh' | t }}
+          </button>
+        }
+        @if (p.status === 'FAILED' || p.status === 'CANCELLED') {
+          <a
+            class="btn"
+            [routerLink]="'/kabinet/tolov/' + p.auctionId | link"
+            [queryParams]="{ purpose: p.purpose }"
+            >{{ 'result.again' | t }}</a
+          >
+        }
+        <a class="btn btn-secondary" [routerLink]="'/kabinet/arizalar' | link">{{
+          'result.toApps' | t
+        }}</a>
+      </div>
+    </div>
+  } @else {
+    <p class="notice notice-warning">{{ 'result.none' | t }}</p>
+    <a class="btn btn-secondary" [routerLink]="'/kabinet/tolovlar' | link">{{
+      'pay.toPayments' | t
+    }}</a>
+  }
+</div>

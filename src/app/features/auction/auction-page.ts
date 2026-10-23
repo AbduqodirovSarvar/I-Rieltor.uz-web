@@ -11,8 +11,10 @@ import {
 import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { map } from 'rxjs';
-import { PublicAuctionDetail, PublicBid } from '../../api/models';
+import { MyParticipation, PlacedBid, PublicAuctionDetail, PublicBid } from '../../api/models';
 import { AuctionService } from '../../core/auction/auction.service';
+import { AuthService } from '../../core/auth/auth.service';
+import { DealsService } from '../../core/deals/deals.service';
 import { DateTimePipe, MoneyPipe, TimeSecondsPipe, formatMoney } from '../../core/format/format';
 import { ApiError } from '../../core/http/api-error';
 import { I18n } from '../../core/i18n/i18n.service';
@@ -24,6 +26,7 @@ import { ServerClock } from '../../core/time/server-clock';
 import { valueOf } from '../../core/util/resource';
 import { injectResponseStatus } from '../../core/util/response-status';
 import { ApplyCta } from '../../shared/ui/apply-cta';
+import { BidPanel } from './bid-panel';
 import { Countdown } from '../../shared/ui/countdown';
 import { ErrorState, kindOfError } from '../../shared/ui/error-state';
 import { Price } from '../../shared/ui/price';
@@ -55,6 +58,7 @@ const EXTENDED_NOTE_MS = 8000;
   selector: 'app-auction-page',
   imports: [
     ApplyCta,
+    BidPanel,
     Countdown,
     DateTimePipe,
     ErrorState,
@@ -79,6 +83,8 @@ export class AuctionPage {
   private readonly seo = inject(Seo);
   private readonly clock = inject(ServerClock);
   private readonly hydrated = inject(Hydrated);
+  private readonly auth = inject(AuthService);
+  private readonly deals = inject(DealsService);
   private readonly setStatus = injectResponseStatus();
   private readonly destroyRef = inject(DestroyRef);
   protected readonly live = inject(AuctionLive);
@@ -93,6 +99,22 @@ export class AuctionPage {
     stream: ({ params }) =>
       this.service.bids(params, BID_HISTORY_LIMIT).pipe(map((page) => page.items)),
   });
+  /** The signed-in person's own application for this auction (browser only: the session is not known on the server). */
+  protected readonly mine = rxResource({
+    params: () => (this.hydrated.ready() && this.auth.isAuthenticated() ? this.id() : undefined),
+    stream: ({ params }) =>
+      this.deals
+        .myParticipations()
+        .pipe(
+          map(
+            (list) => list.find((p) => p.auctionId === params && p.status !== 'WITHDRAWN') ?? null,
+          ),
+        ),
+  });
+  protected readonly participation = computed<MyParticipation | null>(
+    () => valueOf(this.mine) ?? null,
+  );
+
   /** Bids that arrived live since the list was loaded. */
   private readonly liveBids = signal<PublicBid[]>([]);
   protected readonly bids = computed(() => mergeBids(valueOf(this.bidList) ?? [], this.liveBids()));
@@ -218,6 +240,23 @@ export class AuctionPage {
     });
   }
 
+  /** The person's own bid was accepted: its numbers are applied at once (the stream repeats them, which changes nothing). */
+  protected onPlaced(placed: PlacedBid): void {
+    const a = this.auction();
+    if (!a) return;
+    const patch = patchFromBid(a.id, a, { ...placed, bidCount: a.bidCount + 1 });
+    if (patch) this.patch.update((p) => ({ ...p, ...patch }));
+    this.liveBids.update((list) => [
+      {
+        participantNumber: placed.participantNumber,
+        amount: placed.amount,
+        placedAt: placed.placedAt,
+      },
+      ...list,
+    ]);
+    if (placed.extended) this.showExtended();
+  }
+
   /** A countdown reached zero: the state is about to change; ask the server shortly. */
   protected onZero(): void {
     if (this.reloadTimer) clearTimeout(this.reloadTimer);
@@ -227,6 +266,7 @@ export class AuctionPage {
   protected reload(): void {
     this.resource.reload();
     this.bidList.reload();
+    if (this.hydrated.ready() && this.auth.isAuthenticated()) this.mine.reload();
   }
 
   private showExtended(): void {

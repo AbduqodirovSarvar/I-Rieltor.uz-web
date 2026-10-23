@@ -1,0 +1,126 @@
+<h2>{{ 'apps.title' | t }}</h2>
+
+@if (list.isLoading() && !list.hasValue()) {
+  <p class="muted" role="status">{{ 'common.loading' | t }}</p>
+} @else if (rows().length === 0) {
+  <app-empty-state [title]="'apps.empty' | t" [text]="'apps.emptyText' | t">
+    <a class="btn" [routerLink]="'/katalog' | link">{{ 'apps.toCatalog' | t }}</a>
+  </app-empty-state>
+} @else {
+  <ul class="docs">
+    @for (row of rows(); track row.p.id) {
+      <li class="card card-body stack">
+        <div class="app-head">
+          <div>
+            <h3>
+              <a [routerLink]="'/auksion/' + row.p.auctionId | link">{{
+                row.p.auctionTitle || ('apps.auction' | t)
+              }}</a>
+            </h3>
+            @if (row.p.lotNumber) {
+              <p class="doc-meta muted">{{ 'card.lot' | t: { number: row.p.lotNumber } }}</p>
+            }
+          </div>
+          <div class="row">
+            <span class="badge">{{ row.p.status | enumLabel: 'ParticipantStatus' }}</span>
+            @if (row.p.depositAmount > 0 && row.p.status === 'APPROVED') {
+              <span class="badge" [class.badge-success]="row.p.depositStatus === 'PAID'">{{
+                row.p.depositStatus | enumLabel: 'DepositStatus'
+              }}</span>
+            }
+          </div>
+        </div>
+
+        <div class="step">
+          <p class="step-title">{{ titleOf(row.view.step) | t }}</p>
+          <p class="muted">{{ textOf(row.view.step) | t }}</p>
+        </div>
+
+        <dl class="facts">
+          @if (row.p.participantNumber) {
+            <dt>№</dt>
+            <dd>{{ 'apps.number' | t: { n: row.p.participantNumber } }}</dd>
+          }
+          <dt>{{ 'apps.starts' | t }}</dt>
+          <dd>{{ row.p.startsAt | dateTime }}</dd>
+          @if (row.p.depositAmount > 0) {
+            <dt>{{ 'apps.deposit' | t }}</dt>
+            <dd class="num">{{ row.p.depositAmount | money }}</dd>
+          }
+          @if (row.p.award; as award) {
+            <dt>{{ 'apps.price' | t }}</dt>
+            <dd class="num">{{ award.price | money }}</dd>
+            @if (row.view.step === 'pay-final' || row.view.step === 'offer') {
+              <dt>{{ 'apps.due' | t }}</dt>
+              <dd class="num">{{ award.amountDue | money }}</dd>
+            }
+          }
+        </dl>
+
+        @if (row.p.rejectReason) {
+          <p class="notice notice-danger">
+            {{ 'apps.rejectReason' | t: { reason: row.p.rejectReason } }}
+          </p>
+        }
+        @if (row.view.step === 'pay-final' && row.p.award?.paymentDueAt; as due) {
+          <p class="notice notice-warning">{{ 'apps.payBy' | t: { date: (due | dateTime) } }}</p>
+        }
+        @if (row.view.step === 'offer' && row.p.award?.respondBy; as by) {
+          <p class="notice notice-warning">{{ 'apps.respondBy' | t: { date: (by | dateTime) } }}</p>
+        }
+
+        <div class="row">
+          @switch (row.view.step) {
+            @case ('pay-deposit') {
+              <a
+                class="btn"
+                [routerLink]="'/kabinet/tolov/' + row.p.auctionId | link"
+                [queryParams]="{ purpose: 'DEPOSIT' }"
+                >{{ 'apps.payDeposit' | t }}</a
+              >
+            }
+            @case ('pay-final') {
+              <a
+                class="btn"
+                [routerLink]="'/kabinet/tolov/' + row.p.auctionId | link"
+                [queryParams]="{ purpose: 'FINAL_PAYMENT' }"
+                >{{ 'apps.payFinal' | t }}</a
+              >
+              <button type="button" class="btn btn-ghost" (click)="refuse(row)">
+                {{ 'apps.refuse' | t }}
+              </button>
+            }
+            @case ('offer') {
+              <button type="button" class="btn" (click)="accept(row)">
+                {{ 'apps.accept' | t }}
+              </button>
+              <button type="button" class="btn btn-ghost" (click)="decline(row)">
+                {{ 'apps.decline' | t }}
+              </button>
+            }
+            @case ('can-bid') {
+              <a class="btn" [routerLink]="'/auksion/' + row.p.auctionId | link">{{
+                'apps.goBid' | t
+              }}</a>
+            }
+            @case ('rejected') {
+              <a class="btn btn-secondary" [routerLink]="'/auksion/' + row.p.auctionId | link">{{
+                'apps.applyAgain' | t
+              }}</a>
+            }
+            @case ('withdrawn') {
+              <a class="btn btn-secondary" [routerLink]="'/auksion/' + row.p.auctionId | link">{{
+                'apps.applyAgain' | t
+              }}</a>
+            }
+          }
+          @if (row.view.canWithdraw) {
+            <button type="button" class="btn btn-ghost" (click)="withdraw(row)">
+              {{ 'apps.withdraw' | t }}
+            </button>
+          }
+        </div>
+      </li>
+    }
+  </ul>
+}

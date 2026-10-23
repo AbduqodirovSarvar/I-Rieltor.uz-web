@@ -1,0 +1,76 @@
+<h2>{{ 'payments.title' | t }}</h2>
+
+@if (list.isLoading() && !list.hasValue()) {
+  <p class="muted" role="status">{{ 'common.loading' | t }}</p>
+} @else if (payments().length === 0) {
+  <app-empty-state [title]="'payments.empty' | t" />
+} @else {
+  <ul class="docs">
+    @for (p of payments(); track p.id) {
+      <li class="card card-body stack">
+        <div class="app-head">
+          <div>
+            <h3>
+              {{ p.purpose | enumLabel: 'PaymentPurpose' }}:
+              <span class="num">{{ p.amount | money }}</span>
+            </h3>
+            <p class="doc-meta muted">
+              {{ p.provider | enumLabel: 'PaymentProvider' }} · {{ p.createdAt | dateTime }}
+            </p>
+          </div>
+          <span
+            class="badge"
+            [class.badge-success]="p.status === 'PAID'"
+            [class.badge-warning]="p.status === 'PENDING'"
+            [class.badge-danger]="p.status === 'FAILED' || p.status === 'CANCELLED'"
+            >{{ p.status | enumLabel: 'PaymentStatus' }}</span
+          >
+        </div>
+
+        <p class="doc-meta">
+          <a [routerLink]="'/auksion/' + p.auctionId | link">{{
+            p.auctionTitle || ('payments.auction' | t)
+          }}</a>
+          @if (p.lotNumber) {
+            <span class="muted"> · {{ 'card.lot' | t: { number: p.lotNumber } }}</span>
+          }
+        </p>
+
+        @if (p.receipts && p.receipts.length > 0) {
+          <div>
+            <p class="doc-meta muted">{{ 'pay.receipts' | t }}</p>
+            <ul class="docs">
+              @for (r of p.receipts; track r.id) {
+                <li>
+                  <button
+                    type="button"
+                    class="btn btn-ghost"
+                    (click)="openReceipt(r.id, r.originalName)"
+                  >
+                    {{ r.originalName }}
+                  </button>
+                </li>
+              }
+            </ul>
+          </div>
+        }
+
+        @if (canAttach(p)) {
+          <div class="row">
+            <a
+              class="btn btn-secondary"
+              [routerLink]="'/kabinet/tolov/' + p.auctionId | link"
+              [queryParams]="{ purpose: p.purpose }"
+              >{{ 'payments.continue' | t }}</a
+            >
+          </div>
+          <app-receipt-upload
+            [paymentId]="p.id"
+            [auctionId]="p.auctionId"
+            (uploaded)="list.reload()"
+          />
+        }
+      </li>
+    }
+  </ul>
+}

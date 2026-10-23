@@ -22,6 +22,8 @@ export class CabinetLayout {
 
   protected readonly sections: Section[] = [
     { path: '/kabinet/profil', text: 'cabinet.profile' },
+    { path: '/kabinet/arizalar', text: 'cabinet.applications' },
+    { path: '/kabinet/tolovlar', text: 'cabinet.payments' },
     { path: '/kabinet/hujjatlar', text: 'cabinet.documents' },
     { path: '/kabinet/xavfsizlik', text: 'cabinet.security' },
   ];

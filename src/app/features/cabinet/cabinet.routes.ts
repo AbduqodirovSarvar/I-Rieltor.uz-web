@@ -17,6 +17,18 @@ export const cabinetRoutes: Routes = [
         loadComponent: () => import('./profile-page').then((m) => m.ProfilePage),
       },
       {
+        path: 'arizalar',
+        loadComponent: () => import('./applications-page').then((m) => m.ApplicationsPage),
+      },
+      {
+        path: 'tolovlar',
+        loadComponent: () => import('./payments-page').then((m) => m.PaymentsPage),
+      },
+      {
+        path: 'tolov/:auctionId',
+        loadComponent: () => import('./pay-page').then((m) => m.PayPage),
+      },
+      {
         path: 'hujjatlar',
         loadComponent: () => import('./documents-page').then((m) => m.DocumentsPage),
       },

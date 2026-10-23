@@ -1,0 +1,11 @@
+h2 {
+  margin: 0;
+  font-size: var(--fs-xl);
+}
+
+.quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin: var(--s-3) 0;
+}

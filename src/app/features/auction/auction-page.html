@@ -110,11 +110,21 @@
       </div>
 
       <aside class="side">
+        @if (a.status === 'ONGOING') {
+          <app-bid-panel
+            [auction]="a"
+            [participation]="participation()"
+            [bids]="bids()"
+            (placed)="onPlaced($event)"
+            (stale)="reload()"
+          />
+        }
         <div class="card card-body stack">
           <app-apply-cta
             [auctionId]="a.id"
             [status]="a.status"
             [deadline]="a.applicationDeadline"
+            [participation]="participation()"
           />
           <a class="btn btn-secondary btn-block" [routerLink]="'/obyekt/' + a.propertyId | link">{{
             'auction.property' | t

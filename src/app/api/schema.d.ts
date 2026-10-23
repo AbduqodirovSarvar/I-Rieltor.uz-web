@@ -2443,6 +2443,43 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/Payment/providers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["PaymentProviderListResponseModel"];
+                        "application/json": components["schemas"]["PaymentProviderListResponseModel"];
+                        "text/json": components["schemas"]["PaymentProviderListResponseModel"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/Payment/my": {
         parameters: {
             query?: never;
@@ -5044,6 +5081,20 @@ export interface components {
         };
         /** @enum {string} */
         PaymentProvider: "CLICK" | "PAYME" | "UZUM" | "BANK_TRANSFER" | "CARD_TRANSFER" | "MANUAL";
+        PaymentProviderListResponseModel: {
+            success: boolean;
+            statusCode: components["schemas"]["HttpStatusCode"];
+            message: string | null;
+            errors: string[] | null;
+            data: components["schemas"]["PaymentProvider"][] | null;
+            /** Format: int32 */
+            pageIndex: number | null;
+            /** Format: int32 */
+            pageSize: number | null;
+            /** Format: int32 */
+            totalCount: number | null;
+            readonly isPaginated: boolean;
+        };
         /** @enum {string} */
         PaymentPurpose: "DEPOSIT" | "FINAL_PAYMENT" | "REFUND";
         PaymentReceiptViewModel: {

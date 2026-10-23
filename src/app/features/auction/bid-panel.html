@@ -1,0 +1,66 @@
+@if (allowed()) {
+  <section class="card card-body stack" aria-labelledby="bid-title">
+    <h2 id="bid-title">{{ 'bid.title' | t }}</h2>
+
+    @switch (state()) {
+      @case ('leader') {
+        <p class="notice notice-success" role="status">{{ 'bid.leader' | t }}</p>
+      }
+      @case ('outbid') {
+        <p class="notice notice-warning" role="status">{{ 'bid.outbid' | t }}</p>
+      }
+    }
+    @if (conflict()) {
+      <p class="notice notice-warning" role="alert">
+        {{ 'bid.changed' | t: { amount: (auction().minNextBid | money) } }}
+      </p>
+    }
+
+    <form (submit)="$event.preventDefault(); submit()" novalidate>
+      <div class="field">
+        <label for="bid-amount">{{ 'bid.amount' | t }}</label>
+        <input
+          id="bid-amount"
+          class="input num"
+          inputmode="numeric"
+          autocomplete="off"
+          [value]="text()"
+          [attr.aria-invalid]="problem() ? 'true' : null"
+          aria-describedby="bid-min bid-error"
+          (input)="onInput($event)"
+        />
+        <span class="hint" id="bid-min">{{
+          'bid.min' | t: { amount: (auction().minNextBid | money) }
+        }}</span>
+        @if (problem() === 'invalid') {
+          <span class="error" id="bid-error" role="alert">{{ 'bid.invalid' | t }}</span>
+        } @else if (problem() === 'low') {
+          <span class="error" id="bid-error" role="alert">{{
+            'bid.tooLow' | t: { amount: (auction().minNextBid | money) }
+          }}</span>
+        }
+      </div>
+
+      <div class="quick" role="group" [attr.aria-label]="'bid.quick' | t">
+        @for (q of quick(); track q.steps) {
+          <button type="button" class="btn btn-secondary" (click)="pick(q.amount)">
+            @if (q.steps === 0) {
+              {{ q.amount | money: false }}
+            } @else {
+              {{ 'bid.plus' | t: { amount: (q.amount - auction().minNextBid | money: false) } }}
+            }
+          </button>
+        }
+      </div>
+
+      @if (wait() > 0) {
+        <p class="notice notice-warning" role="alert">
+          {{ 'auth.signIn.wait' | t: { seconds: wait() } }}
+        </p>
+      }
+      <button type="submit" class="btn btn-block" [disabled]="!canSubmit()">
+        {{ 'bid.place' | t }}
+      </button>
+    </form>
+  </section>
+}

@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { environment } from '../environments/environment';
-import { guestGuard } from './core/auth/auth.guards';
+import { authGuard, guestGuard } from './core/auth/auth.guards';
 
 /**
  * The pages of the site. They are mounted twice: at the root (Uzbek) and under `/ru` (Russian), so every address exists in
@@ -55,6 +55,13 @@ const pages: Routes = [
     path: 'confirm-email',
     loadComponent: () =>
       import('./features/auth/confirm-email-page').then((m) => m.ConfirmEmailPage),
+  },
+  {
+    // Where a payment provider sends the person back to (backend setting Payments__ReturnUrl).
+    path: 'tolov/natija',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/cabinet/payment-result-page').then((m) => m.PaymentResultPage),
   },
   {
     path: 'kabinet',
