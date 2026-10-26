@@ -202,6 +202,10 @@ describe('CatalogPage', () => {
     harness.detectChanges();
     expect(el().textContent).toContain('Server xatosi');
     expect(el().textContent).toContain('req-77');
+    // A list that failed to load is not content for search engines.
+    expect(document.head.querySelector('meta[name="robots"]')?.getAttribute('content')).toBe(
+      'noindex, nofollow',
+    );
     (el().querySelector('app-error-state button') as HTMLButtonElement).click();
     await tick();
     harness.detectChanges();

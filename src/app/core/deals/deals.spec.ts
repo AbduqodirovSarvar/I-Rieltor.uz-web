@@ -4,7 +4,7 @@ import { pickPayment } from '../../features/cabinet/payment-result-page';
 import { canAttachReceipt } from '../../features/cabinet/payments-page';
 import { hoursFromNow, participation, payment } from '../../testing/factories';
 import { isRedirectProvider, parseAmount, safeProviderUrl } from './deals.service';
-import { canBid, describeParticipation } from './participation-view';
+import { canBid, depositOutcome, describeParticipation } from './participation-view';
 
 const now = Date.now();
 const award = (over: Record<string, unknown>) =>
@@ -87,6 +87,23 @@ describe('describeParticipation', () => {
     expect(canBid({ ...ok, auctionStatus: 'SCHEDULED' })).toBe(false);
     expect(canBid({ ...ok, depositAmount: 0, depositStatus: 'NOT_PAID' })).toBe(true);
     expect(canBid({ ...ok, award: award({}) })).toBe(false);
+  });
+});
+
+describe('deposit outcome', () => {
+  const of = (over = {}) => depositOutcome(participation(over));
+
+  it('says whether the deposit was given back, kept as a penalty or is still held', () => {
+    expect(of({ depositStatus: 'REFUNDED', auctionStatus: 'FINISHED' })?.tone).toBe('success');
+    expect(of({ depositStatus: 'FORFEITED', auctionStatus: 'FINISHED' })?.tone).toBe('danger');
+    expect(of({ depositStatus: 'PAID', auctionStatus: 'ONGOING' })?.tone).toBe('info');
+    expect(of({ depositStatus: 'PAID', auctionStatus: 'FINISHED' })).toBeNull();
+  });
+
+  it('is silent when there is no deposit to talk about', () => {
+    expect(of({ depositAmount: 0, depositStatus: 'REFUNDED' })).toBeNull();
+    expect(of({ status: 'PENDING', depositStatus: 'REFUNDED' })).toBeNull();
+    expect(of({ depositStatus: 'NOT_PAID' })).toBeNull();
   });
 });
 

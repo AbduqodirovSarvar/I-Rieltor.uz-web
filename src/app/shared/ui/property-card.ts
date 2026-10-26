@@ -19,6 +19,9 @@ export class PropertyCard {
   /** The first cards on a page load at once (they are what the visitor sees); the rest load as they are scrolled to. */
   readonly eager = input(false);
 
+  /** The heading level of the title: 2 where the list follows the page title directly, 3 under a section heading. */
+  readonly level = input<2 | 3>(3);
+
   private readonly fileUrl = injectFileUrl();
 
   protected readonly cover = computed(() => this.fileUrl(this.property().cover?.url));

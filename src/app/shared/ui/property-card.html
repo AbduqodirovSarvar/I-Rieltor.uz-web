@@ -21,9 +21,15 @@
   </a>
   <div class="card-body body">
     <p class="muted category">{{ property().categoryName }}</p>
-    <h3 class="title">
-      <a [routerLink]="'/obyekt/' + property().id | link">{{ property().title }}</a>
-    </h3>
+    @if (level() === 2) {
+      <h2 class="title">
+        <a [routerLink]="'/obyekt/' + property().id | link">{{ property().title }}</a>
+      </h2>
+    } @else {
+      <h3 class="title">
+        <a [routerLink]="'/obyekt/' + property().id | link">{{ property().title }}</a>
+      </h3>
+    }
     @if (location()) {
       <p class="muted place">{{ location() }}</p>
     }

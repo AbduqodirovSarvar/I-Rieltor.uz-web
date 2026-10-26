@@ -8,6 +8,7 @@ import {
   ParticipationView,
   STEP_TEXT,
   STEP_TITLE,
+  depositOutcome,
   describeParticipation,
 } from '../../core/deals/participation-view';
 import { DateTimePipe, MoneyPipe } from '../../core/format/format';
@@ -48,6 +49,7 @@ export class ApplicationsPage {
     return (valueOf(this.list) ?? []).map((p) => ({ p, view: describeParticipation(p, now) }));
   });
 
+  protected readonly outcomeOf = depositOutcome;
   protected readonly titleOf = (step: ParticipationView['step']) => STEP_TITLE[step];
   protected readonly textOf = (step: ParticipationView['step']) => STEP_TEXT[step];
 

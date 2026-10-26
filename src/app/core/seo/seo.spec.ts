@@ -58,14 +58,17 @@ describe('Seo', () => {
     expect(head('link[rel="canonical"]')?.getAttribute('href')).toMatch(/\/katalog$/);
   });
 
-  it('does not repeat head elements when called again, and drops an old picture', async () => {
+  it('does not repeat head elements when called again, and replaces an old picture with the site one', async () => {
     await router.navigateByUrl('/');
     seo.set({ title: 'A', image: '/a.jpg', jsonLd: { '@type': 'Thing' } });
     seo.set({ title: 'B' });
     expect(document.head.querySelectorAll('link[rel="canonical"]').length).toBe(1);
     expect(document.head.querySelectorAll('link[hreflang]').length).toBe(3);
     expect(document.head.querySelectorAll('script[data-seo-jsonld]').length).toBe(0);
-    expect(head('meta[property="og:image"]')).toBeNull();
+    expect(head('meta[property="og:image"]')?.getAttribute('content')).toMatch(
+      /\/og-default\.png$/,
+    );
+    expect(head('meta[name="twitter:card"]')?.getAttribute('content')).toBe('summary_large_image');
     expect(document.title).toBe('B | I-Rieltor');
   });
 

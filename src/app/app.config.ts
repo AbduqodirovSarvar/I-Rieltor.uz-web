@@ -6,13 +6,18 @@ import {
   provideAppInitializer,
   provideBrowserGlobalErrorListeners,
 } from '@angular/core';
-import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import {
+  provideClientHydration,
+  withEventReplay,
+  withNoHttpTransferCache,
+} from '@angular/platform-browser';
 import {
   TitleStrategy,
   provideRouter,
   withComponentInputBinding,
   withInMemoryScrolling,
 } from '@angular/router';
+import { transferCacheInterceptor } from './core/http/transfer-cache';
 import { routes } from './app.routes';
 import { AuthService } from './core/auth/auth.service';
 import { authInterceptor } from './core/auth/auth.interceptor';
@@ -29,8 +34,11 @@ export const appConfig: ApplicationConfig = {
       withComponentInputBinding(),
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }),
     ),
-    provideClientHydration(withEventReplay()),
-    provideHttpClient(withFetch(), withInterceptors([clockInterceptor, authInterceptor])),
+    provideClientHydration(withEventReplay(), withNoHttpTransferCache()),
+    provideHttpClient(
+      withFetch(),
+      withInterceptors([transferCacheInterceptor, clockInterceptor, authInterceptor]),
+    ),
     { provide: TitleStrategy, useExisting: AppTitleStrategy },
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
     // The language comes from the address; the service must exist before the first navigation starts.

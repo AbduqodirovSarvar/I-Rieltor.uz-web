@@ -23,6 +23,9 @@ export interface PageMeta {
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
+/** Shown in link previews when a page has no picture of its own. */
+export const DEFAULT_SHARE_IMAGE = '/og-default.png';
+
 const LOCALES = { uz: 'uz_UZ', ru: 'ru_RU' } as const;
 
 /**
@@ -61,17 +64,12 @@ export class Seo {
     this.setProperty('og:url', url);
     this.setProperty('og:site_name', name);
     this.setProperty('og:locale', LOCALES[lang]);
-    this.setName('twitter:card', page.image ? 'summary_large_image' : 'summary');
+    const image = this.absolute(page.image || DEFAULT_SHARE_IMAGE);
+    this.setName('twitter:card', 'summary_large_image');
     this.setName('twitter:title', full);
     this.setName('twitter:description', description);
-    if (page.image) {
-      const image = this.absolute(page.image);
-      this.setProperty('og:image', image);
-      this.setName('twitter:image', image);
-    } else {
-      this.meta.removeTag("property='og:image'");
-      this.meta.removeTag("name='twitter:image'");
-    }
+    this.setProperty('og:image', image);
+    this.setName('twitter:image', image);
 
     this.setLink('canonical', url);
     this.setAlternates(neutralPath);

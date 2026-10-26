@@ -60,6 +60,9 @@ export const ruDeals: Record<keyof typeof uzDeals, string> = {
   'apps.accepted': 'Предложение принято. Теперь внесите итоговый платёж.',
   'apps.declined': 'Вы отказались от предложения.',
   'apps.goBid': 'Перейти к торгам',
+  'apps.depositRefunded': 'Ваш задаток возвращён.',
+  'apps.depositForfeited': 'Задаток удержан: покупка не оплачена в срок или вы от неё отказались.',
+  'apps.depositKept': 'Задаток удерживается до завершения аукциона.',
 
   'step.awaiting-approval.title': 'Заявка на рассмотрении',
   'step.awaiting-approval.text': 'После одобрения заявки сотрудником можно будет внести задаток.',

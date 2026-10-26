@@ -133,6 +133,49 @@ describe('applications, payments and the pay page', () => {
       expect(buttonWith('Xariddan voz kechish')).toBeTruthy();
     });
 
+    it('explains what became of the deposit: given back, kept as a penalty, or still held', async () => {
+      await openApplications([
+        participation({ auctionStatus: 'FINISHED', depositStatus: 'REFUNDED' }),
+        participation({
+          id: 'b',
+          auctionId: 'a2',
+          auctionStatus: 'FINISHED',
+          depositStatus: 'FORFEITED',
+          award: award({ status: 'DEFAULTED' }),
+        }),
+        participation({ id: 'c', auctionId: 'a3', depositStatus: 'PAID' }),
+      ]);
+      const cards = Array.from(el().querySelectorAll('li.card')) as HTMLElement[];
+      expect(text(cards[0])).toContain('Zakalatingiz qaytarildi.');
+      expect(cards[0].querySelector('.notice-success')).toBeTruthy();
+      expect(text(cards[1])).toContain('Zakalat musodara qilindi');
+      expect(text(cards[1])).toContain('Xarid amalga oshmadi');
+      expect(cards[1].querySelector('.notice-danger')).toBeTruthy();
+      expect(text(cards[2])).toContain('auksion yakunigacha ushlab turiladi');
+    });
+
+    it('a runner-up offer shows its deadline; after the deadline it is no longer an offer', async () => {
+      await openApplications([
+        participation({
+          auctionStatus: 'FINISHED',
+          depositStatus: 'PAID',
+          award: award({ status: 'OFFERED', rank: 2, respondBy: hoursFromNow(3) }),
+        }),
+        participation({
+          id: 'b',
+          auctionId: 'a2',
+          auctionStatus: 'FINISHED',
+          depositStatus: 'PAID',
+          award: award({ status: 'OFFERED', rank: 2, respondBy: hoursFromNow(-3) }),
+        }),
+      ]);
+      const cards = Array.from(el().querySelectorAll('li.card')) as HTMLElement[];
+      expect(text(cards[0])).toContain('Javob muddati:');
+      expect(text(cards[0])).toContain('Taklifni qabul qilish');
+      expect(text(cards[1])).toContain('Xarid amalga oshmadi');
+      expect(text(cards[1])).not.toContain('Taklifni qabul qilish');
+    });
+
     it('taking an application back asks first; "no" sends nothing, "yes" sends and refreshes', async () => {
       await openApplications();
       const confirm = TestBed.inject(Confirm);

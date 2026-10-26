@@ -168,6 +168,15 @@ describe('cards', () => {
     expect(text(fixture.nativeElement)).toContain('Yakuniy narx');
   });
 
+  it('PropertyCard titles are h2 right under the page title (level 2), h3 under a section heading', () => {
+    const fixture = TestBed.createComponent(PropertyCard);
+    fixture.componentRef.setInput('property', property());
+    fixture.componentRef.setInput('level', 2);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('h2 a')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('h3')).toBeNull();
+  });
+
   it('PropertyCard links to the object, describes it, and loads the picture lazily', () => {
     const fixture = TestBed.createComponent(PropertyCard);
     fixture.componentRef.setInput('property', property());

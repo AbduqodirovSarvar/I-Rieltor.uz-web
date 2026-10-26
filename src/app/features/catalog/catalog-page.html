@@ -154,7 +154,7 @@
         } @else {
           <div class="grid" [class.busy]="results.isLoading()">
             @for (p of r.items; track p.id; let i = $index) {
-              <app-property-card [property]="p" [eager]="i < 3" />
+              <app-property-card [property]="p" [eager]="i < 3" [level]="2" />
             }
           </div>
           <app-pagination [page]="page()" [pageSize]="pageSize" [total]="r.totalCount" />

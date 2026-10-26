@@ -102,3 +102,25 @@ export function canBid(p: MyParticipation | null | undefined): boolean {
   if (!p || p.status !== 'APPROVED' || p.auctionStatus !== 'ONGOING' || p.award) return false;
   return !(p.depositAmount > 0 && p.depositStatus === 'NOT_PAID');
 }
+
+export interface DepositOutcome {
+  key: TextKey;
+  tone: 'success' | 'danger' | 'info';
+}
+
+/** What happened to the deposit, said plainly: given back, kept as a penalty, or still held until the sale ends. */
+export function depositOutcome(p: MyParticipation): DepositOutcome | null {
+  if (p.depositAmount <= 0 || p.status !== 'APPROVED') return null;
+  switch (p.depositStatus) {
+    case 'REFUNDED':
+      return { key: 'apps.depositRefunded', tone: 'success' };
+    case 'FORFEITED':
+      return { key: 'apps.depositForfeited', tone: 'danger' };
+    case 'PAID':
+      return p.auctionStatus === 'SCHEDULED' || p.auctionStatus === 'ONGOING'
+        ? { key: 'apps.depositKept', tone: 'info' }
+        : null;
+    default:
+      return null;
+  }
+}

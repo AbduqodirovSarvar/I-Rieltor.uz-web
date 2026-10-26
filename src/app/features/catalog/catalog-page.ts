@@ -18,6 +18,7 @@ import { I18n } from '../../core/i18n/i18n.service';
 import { TPipe } from '../../core/i18n/t.pipe';
 import { TextKey } from '../../core/i18n/uz';
 import { Seo } from '../../core/seo/seo.service';
+import { injectResponseStatus } from '../../core/util/response-status';
 import { valueOf } from '../../core/util/resource';
 import { EmptyState } from '../../shared/ui/empty-state';
 import { ErrorState } from '../../shared/ui/error-state';
@@ -90,6 +91,7 @@ export class CatalogPage {
   });
   protected readonly errorKind = computed(() => kindOfError(this.error()));
 
+  private readonly setStatus = injectResponseStatus();
   private readonly typed = new Subject<string>();
 
   constructor() {
@@ -102,11 +104,14 @@ export class CatalogPage {
       const page = this.data();
       const category = this.categoryOptions().find((c) => c.id === filter.category)?.label;
       const title = this.i18n.t('catalog.title');
+      // A list that could not be loaded must not be taken for the page itself: "try later" for crawlers, not content.
+      const failed = this.error() !== null;
+      if (failed) this.setStatus(503);
       this.seo.set({
         title: category ? `${category.replace(/^— /, '')} | ${title}` : title,
         description: this.i18n.t('catalog.metaDescription'),
         // A filtered list is a variation of the catalog, not a page of its own: it stays out of search results.
-        noindex: activeFilters(filter) > 0,
+        noindex: failed || activeFilters(filter) > 0,
         canonicalPath: '/katalog',
         jsonLd: page
           ? {

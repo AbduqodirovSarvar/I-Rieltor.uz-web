@@ -59,6 +59,10 @@ export const uzDeals = {
   'apps.accepted': 'Taklif qabul qilindi. Endi yakuniy to‘lovni amalga oshiring.',
   'apps.declined': 'Taklif rad etildi.',
   'apps.goBid': 'Savdoga o‘tish',
+  'apps.depositRefunded': 'Zakalatingiz qaytarildi.',
+  'apps.depositForfeited':
+    'Zakalat musodara qilindi: xarid muddatida to‘lanmagan yoki undan voz kechilgan.',
+  'apps.depositKept': 'Zakalat auksion yakunigacha ushlab turiladi.',
 
   'step.awaiting-approval.title': 'Arizangiz ko‘rib chiqilmoqda',
   'step.awaiting-approval.text': 'Xodim arizani tasdiqlagach, zakalatni to‘lash mumkin bo‘ladi.',
