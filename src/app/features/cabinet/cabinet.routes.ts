@@ -29,6 +29,14 @@ export const cabinetRoutes: Routes = [
         loadComponent: () => import('./pay-page').then((m) => m.PayPage),
       },
       {
+        path: 'e-imzo',
+        loadComponent: () => import('./eimzo-page').then((m) => m.EimzoPage),
+      },
+      {
+        path: 'bildirishnomalar',
+        loadComponent: () => import('./notifications-page').then((m) => m.NotificationsPage),
+      },
+      {
         path: 'hujjatlar',
         loadComponent: () => import('./documents-page').then((m) => m.DocumentsPage),
       },

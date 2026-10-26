@@ -228,6 +228,47 @@ describe('bidding on the auction page', () => {
     expect(TestBed.inject(Notify).toasts()[0].message).toContain('Taklifingiz qabul qilindi');
   });
 
+  it('when the live stream brings my own bid before the answer does, it is counted once', async () => {
+    const f = await open();
+    field(f).value = '520000000';
+    field(f).dispatchEvent(new Event('input'));
+    await submit(f);
+    TestBed.inject(Confirm).answer(true);
+    await tick();
+    const post = request('/api/Bid');
+    const placedAt = hoursFromNow(0);
+    hubs[hubs.length - 1].send('BidPlaced', {
+      auctionId: 'a1',
+      participantNumber: 7,
+      amount: 520_000_000,
+      placedAt,
+      currentPrice: 520_000_000,
+      minNextBid: 525_000_000,
+      endsAt: hoursFromNow(3),
+      extended: false,
+      bidCount: 10,
+    });
+    f.detectChanges();
+    post.flush(
+      ok({
+        bidId: 'b1',
+        auctionId: 'a1',
+        amount: 520_000_000,
+        participantNumber: 7,
+        placedAt,
+        currentPrice: 520_000_000,
+        minNextBid: 525_000_000,
+        endsAt: hoursFromNow(3),
+        extended: false,
+      }),
+    );
+    await tick();
+    f.detectChanges();
+    const labels = Array.from(f.nativeElement.querySelectorAll('dt')) as HTMLElement[];
+    const count = labels.find((dt) => dt.textContent?.includes('Takliflar'))?.nextElementSibling;
+    expect(count?.textContent?.trim()).toBe('10');
+  });
+
   it('"no" at the question sends nothing', async () => {
     const f = await open();
     await submit(f);
@@ -303,6 +344,11 @@ describe('bidding on the auction page', () => {
   it('shows whether the person leads, and when they were outbid, from the newest bid', async () => {
     let f = await open({ bids: [bid(7, 512_000_000, 5), bid(2, 510_000_000, 1)] });
     expect(text(f.nativeElement)).toContain('Siz yetakchisiz');
+    // The server refuses a leader who bids again ("already the highest bidder"), so the form waits for someone else.
+    expect(text(f.nativeElement)).toContain('Boshqa ishtirokchi taklif bergach');
+    expect(
+      (f.nativeElement.querySelector('button[type=submit]') as HTMLButtonElement).disabled,
+    ).toBe(true);
 
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({

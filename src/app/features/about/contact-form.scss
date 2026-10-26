@@ -1,0 +1,13 @@
+:host {
+  display: block;
+  margin-top: var(--s-6);
+}
+
+// Out of sight and out of reach for people, but present in the page for robots.
+.trap {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}

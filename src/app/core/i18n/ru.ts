@@ -1,5 +1,6 @@
 import { ruAuth } from './ru-auth';
 import { ruDeals } from './ru-deals';
+import { ruEimzo } from './ru-eimzo';
 import { ruObject } from './ru-object';
 import { ruPages } from './ru-pages';
 import type { Dictionary } from './uz';
@@ -147,4 +148,11 @@ const ruBase = {
   'map.coordinates': 'Координаты',
 };
 
-export const ru: Dictionary = { ...ruBase, ...ruPages, ...ruObject, ...ruAuth, ...ruDeals };
+export const ru: Dictionary = {
+  ...ruBase,
+  ...ruPages,
+  ...ruObject,
+  ...ruAuth,
+  ...ruDeals,
+  ...ruEimzo,
+};

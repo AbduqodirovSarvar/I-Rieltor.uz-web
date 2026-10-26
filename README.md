@@ -77,3 +77,32 @@ Yangi sahifa marshrutini `app.routes.ts` dagi `pages` ro'yxatiga qo'shing: u ikk
 - To'lov qaytish manzili: backendda `Payments__ReturnUrl=https://<domen>/tolov/natija`. Pochta havolasi: `EmailConfirmation__LinkBaseUrl=https://<domen>/confirm-email`.
 - `src/environments/environment.ts` dagi `siteUrl` haqiqiy domen bo'lishi kerak (canonical, sitemap, ulashish rasmi).
 - CI: `.github/workflows/ci.yml` (format, lint, test, build, keyin Docker image qurib `healthz`, `robots.txt` va CSP tekshiriladi).
+
+## Sinovlar
+
+- `npm test` - birlik va komponent sinovlari (Vitest, jsdom); `npm test -- --coverage` qamrov hisoboti.
+- `npm run e2e` - Playwright, ishlayotgan stack ustida (backend papkasida `.\deploy\local\up.ps1`, manzil `E2E_BASE_URL`, standart `http://localhost:8080`): mehmon yo'li, hisob, SEO/SSR sarlavhalari, `axe` bilan a11y, o'lchamlar. Ro'yxatdan o'tish daqiqasiga cheklangan, sinov kutadi.
+- `node scripts/load.mjs http://web:4000 50 15 / /katalog` - yuklama (Nginx emas, to'g'ridan-to'g'ri Node serveriga; Docker tarmog'i ichidan). Production'da `NG_ALLOWED_HOSTS` da domen bo'lishi shart, aks holda sayt 400 beradi.
+
+## E-IMZO
+
+- **Haqiqiy kutubxona**: `e-imzo.js` va `e-imzo-client.js` fayllarini `public/eimzo/` ga qo'ying, domen uchun E-IMZO bergan kalitlarni `src/environments/environment.ts` dagi `eimzoApiKeys` ga yozing (`['i-rieltor.uz', '<kalit>']`). Fayllar yo'q bo'lsa, kirish va tiklash sahifalarida E-IMZO bloki ko'rinmaydi, ulash va ariza sahifalarida "E-IMZO hali ulanmagan" deb aytiladi. Adapter: `src/app/core/eimzo/real-eimzo.ts` (kutubxonaning ochiq hujjatiga qarab yozilgan, **haqiqiy fayllar bilan hali sinalmagan**: kelganda `listAllUserKeys`, `loadKey`, `createPkcs7` chaqiruvlarini va xato matnlarini tekshiring).
+- **Sinov uchun soxta E-IMZO**: backend papkasida `docker compose -f docker-compose.yml -f docker-compose.local.yml -f docker-compose.eimzo-fake.yml up -d` (soxta E-IMZO server + yuqori limitlar, faqat lokal), brauzer konsolida `localStorage.setItem('irieltor.dev.fake-eimzo','1')`. Sahifa soxta kalitlarni taklif qiladi va "sinov rejimi" deb ogohlantiradi. `E2E_EIMZO_FAKE=1 npm run e2e` E-IMZO ssenariylarini ham yuritadi.
+- **E-IMZO Mobile** (QR, `e-imzo-mobile.js`) hali qilinmagan: W5-7, W7-3.
+
+## Yangi sahifa qo'shish
+
+1. `src/app/features/<bo'lim>/<nom>-page.ts|html|scss`: mustaqil (`standalone`) komponent, `Seo.set({title, noindex})`, matnlar `TPipe` bilan.
+2. Marshrut: ochiq sahifa `src/app/app.routes.ts` dagi `pages` ga (u `/` va `/ru` ostida ikki marta ulanadi), kabinet sahifasi `features/cabinet/cabinet.routes.ts` ga.
+3. Shaxsiy sahifa bo'lsa `src/app/app.routes.server.ts` ga `RenderMode.Client`, `src/seo-files.ts` dagi `CLOSED` ro'yxatiga (robots va kesh), `authGuard`.
+4. Matnlar: `src/app/core/i18n/uz-*.ts` va `ru-*.ts` (kalit ikkala tilda ham bo'lishi shart, tip tekshiradi).
+5. Sinov (`*.spec.ts`) va, kerak bo'lsa, `e2e/`.
+
+## Joylashtirish (deploy) qadamlari
+
+1. Domenni serverga yo'naltiring; backend `.env` da `SERVER_NAME`, `LETSENCRYPT_EMAIL`, `Payments__ReturnUrl`, `EmailConfirmation__LinkBaseUrl`, SMTP, `Contact__Email` ni to'ldiring.
+2. `src/environments/environment.ts` da `siteUrl` ni tekshiring.
+3. `docker compose up -d --build` (backend papkasi): `web`, `api`, `nginx` ko'tariladi, sertifikat 1-2 daqiqada olinadi.
+4. Tekshiring: `https://<domen>/healthz`, `/robots.txt`, `/sitemap.xml`, `/health/ready`; Search Console'ga sitemap yuboring.
+5. E-IMZO fayllari va kalitlari kelganda yuqoridagi bo'limga qarang.
+

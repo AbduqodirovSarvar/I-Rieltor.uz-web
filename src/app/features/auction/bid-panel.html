@@ -4,7 +4,9 @@
 
     @switch (state()) {
       @case ('leader') {
-        <p class="notice notice-success" role="status">{{ 'bid.leader' | t }}</p>
+        <p class="notice notice-success" role="status">
+          {{ 'bid.leader' | t }} {{ 'bid.leaderWait' | t }}
+        </p>
       }
       @case ('outbid') {
         <p class="notice notice-warning" role="status">{{ 'bid.outbid' | t }}</p>

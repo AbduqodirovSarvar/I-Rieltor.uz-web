@@ -1,0 +1,45 @@
+<div class="container narrow">
+  <h1>{{ 'apply.title' | t }}</h1>
+
+  @if (!auth.isVerified()) {
+    <p class="notice notice-warning" role="alert">{{ 'apply.verify' | t }}</p>
+    <a class="btn" [routerLink]="'/kabinet/e-imzo' | link" [queryParams]="verifyLink()">{{
+      'apply.toVerify' | t
+    }}</a>
+  } @else if (application.isLoading() && !application.hasValue()) {
+    <p class="muted" role="status">{{ 'common.loading' | t }}</p>
+  } @else if (data(); as application) {
+    <p class="muted">{{ 'apply.intro' | t }}</p>
+    <p class="muted">
+      {{ 'apply.deadline' | t: { date: (application.applicationDeadline | dateTime) } }}
+    </p>
+
+    <form class="card card-body stack" (submit)="$event.preventDefault(); submit()" novalidate>
+      <h2>{{ 'apply.text' | t }}</h2>
+      <pre class="text" tabindex="0">{{ application.text }}</pre>
+
+      <label class="check">
+        <input
+          type="checkbox"
+          [checked]="agreed()"
+          (change)="agreed.set($any($event.target).checked)"
+        />
+        {{ 'apply.agree' | t }}
+      </label>
+
+      <app-eimzo-key-picker controlId="apply-key" (keyChange)="key.set($event)" />
+
+      @if (message(); as text) {
+        <p class="notice notice-danger" role="alert">{{ text | t }}</p>
+      }
+
+      <button type="submit" class="btn" [disabled]="working()">{{ 'apply.submit' | t }}</button>
+    </form>
+  } @else {
+    <p class="notice notice-danger" role="alert">{{ 'error.server.text' | t }}</p>
+  }
+
+  <p class="alt">
+    <a [routerLink]="'/auksion/' + id() | link">{{ 'apply.back' | t }}</a>
+  </p>
+</div>

@@ -13,6 +13,7 @@ export const uzAuth = {
   'auth.err.mismatch': 'Parollar bir xil emas.',
   'auth.err.same': 'Yangi parol joriy paroldan farq qilishi kerak.',
   'auth.err.max': 'Matn juda uzun.',
+  'auth.err.min': 'Matn juda qisqa.',
 
   'auth.signIn.title': 'Kirish',
   'auth.signIn.login': 'Login yoki elektron pochta',
@@ -44,6 +45,21 @@ export const uzAuth = {
     'Auksionga ariza berish uchun keyinroq E-IMZO kalitingizni ulaysiz. Ro‘yxatdan o‘tish orqali siz qoidalar va maxfiylik siyosati bilan tanishganingizni tasdiqlaysiz.',
   'auth.signUp.welcome': 'Hisob yaratildi. Elektron pochtangizga tasdiqlash havolasi yuborildi.',
 
+  'auth.signIn.forgot': 'Parolni unutdingizmi?',
+  'auth.forgot.title': 'Parolni tiklash',
+  'auth.forgot.intro':
+    'Hisobingizga ulangan elektron pochta manzilini yozing. Manzil tasdiqlangan bo‘lsa, parolni yangilash havolasi yuboriladi.',
+  'auth.forgot.submit': 'Havola yuborish',
+  'auth.forgot.sent':
+    'Agar bu manzil tasdiqlangan hisobga tegishli bo‘lsa, havola yuborildi. Xat kelmasa, spam papkasini tekshiring. Havola 1 soat amal qiladi.',
+  'auth.forgot.back': 'Kirish sahifasiga qaytish',
+  'auth.reset.title': 'Yangi parol o‘rnatish',
+  'auth.reset.password': 'Yangi parol',
+  'auth.reset.submit': 'Parolni saqlash',
+  'auth.reset.done': 'Parol o‘zgartirildi. Yangi parol bilan kiring.',
+  'auth.reset.badLink': 'Havola yaroqsiz, muddati tugagan yoki allaqachon ishlatilgan.',
+  'auth.reset.noToken': 'Havolada kalit yo‘q. Xatdagi havolani to‘liq oching.',
+  'auth.reset.askAgain': 'Yangi havola so‘rash',
   'auth.confirm.title': 'Elektron pochtani tasdiqlash',
   'auth.confirm.working': 'Tasdiqlanmoqda…',
   'auth.confirm.ok': 'Elektron pochta manzilingiz tasdiqlandi.',

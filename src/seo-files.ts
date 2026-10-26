@@ -4,7 +4,16 @@
  */
 
 /** Private or one-purpose pages, in both languages: crawlers are told to stay out (the pages also say `noindex`). */
-const CLOSED = ['/kabinet', '/kirish', '/royxatdan-otish', '/confirm-email', '/tolov', '/dev'];
+const CLOSED = [
+  '/kabinet',
+  '/kirish',
+  '/royxatdan-otish',
+  '/confirm-email',
+  '/parolni-unutdim',
+  '/parolni-tiklash',
+  '/tolov',
+  '/dev',
+];
 
 /** Pages of the site that exist without any data behind them. */
 const STATIC_PATHS = ['/', '/katalog', '/biz-haqida', '/qoidalar', '/maxfiylik'];

@@ -1250,6 +1250,92 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/Auth/forgot-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["ForgotPasswordCommand"];
+                    "text/json": components["schemas"]["ForgotPasswordCommand"];
+                    "application/*+json": components["schemas"]["ForgotPasswordCommand"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["BooleanResponseModel"];
+                        "application/json": components["schemas"]["BooleanResponseModel"];
+                        "text/json": components["schemas"]["BooleanResponseModel"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/Auth/reset-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["ResetPasswordCommand"];
+                    "text/json": components["schemas"]["ResetPasswordCommand"];
+                    "application/*+json": components["schemas"]["ResetPasswordCommand"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["BooleanResponseModel"];
+                        "application/json": components["schemas"]["BooleanResponseModel"];
+                        "text/json": components["schemas"]["BooleanResponseModel"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/Auth/confirm-email": {
         parameters: {
             query?: never;
@@ -1842,6 +1928,43 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/Notification/my": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["MyNotificationViewModelListResponseModel"];
+                        "application/json": components["schemas"]["MyNotificationViewModelListResponseModel"];
+                        "text/json": components["schemas"]["MyNotificationViewModelListResponseModel"];
+                    };
                 };
             };
         };
@@ -4857,6 +4980,10 @@ export interface components {
         };
         /** @enum {string} */
         FileMimeType: "Unknown" | "ImagePng" | "ImageJpeg" | "ImageGif" | "ApplicationPdf" | "ApplicationDocx" | "ApplicationXlsx" | "VideoMp4" | "AudioMp3";
+        ForgotPasswordCommand: {
+            /** Format: email */
+            email: string;
+        };
         /** @enum {string} */
         HttpStatusCode: "Continue" | "SwitchingProtocols" | "Processing" | "EarlyHints" | "OK" | "Created" | "Accepted" | "NonAuthoritativeInformation" | "NoContent" | "ResetContent" | "PartialContent" | "MultiStatus" | "AlreadyReported" | "IMUsed" | "MultipleChoices" | "MovedPermanently" | "Found" | "SeeOther" | "NotModified" | "UseProxy" | "Unused" | "TemporaryRedirect" | "PermanentRedirect" | "BadRequest" | "Unauthorized" | "PaymentRequired" | "Forbidden" | "NotFound" | "MethodNotAllowed" | "NotAcceptable" | "ProxyAuthenticationRequired" | "RequestTimeout" | "Conflict" | "Gone" | "LengthRequired" | "PreconditionFailed" | "RequestEntityTooLarge" | "RequestUriTooLong" | "UnsupportedMediaType" | "RequestedRangeNotSatisfiable" | "ExpectationFailed" | "MisdirectedRequest" | "UnprocessableEntity" | "Locked" | "FailedDependency" | "UpgradeRequired" | "PreconditionRequired" | "TooManyRequests" | "RequestHeaderFieldsTooLarge" | "UnavailableForLegalReasons" | "InternalServerError" | "NotImplemented" | "BadGateway" | "ServiceUnavailable" | "GatewayTimeout" | "HttpVersionNotSupported" | "VariantAlsoNegotiates" | "InsufficientStorage" | "LoopDetected" | "NotExtended" | "NetworkAuthenticationRequired";
         LinkEimzoCommand: {
@@ -4880,6 +5007,31 @@ export interface components {
             respondBy: string | null;
             /** Format: date-time */
             paymentDueAt: string | null;
+        };
+        MyNotificationViewModel: {
+            /** Format: uuid */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            type: components["schemas"]["NotificationType"];
+            subject: string | null;
+            body: string | null;
+            /** Format: uuid */
+            auctionId: string | null;
+        };
+        MyNotificationViewModelListResponseModel: {
+            success: boolean;
+            statusCode: components["schemas"]["HttpStatusCode"];
+            message: string | null;
+            errors: string[] | null;
+            data: components["schemas"]["MyNotificationViewModel"][] | null;
+            /** Format: int32 */
+            pageIndex: number | null;
+            /** Format: int32 */
+            pageSize: number | null;
+            /** Format: int32 */
+            totalCount: number | null;
+            readonly isPaginated: boolean;
         };
         MyParticipationViewModel: {
             /** Format: uuid */
@@ -5723,6 +5875,11 @@ export interface components {
             /** Format: uuid */
             id: string;
             reason: string;
+        };
+        ResetPasswordCommand: {
+            token: string;
+            newPassword: string;
+            confirmPassword: string;
         };
         ResetPasswordViaEimzoCommand: {
             signedData: string;

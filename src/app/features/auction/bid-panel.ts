@@ -74,7 +74,11 @@ export class BidPanel {
   protected readonly state = computed(() =>
     leadership(this.participation()?.participantNumber ?? null, this.bids()),
   );
-  protected readonly canSubmit = computed(() => !this.submitting() && this.wait() === 0);
+  /** The leader cannot outbid themselves: the server refuses (409 "already the highest bidder"), so the form waits. */
+  protected readonly leading = computed(() => this.state() === 'leader');
+  protected readonly canSubmit = computed(
+    () => !this.submitting() && this.wait() === 0 && !this.leading(),
+  );
 
   protected onInput(event: Event): void {
     this.typed.set((event.target as HTMLInputElement).value);
@@ -119,7 +123,11 @@ export class BidPanel {
   }
 
   private fail(error: unknown): void {
-    if (error instanceof ApiError && error.status === 409) {
+    if (error instanceof ApiError && error.status === 409 && this.leading()) {
+      // Not a race: the person already leads (the list of bids may have been late), nothing to bid against.
+      this.typed.set(null);
+      this.stale.emit();
+    } else if (error instanceof ApiError && error.status === 409) {
       // "Another bid was placed at the same moment": the numbers on the page are old. Take the new ones and let the person decide.
       this.typed.set(null);
       this.conflict.set(true);

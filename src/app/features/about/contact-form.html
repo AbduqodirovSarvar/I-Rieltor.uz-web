@@ -1,0 +1,91 @@
+<section aria-labelledby="contact-title">
+  <h2 id="contact-title">{{ 'contact.title' | t }}</h2>
+  <p class="muted">{{ 'contact.intro' | t }}</p>
+
+  <form class="card card-body stack" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <app-field controlId="ct-name" [label]="'contact.name' | t" [error]="error('name')">
+      <input
+        id="ct-name"
+        class="input"
+        formControlName="name"
+        autocomplete="name"
+        [attr.aria-invalid]="error('name') ? 'true' : null"
+        aria-describedby="ct-name-error"
+      />
+    </app-field>
+
+    <app-field
+      controlId="ct-phone"
+      [label]="'contact.phone' | t"
+      [hint]="'auth.signUp.phoneHint' | t"
+      [error]="error('phone')"
+      [optional]="true"
+    >
+      <input
+        id="ct-phone"
+        class="input"
+        type="tel"
+        formControlName="phone"
+        autocomplete="tel"
+        [attr.aria-invalid]="error('phone') ? 'true' : null"
+        aria-describedby="ct-phone-hint ct-phone-error"
+      />
+    </app-field>
+
+    <app-field
+      controlId="ct-email"
+      [label]="'auth.signUp.email' | t"
+      [error]="error('email')"
+      [optional]="true"
+    >
+      <input
+        id="ct-email"
+        class="input"
+        type="email"
+        formControlName="email"
+        autocomplete="email"
+        autocapitalize="none"
+        spellcheck="false"
+        [attr.aria-invalid]="error('email') ? 'true' : null"
+        aria-describedby="ct-email-error"
+      />
+    </app-field>
+
+    <app-field controlId="ct-message" [label]="'contact.message' | t" [error]="error('message')">
+      <textarea
+        id="ct-message"
+        class="textarea"
+        rows="5"
+        formControlName="message"
+        [attr.aria-invalid]="error('message') ? 'true' : null"
+        aria-describedby="ct-message-error"
+      ></textarea>
+    </app-field>
+
+    <!-- A trap for robots: people never see or reach this field. -->
+    <div class="trap" aria-hidden="true">
+      <label for="ct-website">Website</label>
+      <input
+        id="ct-website"
+        formControlName="website"
+        tabindex="-1"
+        autocomplete="off"
+        autocapitalize="none"
+      />
+    </div>
+
+    @if (needContact()) {
+      <p class="notice notice-danger" role="alert">{{ 'contact.needContact' | t }}</p>
+    }
+    @if (wait() > 0) {
+      <p class="notice notice-warning" role="alert">
+        {{ 'auth.signIn.wait' | t: { seconds: wait() } }}
+      </p>
+    }
+    @if (sent()) {
+      <p class="notice notice-success" role="status">{{ 'contact.sent' | t }}</p>
+    }
+
+    <button type="submit" class="btn" [disabled]="!canSubmit()">{{ 'contact.submit' | t }}</button>
+  </form>
+</section>

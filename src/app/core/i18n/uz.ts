@@ -5,6 +5,7 @@
  */
 import { uzAuth } from './uz-auth';
 import { uzDeals } from './uz-deals';
+import { uzEimzo } from './uz-eimzo';
 import { uzObject } from './uz-object';
 import { uzPages } from './uz-pages';
 
@@ -151,7 +152,14 @@ const uzBase = {
   'map.coordinates': 'Koordinatalar',
 } as const;
 
-export const uz = { ...uzBase, ...uzPages, ...uzObject, ...uzAuth, ...uzDeals } as const;
+export const uz = {
+  ...uzBase,
+  ...uzPages,
+  ...uzObject,
+  ...uzAuth,
+  ...uzDeals,
+  ...uzEimzo,
+} as const;
 
 export type TextKey = keyof typeof uz;
 export type Dictionary = Record<TextKey, string>;

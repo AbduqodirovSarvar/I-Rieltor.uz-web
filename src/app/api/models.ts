@@ -21,4 +21,5 @@ export type PaymentReceipt = Schemas['PaymentReceiptViewModel'];
 export type Checkout = Schemas['CheckoutViewModel'];
 export type PlacedBid = Schemas['PlacedBidViewModel'];
 export type PaymentProvider = Schemas['PaymentProvider'];
+export type MyNotification = Schemas['MyNotificationViewModel'];
 export type PaymentPurpose = Schemas['PaymentPurpose'];

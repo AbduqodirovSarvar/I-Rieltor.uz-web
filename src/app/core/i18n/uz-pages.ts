@@ -44,6 +44,14 @@ export const uzPages = {
     'Barcha vaqt Toshkent bo‘yicha ko‘rsatiladi. Savdo tugashiga oz qolganda taklif berilsa, tugash vaqti uzaytirilishi mumkin.',
 
   'about.title': 'Biz haqimizda',
+  'contact.title': 'Bizga yozing',
+  'contact.intro': 'Savolingiz bormi? Xabar qoldiring, tez orada javob beramiz.',
+  'contact.name': 'Ismingiz',
+  'contact.phone': 'Telefon',
+  'contact.message': 'Xabar',
+  'contact.needContact': 'Javob berishimiz uchun telefon raqami yoki elektron pochta yozing.',
+  'contact.sent': 'Xabaringiz yuborildi. Rahmat! Tez orada siz bilan bog‘lanamiz.',
+  'contact.submit': 'Yuborish',
   'about.mission': 'Missiyamiz',
   'about.contacts': 'Aloqa',
   'about.address': 'Manzil',
@@ -69,7 +77,7 @@ export const uzPages = {
     'Ro‘yxatdan o‘tishda kiritilgan ma’lumotlar (F.I.O., telefon, elektron pochta) va E-IMZO orqali tasdiqlangan identifikatorlar.',
   'privacy.2.title': 'Brauzerda saqlanadigan ma’lumot',
   'privacy.2.text':
-    'Sayt faqat kirish sessiyasi va tanlangan mavzuni brauzer xotirasida saqlaydi. Reklama cookie-fayllari ishlatilmaydi.',
+    'Sayt faqat kirish sessiyasi, tanlangan mavzu va oxirgi ko‘rilgan xabar vaqtini brauzer xotirasida saqlaydi. Reklama cookie-fayllari ishlatilmaydi.',
   'privacy.3.title': 'Ma’lumotni himoya qilish',
   'privacy.3.text':
     'Shaxsiy ma’lumotlar faqat auksionni o‘tkazish uchun ishlatiladi va uchinchi shaxslarga berilmaydi.',

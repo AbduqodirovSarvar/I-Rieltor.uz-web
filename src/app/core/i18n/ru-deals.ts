@@ -4,6 +4,16 @@ import type { uzDeals } from './uz-deals';
 export const ruDeals: Record<keyof typeof uzDeals, string> = {
   'cabinet.applications': 'Мои заявки',
   'cabinet.payments': 'Мои платежи',
+  'cabinet.notifications': 'Сообщения',
+  'notifications.title': 'Сообщения',
+  'notifications.empty': 'Сообщений пока нет.',
+  'notifications.emptyText':
+    'Сообщения о заявках, задатке, ставках и платежах будут отображаться и здесь.',
+  'notifications.unread': 'Новых сообщений: {n}',
+  'notifications.new': 'Новое',
+  'notifications.generic': 'Сообщение',
+  'notifications.toAuction': 'Перейти к аукциону',
+  'notifications.note': 'Последние 50 сообщений. Они также отправлены по электронной почте и SMS.',
 
   'enum.ParticipantStatus.PENDING': 'На рассмотрении',
   'enum.ParticipantStatus.APPROVED': 'Одобрена',
@@ -146,6 +156,7 @@ export const ruDeals: Record<keyof typeof uzDeals, string> = {
   'bid.changed':
     'Тем временем поступила другая ставка. Новая минимальная ставка: {amount}. Проверьте сумму и повторите.',
   'bid.leader': 'Вы лидируете: сейчас самая высокая ставка ваша.',
+  'bid.leaderWait': 'Когда другой участник сделает ставку, вы сможете ставить снова.',
   'bid.outbid': 'Вашу ставку перебили. Сделайте новую.',
   'bid.needSignIn': 'Войдите, чтобы делать ставки.',
   'bid.needApproval': 'Чтобы делать ставки, ваша заявка должна быть одобрена.',

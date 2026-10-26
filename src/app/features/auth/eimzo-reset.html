@@ -1,0 +1,45 @@
+@if (!unavailable()) {
+  <form
+    class="card card-body stack"
+    [formGroup]="form"
+    (ngSubmit)="submit()"
+    novalidate
+    aria-labelledby="eimzo-reset-title"
+  >
+    <h2 id="eimzo-reset-title">{{ 'eimzo.reset.title' | t }}</h2>
+    <p class="muted">{{ 'eimzo.reset.intro' | t }}</p>
+
+    <app-eimzo-key-picker
+      controlId="eimzo-reset-key"
+      (keyChange)="key.set($event)"
+      (failed)="onFailed($event)"
+    />
+
+    <app-password-input
+      controlId="er-password"
+      [label]="'auth.reset.password' | t"
+      [control]="form.controls.password"
+      [hint]="'auth.signUp.passwordHint' | t"
+      autocomplete="new-password"
+    />
+    <app-password-input
+      controlId="er-confirm"
+      [label]="'auth.signUp.confirm' | t"
+      [control]="form.controls.confirm"
+      autocomplete="new-password"
+    />
+
+    @if (message(); as text) {
+      <p class="notice notice-danger" role="alert">{{ text | t }}</p>
+    }
+    @if (problems().length > 0) {
+      <ul class="notice notice-danger" role="alert">
+        @for (line of problems(); track $index) {
+          <li>{{ line }}</li>
+        }
+      </ul>
+    }
+
+    <button type="submit" class="btn" [disabled]="working()">{{ 'eimzo.reset.submit' | t }}</button>
+  </form>
+}

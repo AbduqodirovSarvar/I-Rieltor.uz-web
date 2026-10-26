@@ -1,0 +1,28 @@
+.narrow {
+  max-width: 40rem;
+  padding-block: var(--s-6);
+}
+
+.text {
+  margin: 0;
+  max-height: 20rem;
+  overflow: auto;
+  padding: var(--s-3);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: inherit;
+  background: var(--c-surface-2, var(--c-surface));
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-2, 0.5rem);
+}
+
+.check {
+  display: flex;
+  gap: var(--s-2);
+  align-items: flex-start;
+}
+
+.alt {
+  margin-top: var(--s-4);
+  text-align: center;
+}

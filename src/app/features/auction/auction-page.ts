@@ -244,7 +244,14 @@ export class AuctionPage {
   protected onPlaced(placed: PlacedBid): void {
     const a = this.auction();
     if (!a) return;
-    const patch = patchFromBid(a.id, a, { ...placed, bidCount: a.bidCount + 1 });
+    // The stream may have brought this very bid before the answer to the request did: it is counted once.
+    const seen = this.bids().some(
+      (b) => b.participantNumber === placed.participantNumber && b.amount === placed.amount,
+    );
+    const patch = patchFromBid(a.id, a, {
+      ...placed,
+      bidCount: seen ? a.bidCount : a.bidCount + 1,
+    });
     if (patch) this.patch.update((p) => ({ ...p, ...patch }));
     this.liveBids.update((list) => [
       {

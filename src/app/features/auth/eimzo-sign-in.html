@@ -1,0 +1,30 @@
+@if (!unavailable()) {
+  <section class="card card-body stack" aria-labelledby="eimzo-signin-title">
+    <h2 id="eimzo-signin-title">{{ 'eimzo.signIn.title' | t }}</h2>
+    <p class="muted">{{ 'eimzo.signIn.intro' | t }}</p>
+
+    <app-eimzo-key-picker
+      controlId="eimzo-signin-key"
+      (keyChange)="key.set($event)"
+      (failed)="onFailed($event)"
+    />
+
+    @if (message(); as text) {
+      <p class="notice notice-danger" role="alert">{{ text | t }}</p>
+    }
+
+    <div class="stack">
+      <button type="button" class="btn btn-block" [disabled]="working()" (click)="run('sign-in')">
+        {{ 'eimzo.signIn.submit' | t }}
+      </button>
+      <button
+        type="button"
+        class="btn btn-secondary btn-block"
+        [disabled]="working()"
+        (click)="run('sign-up')"
+      >
+        {{ 'eimzo.signIn.signUp' | t }}
+      </button>
+    </div>
+  </section>
+}

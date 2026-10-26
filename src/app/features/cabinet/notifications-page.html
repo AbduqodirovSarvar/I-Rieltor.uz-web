@@ -1,0 +1,32 @@
+<h2>{{ 'notifications.title' | t }}</h2>
+
+@if (list.isLoading() && !list.hasValue()) {
+  <p class="muted" role="status">{{ 'common.loading' | t }}</p>
+} @else if (rows().length === 0) {
+  <app-empty-state [title]="'notifications.empty' | t" [text]="'notifications.emptyText' | t" />
+} @else {
+  <p class="muted">{{ 'notifications.note' | t }}</p>
+  <ul class="docs">
+    @for (row of rows(); track row.item.id) {
+      <li class="card card-body stack">
+        <div class="app-head">
+          <div>
+            <h3>{{ row.item.subject || ('notifications.generic' | t) }}</h3>
+            <p class="doc-meta muted">{{ row.item.createdAt | dateTime }}</p>
+          </div>
+          @if (row.isNew) {
+            <span class="badge badge-warning">{{ 'notifications.new' | t }}</span>
+          }
+        </div>
+        <p>{{ row.item.body }}</p>
+        @if (row.item.auctionId) {
+          <div class="row">
+            <a class="btn btn-secondary" [routerLink]="'/auksion/' + row.item.auctionId | link">{{
+              'notifications.toAuction' | t
+            }}</a>
+          </div>
+        }
+      </li>
+    }
+  </ul>
+}

@@ -40,6 +40,12 @@
     </button>
   </form>
 
+  <app-eimzo-sign-in class="eimzo" [returnUrl]="returnUrl()" />
+
+  <p class="alt">
+    <a [routerLink]="'/parolni-unutdim' | link">{{ 'auth.signIn.forgot' | t }}</a>
+  </p>
+
   <p class="alt">
     {{ 'auth.signIn.noAccount' | t }}
     <a

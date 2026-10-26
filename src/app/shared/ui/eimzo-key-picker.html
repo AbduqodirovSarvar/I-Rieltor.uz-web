@@ -1,0 +1,26 @@
+<div class="picker">
+  @if (fake) {
+    <p class="notice notice-warning">{{ 'eimzo.fake' | t }}</p>
+  }
+
+  @if (loading()) {
+    <p class="muted" role="status">{{ 'eimzo.loading' | t }}</p>
+  } @else if (problem(); as text) {
+    <p class="notice notice-danger" role="alert">{{ text | t }}</p>
+    <button type="button" class="btn btn-secondary" (click)="load()">
+      {{ 'eimzo.retry' | t }}
+    </button>
+  } @else if (keys().length > 0) {
+    <div class="field">
+      <label [attr.for]="controlId()">{{ 'eimzo.key' | t }}</label>
+      <select [id]="controlId()" class="select" (change)="choose($event)">
+        @for (k of keys(); track k.id) {
+          <option [value]="k.id" [selected]="k.id === key()?.id">
+            {{ k.owner }}{{ k.organisation ? ' · ' + k.organisation : ''
+            }}{{ k.validTo ? ' · ' + ('eimzo.until' | t: { date: k.validTo }) : '' }}
+          </option>
+        }
+      </select>
+    </div>
+  }
+</div>

@@ -9,11 +9,12 @@ import { Seo } from '../../core/seo/seo.service';
 import { valueOf } from '../../core/util/resource';
 import { EmptyState } from '../../shared/ui/empty-state';
 import { MapLink } from '../../shared/ui/map-link';
+import { ContactForm } from './contact-form';
 
 /** About the company: name, description, mission, contacts and the place on a map. Without company data, a friendly empty page. */
 @Component({
   selector: 'app-about-page',
-  imports: [EmptyState, MapLink, TPipe],
+  imports: [ContactForm, EmptyState, MapLink, TPipe],
   templateUrl: './about-page.html',
   styleUrl: './about-page.scss',
 })

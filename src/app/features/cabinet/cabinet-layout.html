@@ -15,7 +15,16 @@
   <div class="layout">
     <nav class="menu" [attr.aria-label]="'cabinet.nav' | t">
       @for (s of sections; track s.path) {
-        <a [routerLink]="s.path | link" routerLinkActive="active">{{ s.text | t }}</a>
+        <a [routerLink]="s.path | link" routerLinkActive="active"
+          >{{ s.text | t }}
+          @if (s.path === '/kabinet/bildirishnomalar' && notifications.unread() > 0) {
+            <span
+              class="badge badge-warning"
+              [attr.aria-label]="'notifications.unread' | t: { n: notifications.unread() }"
+              >{{ notifications.unread() }}</span
+            >
+          }
+        </a>
       }
     </nav>
     <section class="content">

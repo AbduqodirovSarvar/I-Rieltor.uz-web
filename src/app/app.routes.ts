@@ -27,6 +27,11 @@ const pages: Routes = [
     loadComponent: () => import('./features/auction/auction-page').then((m) => m.AuctionPage),
   },
   {
+    path: 'auksion/:id/ariza',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/auction/apply-page').then((m) => m.ApplyPage),
+  },
+  {
     path: 'biz-haqida',
     loadComponent: () => import('./features/about/about-page').then((m) => m.AboutPage),
   },
@@ -49,6 +54,18 @@ const pages: Routes = [
     path: 'royxatdan-otish',
     canActivate: [guestGuard],
     loadComponent: () => import('./features/auth/sign-up-page').then((m) => m.SignUpPage),
+  },
+  {
+    path: 'parolni-unutdim',
+    canActivate: [guestGuard],
+    loadComponent: () =>
+      import('./features/auth/forgot-password-page').then((m) => m.ForgotPasswordPage),
+  },
+  {
+    // The address the e-mailed reset link opens; fixed by the backend (PasswordReset__LinkBaseUrl).
+    path: 'parolni-tiklash',
+    loadComponent: () =>
+      import('./features/auth/reset-password-page').then((m) => m.ResetPasswordPage),
   },
   {
     // The address the e-mailed link opens; fixed by the backend setting EmailConfirmation__LinkBaseUrl.

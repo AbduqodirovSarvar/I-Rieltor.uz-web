@@ -15,6 +15,7 @@ export function fieldError(control: AbstractControl | null, i18n: I18n): string 
   if (errors['password']) return i18n.t('auth.err.password');
   if (errors['mismatch']) return i18n.t('auth.err.mismatch');
   if (errors['same']) return i18n.t('auth.err.same');
+  if (errors['minlength']) return i18n.t('auth.err.min');
   if (errors['maxlength']) return i18n.t('auth.err.max');
   const server = errors['server'];
   return Array.isArray(server) && typeof server[0] === 'string' ? server[0] : null;

@@ -2,6 +2,16 @@
 export const uzDeals = {
   'cabinet.applications': 'Arizalarim',
   'cabinet.payments': 'To‘lovlarim',
+  'cabinet.notifications': 'Xabarlar',
+  'notifications.title': 'Xabarlar',
+  'notifications.empty': 'Hali xabar yo‘q.',
+  'notifications.emptyText':
+    'Ariza, zakalat, takliflar va to‘lovlar haqidagi xabarlar shu yerda ham ko‘rinadi.',
+  'notifications.unread': 'Yangi xabarlar: {n}',
+  'notifications.new': 'Yangi',
+  'notifications.generic': 'Xabar',
+  'notifications.toAuction': 'Auksionga o‘tish',
+  'notifications.note': 'Oxirgi 50 ta xabar. Ular elektron pochta va SMS orqali ham yuborilgan.',
 
   'enum.ParticipantStatus.PENDING': 'Ko‘rib chiqilmoqda',
   'enum.ParticipantStatus.APPROVED': 'Tasdiqlangan',
@@ -146,6 +156,7 @@ export const uzDeals = {
   'bid.changed':
     'Shu orada boshqa taklif tushdi. Yangi minimal taklif: {amount}. Summani tekshirib, qayta urinib ko‘ring.',
   'bid.leader': 'Siz yetakchisiz: hozirgi eng yuqori taklif sizniki.',
+  'bid.leaderWait': 'Boshqa ishtirokchi taklif bergach, yana taklif bera olasiz.',
   'bid.outbid': 'Taklifingiz oshirildi. Yangi taklif bering.',
   'bid.needSignIn': 'Taklif berish uchun kiring.',
   'bid.needApproval': 'Taklif berish uchun arizangiz tasdiqlangan bo‘lishi kerak.',

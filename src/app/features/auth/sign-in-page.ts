@@ -13,6 +13,7 @@ import { LinkPipe, TPipe } from '../../core/i18n/t.pipe';
 import { Notify } from '../../core/notify/notify.service';
 import { Seo } from '../../core/seo/seo.service';
 import { FormField } from '../../shared/ui/form-field';
+import { EimzoSignIn } from './eimzo-sign-in';
 import { PasswordInput } from '../../shared/ui/password-input';
 
 /**
@@ -21,7 +22,15 @@ import { PasswordInput } from '../../shared/ui/password-input';
  */
 @Component({
   selector: 'app-sign-in-page',
-  imports: [FormField, PasswordInput, ReactiveFormsModule, RouterLink, TPipe, LinkPipe],
+  imports: [
+    EimzoSignIn,
+    FormField,
+    PasswordInput,
+    ReactiveFormsModule,
+    RouterLink,
+    TPipe,
+    LinkPipe,
+  ],
   templateUrl: './sign-in-page.html',
   styleUrl: './auth-pages.scss',
 })
