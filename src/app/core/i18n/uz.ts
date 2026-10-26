@@ -9,7 +9,7 @@ import { uzEimzo } from './uz-eimzo';
 import { uzObject } from './uz-object';
 import { uzPages } from './uz-pages';
 
-const uzBase = {
+export const uzBase = {
   'site.name': 'I-Rieltor',
   'site.tagline': 'Ko‘chmas mulk auksionlari',
   'site.description':

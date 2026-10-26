@@ -1,25 +1,33 @@
 import { DOCUMENT } from '@angular/common';
 import { Injectable, effect, inject, signal } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
-import { LANGS, Lang, pluralForm } from './plural';
+import { cyrillicDictionary } from './cyrillic';
+import { en } from './en';
+import { HTML_LANG, LANGS, LANG_PREFIX, Lang, pluralForm } from './plural';
 import { ru } from './ru';
 import { Dictionary, TextKey, uz } from './uz';
 
-const DICTIONARIES: Record<Lang, Dictionary> = { uz, ru };
+/** Uzbek in Cyrillic is made from the Latin text (see `cyrillic.ts`), so the two scripts cannot drift apart. */
+const DICTIONARIES: Record<Lang, Dictionary> = { uz, ru, en, cyrl: cyrillicDictionary(uz) };
 
-/** Russian pages live under `/ru`; Uzbek (the main language) has no prefix. */
-export const RU_PREFIX = '/ru';
+/** The other languages live under their prefix (`/ru`, `/en`, `/cyrl`); Uzbek (the main language) has none. */
+const PREFIXED = LANGS.filter((lang) => LANG_PREFIX[lang] !== '');
 
 /** The language a URL is written in. */
 export function langOfUrl(url: string): Lang {
   const path = url.split(/[?#]/)[0];
-  return path === RU_PREFIX || path.startsWith(`${RU_PREFIX}/`) ? 'ru' : 'uz';
+  return (
+    PREFIXED.find(
+      (lang) => path === LANG_PREFIX[lang] || path.startsWith(`${LANG_PREFIX[lang]}/`),
+    ) ?? 'uz'
+  );
 }
 
 /** `/ru/katalog?page=2` → `/katalog?page=2`. */
 export function stripLang(url: string): string {
-  if (langOfUrl(url) !== 'ru') return url;
-  return url.slice(RU_PREFIX.length) || '/';
+  const lang = langOfUrl(url);
+  if (lang === 'uz') return url;
+  return url.slice(LANG_PREFIX[lang].length) || '/';
 }
 
 /**
@@ -41,7 +49,7 @@ export class I18n {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) this.current.set(langOfUrl(event.url));
     });
-    effect(() => this.document.documentElement.setAttribute('lang', this.current()));
+    effect(() => this.document.documentElement.setAttribute('lang', HTML_LANG[this.current()]));
   }
 
   /** A text of the current language; `{name}` placeholders are filled from `params`. A missing key shows itself. */
@@ -67,15 +75,16 @@ export class I18n {
     return text ?? value;
   }
 
-  /** An internal path in the current language: `/katalog` → `/ru/katalog` on the Russian side. */
+  /** An internal path in the current language: `/katalog` → `/ru/katalog` on the Russian side, `/en/katalog` on the English one. */
   link(path: string): string {
     return this.linkIn(this.current(), path);
   }
 
   linkIn(lang: Lang, path: string): string {
     const clean = path.startsWith('/') ? path : `/${path}`;
-    if (lang !== 'ru') return clean;
-    return clean === '/' ? RU_PREFIX : `${RU_PREFIX}${clean}`;
+    const prefix = LANG_PREFIX[lang];
+    if (!prefix) return clean;
+    return clean === '/' ? prefix : `${prefix}${clean}`;
   }
 }
 

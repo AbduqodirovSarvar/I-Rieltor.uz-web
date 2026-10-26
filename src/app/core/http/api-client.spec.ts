@@ -98,3 +98,18 @@ describe('ApiClient', () => {
     expect(offline?.isNetwork).toBe(true);
   });
 });
+
+describe('file addresses', () => {
+  it('a link to the API inside the server network becomes a path of the same site; real addresses stay', async () => {
+    const { fileUrlOf } = await import('./file-url');
+    expect(fileUrlOf('', 'http://api:8080/uploads/property/a.png')).toBe('/uploads/property/a.png');
+    expect(fileUrlOf('', 'http://localhost:8080/uploads/a.png')).toBe('/uploads/a.png');
+    expect(fileUrlOf('', 'https://cdn.example.uz/uploads/a.png')).toBe(
+      'https://cdn.example.uz/uploads/a.png',
+    );
+    expect(fileUrlOf('', 'http://api:8080/other/a.png')).toBe('http://api:8080/other/a.png');
+    expect(fileUrlOf('', '/uploads/a.png')).toBe('/uploads/a.png');
+    // A relative path is never given the API's own (server-side) address.
+    expect(fileUrlOf('http://api:8080', '/uploads/a.png')).toBe('/uploads/a.png');
+  });
+});

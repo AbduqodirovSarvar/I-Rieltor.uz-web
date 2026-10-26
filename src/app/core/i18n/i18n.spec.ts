@@ -5,24 +5,69 @@ import { I18n, langOfUrl, stripLang } from './i18n.service';
 import { pluralForm } from './plural';
 import { ru } from './ru';
 import { uz } from './uz';
+import { cyrillicDictionary } from './cyrillic';
+import { en } from './en';
 
 @Component({ template: '' })
 class Blank {}
 
 describe('dictionaries', () => {
-  it('Russian has exactly the keys of Uzbek, none empty', () => {
-    expect(Object.keys(ru).sort()).toEqual(Object.keys(uz).sort());
-    for (const [key, value] of Object.entries({ ...uz, ...ru })) expect(value, key).not.toBe('');
+  const others = { ru, en };
+
+  for (const [name, dictionary] of Object.entries(others)) {
+    it(`${name} has exactly the keys of Uzbek, none empty`, () => {
+      expect(Object.keys(dictionary).sort()).toEqual(Object.keys(uz).sort());
+      for (const [key, value] of Object.entries(dictionary)) expect(value, key).not.toBe('');
+    });
+
+    it(`${name} keeps the same {placeholders} as Uzbek`, () => {
+      const names = (text: string) => (text.match(/\{\w+\}/g) ?? []).sort();
+      for (const key of Object.keys(uz) as (keyof typeof uz)[])
+        expect(names(dictionary[key]), key).toEqual(names(uz[key]));
+    });
+  }
+
+  it('English texts are English, not left in Uzbek (a few checks)', () => {
+    expect(en['nav.catalog']).toBe('Catalog');
+    expect(en['site.tagline']).toBe('Real estate auctions');
   });
 
-  it('keeps the same {placeholders} in both languages', () => {
-    const names = (text: string) => (text.match(/\{\w+\}/g) ?? []).sort();
-    for (const key of Object.keys(uz) as (keyof typeof uz)[])
-      expect(names(ru[key]), key).toEqual(names(uz[key]));
+  it('the Cyrillic dictionary has the same keys and placeholders, and no Latin letters in plain Uzbek words', () => {
+    const cyrl = cyrillicDictionary(uz);
+    expect(Object.keys(cyrl).sort()).toEqual(Object.keys(uz).sort());
+    expect(cyrl['nav.catalog']).toBe('Каталог');
+    for (const key of Object.keys(uz) as (keyof typeof uz)[]) {
+      const names = (text: string) => (text.match(/\{\w+\}/g) ?? []).sort();
+      expect(names(cyrl[key]), key).toEqual(names(uz[key]));
+    }
+  });
+});
+
+describe('languages in addresses', () => {
+  it('reads the language from the prefix, and strips it', () => {
+    expect(langOfUrl('/katalog')).toBe('uz');
+    expect(langOfUrl('/ru/katalog')).toBe('ru');
+    expect(langOfUrl('/en')).toBe('en');
+    expect(langOfUrl('/cyrl/obyekt/1?x=1')).toBe('cyrl');
+    expect(langOfUrl('/english')).toBe('uz');
+    expect(stripLang('/en/katalog?page=2')).toBe('/katalog?page=2');
+    expect(stripLang('/cyrl')).toBe('/');
+    expect(stripLang('/ru/')).toBe('/');
   });
 });
 
 describe('plural forms', () => {
+  it('English has two forms, Uzbek and Cyrillic one', () => {
+    expect([0, 1, 2, 5].map((n) => pluralForm('room|rooms', n, 'en'))).toEqual([
+      'rooms',
+      'room',
+      'rooms',
+      'rooms',
+    ]);
+    expect(pluralForm('xona', 3, 'uz')).toBe('xona');
+    expect(pluralForm('xona', 3, 'cyrl')).toBe('xona');
+  });
+
   const rooms = 'комната|комнаты|комнат';
 
   it('picks the Russian form by the number', () => {

@@ -87,6 +87,26 @@ app.use((req, res, next) => {
     .catch(next);
 });
 
+/**
+ * A page that could not be rendered: one JSON line on the log (what, which address; no headers, no cookies, no query string:
+ * they may carry a token) and a short answer that is never cached. `docker compose logs web` shows it.
+ */
+app.use(
+  (error: unknown, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    if (res.headersSent) return next(error);
+    console.error(
+      JSON.stringify({
+        level: 'error',
+        time: new Date().toISOString(),
+        path: req.path,
+        message: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack?.split(/\r?\n/).slice(0, 6) : undefined,
+      }),
+    );
+    res.status(500).set('Cache-Control', 'no-store').type('text/plain').send('Server error');
+  },
+);
+
 /** Public pages may be shared briefly by a cache; personal pages and errors never. Pages also get their security policy. */
 async function finishResponse(response: Response, path: string): Promise<Response> {
   const headers = new Headers(response.headers);

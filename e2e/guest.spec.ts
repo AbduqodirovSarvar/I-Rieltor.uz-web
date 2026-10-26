@@ -37,12 +37,27 @@ test.describe('guest', () => {
     await expect(page.locator('app-empty-state')).toBeVisible();
   });
 
-  test('the Russian version has its own addresses, language and title', async ({ page }) => {
-    await page.goto('/biz-haqida');
-    await page.locator('a.lang').click();
-    await expect(page).toHaveURL(/\/ru\/biz-haqida$/);
-    await expect(page.locator('html')).toHaveAttribute('lang', 'ru');
-    await expect(page).toHaveTitle(/О нас/);
+  test('every language has its own addresses, language tag and texts', async ({ page }) => {
+    const titles: Record<string, RegExp> = {
+      ru: /О нас/,
+      en: /About us/,
+      cyrl: /Биз ҳақимизда/,
+    };
+    const tags: Record<string, string> = { ru: 'ru', en: 'en', cyrl: 'uz-Cyrl' };
+    for (const [prefix, title] of Object.entries(titles)) {
+      await page.goto('/biz-haqida');
+      await page
+        .locator('header select.lang-select')
+        .selectOption({ value: `/${prefix}/biz-haqida` });
+      await expect(page).toHaveURL(new RegExp(`/${prefix}/biz-haqida$`));
+      await expect(page.locator('html')).toHaveAttribute('lang', tags[prefix]);
+      await expect(page).toHaveTitle(title);
+      // The links stay in the language.
+      await expect(page.locator('nav.nav a[href$="/katalog"]')).toHaveAttribute(
+        'href',
+        `/${prefix}/katalog`,
+      );
+    }
   });
 
   test('an unknown address is a real 404 page with a way home', async ({ page }) => {

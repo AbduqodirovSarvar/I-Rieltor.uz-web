@@ -35,10 +35,13 @@ src/app/
 src/styles/   _tokens.scss (ranglar, o'lchamlar, qorong'i rejim), _base.scss, _components.scss
 ```
 
-## Tillar (uz / ru)
-O'zbek tili prefikssiz (`/katalog`), rus tili `/ru/katalog`. Til manzildan olinadi (SSR va qidiruv tizimlari uchun). Matnlar `core/i18n/uz.ts`
-va `ru.ts` da (kalitlar bir xil bo'lishi kompilyator bilan tekshiriladi). Havola yozishda `[routerLink]="'/katalog' | link"`.
-Yangi sahifa marshrutini `app.routes.ts` dagi `pages` ro'yxatiga qo'shing: u ikkala tilda ham ulanadi.
+## Tillar (uz / ru / en / cyrl)
+To'rt til: o'zbekcha (lotin) prefikssiz (`/katalog`), `/ru/katalog`, `/en/katalog`, `/cyrl/katalog` (o'zbekcha kirill). Til manzildan olinadi
+(SSR va qidiruv tizimlari uchun). Matnlar `core/i18n/uz*.ts` (asosiy), `ru*.ts`, `en*.ts` (kalitlar bir xil bo'lishi kompilyator bilan
+tekshiriladi). **Kirill matn yozilmaydi**: lotin matndan `core/i18n/cyrillic.ts` qoidalari bilan hosil bo'ladi; noto'g'ri chiqqan
+so'z uchun shu fayldagi `STEMS` ga istisno qo'shing. Yangi matn qo'shganda `uz`, `ru` va `en` ga yozing. Havola yozishda
+`[routerLink]="'/katalog' | link"`. Yangi sahifa marshrutini `app.routes.ts` dagi `pages` ro'yxatiga qo'shing: u hamma tilda ulanadi.
+Admin panelda ham 4 til: `I-Rieltor.uz-admin/src/app/core/i18n` (`uz.ts`, `ru.ts`, `en.ts`, kirill avtomatik).
 
 ## SSR qoidalari
 - Ochiq sahifalar serverda renderlanadi (`app.routes.server.ts`), kabinet (`kabinet/**`) faqat brauzerda.
@@ -106,3 +109,9 @@ Yangi sahifa marshrutini `app.routes.ts` dagi `pages` ro'yxatiga qo'shing: u ikk
 4. Tekshiring: `https://<domen>/healthz`, `/robots.txt`, `/sitemap.xml`, `/health/ready`; Search Console'ga sitemap yuboring.
 5. E-IMZO fayllari va kalitlari kelganda yuqoridagi bo'limga qarang.
 
+
+## Kuzatuv
+
+- **Uptime** (tashqi xizmat, masalan UptimeRobot): `https://<domen>/healthz` (sayt jarayoni) va `https://<domen>/health/ready` (API, baza, Redis); ikkalasi 200 bermasa ogohlantirish.
+- **Loglar**: `docker compose logs -f web` (ildiz papkada `.\up.ps1 -Logs`). Sahifa chizilmasa server bitta JSON qator yozadi (`level: error`, manzil, xabar, stek boshi; so'rov sarlavhalari va query yozilmaydi). API xatolari esa backendning `Alerts__Email` orqali emailga boradi.
+- Brauzer xatolari foydalanuvchiga ko'rsatiladi va konsolga yoziladi; tashqi yig'ish (Sentry) yo'q.

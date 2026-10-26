@@ -22,6 +22,8 @@ const STATIC_PATHS = ['/', '/katalog', '/biz-haqida', '/qoidalar', '/maxfiylik']
 const MAX_PAGES = 20_000;
 const PAGE_SIZE = 50;
 
+import { HTML_LANG, LANGS, LANG_PREFIX, Lang } from './app/core/i18n/plural';
+
 export interface SitemapEntry {
   /** Address without the language prefix: `/obyekt/…`. */
   path: string;
@@ -30,7 +32,8 @@ export interface SitemapEntry {
 
 export function robotsTxt(siteUrl: string): string {
   const lines = ['User-agent: *'];
-  for (const path of CLOSED) lines.push(`Disallow: ${path}`, `Disallow: /ru${path}`);
+  for (const path of CLOSED)
+    for (const lang of LANGS) lines.push(`Disallow: ${LANG_PREFIX[lang]}${path}`);
   lines.push('Allow: /', '', `Sitemap: ${siteUrl}/sitemap.xml`, '');
   return lines.join('\n');
 }
@@ -45,21 +48,20 @@ const escapeXml = (text: string) =>
 
 /** Every page appears once per language, and each one names both versions (`hreflang`) so they are paired. */
 export function sitemapXml(siteUrl: string, entries: SitemapEntry[]): string {
-  const at = (lang: 'uz' | 'ru', path: string) =>
-    siteUrl + (lang === 'ru' ? '/ru' + (path === '/' ? '' : path) : path);
+  const at = (lang: Lang, path: string) =>
+    siteUrl + LANG_PREFIX[lang] + (LANG_PREFIX[lang] && path === '/' ? '' : path);
   const body: string[] = [];
   for (const entry of entries) {
-    const alternates = (['uz', 'ru'] as const)
-      .map(
-        (lang) =>
-          `<xhtml:link rel="alternate" hreflang="${lang}" href="${escapeXml(at(lang, entry.path))}"/>`,
-      )
+    const alternates = LANGS.map(
+      (lang) =>
+        `<xhtml:link rel="alternate" hreflang="${HTML_LANG[lang]}" href="${escapeXml(at(lang, entry.path))}"/>`,
+    )
       .concat(
         `<xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(at('uz', entry.path))}"/>`,
       )
       .join('');
     const modified = entry.lastModified && !Number.isNaN(Date.parse(entry.lastModified));
-    for (const lang of ['uz', 'ru'] as const) {
+    for (const lang of LANGS) {
       body.push(
         `<url><loc>${escapeXml(at(lang, entry.path))}</loc>` +
           (modified ? `<lastmod>${new Date(entry.lastModified!).toISOString()}</lastmod>` : '') +
@@ -114,7 +116,7 @@ export async function loadSitemapEntries(
  * price changes during a sale, so not longer); the shells of personal pages are never cached by a shared cache.
  */
 export function cacheControlFor(path: string): string {
-  const bare = path.split(/[?#]/)[0].replace(/^\/ru(?=\/|$)/, '') || '/';
+  const bare = path.split(/[?#]/)[0].replace(/^\/(?:ru|en|cyrl)(?=\/|$)/, '') || '/';
   const closed = CLOSED.some(
     (closedPath) => bare === closedPath || bare.startsWith(closedPath + '/'),
   );

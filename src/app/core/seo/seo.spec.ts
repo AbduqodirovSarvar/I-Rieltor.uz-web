@@ -36,7 +36,7 @@ describe('Seo', () => {
     expect(content('meta[name="robots"]')).toBe('index, follow');
   });
 
-  it('points hreflang at both languages and x-default at Uzbek', async () => {
+  it('points hreflang at all four languages and x-default at Uzbek', async () => {
     await router.navigateByUrl('/ru/katalog');
     seo.set({ title: 'Каталог' });
 
@@ -44,10 +44,12 @@ describe('Seo', () => {
       l.getAttribute('hreflang'),
       l.getAttribute('href'),
     ]);
-    expect(links.map(([lang]) => lang)).toEqual(['uz', 'ru', 'x-default']);
+    expect(links.map(([lang]) => lang)).toEqual(['uz', 'ru', 'en', 'uz-Cyrl', 'x-default']);
     expect(links[0][1]).toMatch(/\/katalog$/);
     expect(links[1][1]).toMatch(/\/ru\/katalog$/);
-    expect(links[2][1]).toBe(links[0][1]);
+    expect(links[2][1]).toMatch(/\/en\/katalog$/);
+    expect(links[3][1]).toMatch(/\/cyrl\/katalog$/);
+    expect(links[4][1]).toBe(links[0][1]);
     expect(head('link[rel="canonical"]')?.getAttribute('href')).toMatch(/\/ru\/katalog$/);
   });
 
@@ -63,7 +65,7 @@ describe('Seo', () => {
     seo.set({ title: 'A', image: '/a.jpg', jsonLd: { '@type': 'Thing' } });
     seo.set({ title: 'B' });
     expect(document.head.querySelectorAll('link[rel="canonical"]').length).toBe(1);
-    expect(document.head.querySelectorAll('link[hreflang]').length).toBe(3);
+    expect(document.head.querySelectorAll('link[hreflang]').length).toBe(5);
     expect(document.head.querySelectorAll('script[data-seo-jsonld]').length).toBe(0);
     expect(head('meta[property="og:image"]')?.getAttribute('content')).toMatch(
       /\/og-default\.png$/,

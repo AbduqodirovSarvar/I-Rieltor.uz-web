@@ -128,6 +128,10 @@ export class RealEimzoProvider extends EimzoProvider {
   private async load(): Promise<EimzoClientLibrary> {
     if (!this.document.defaultView?.EIMZOClient) {
       try {
+        // A missing file would be answered with the site's own page: look first, so nothing is loaded (and no error is
+        // written to the console of every visitor) while the library is not on the site.
+        for (const src of SCRIPTS)
+          if (!(await this.exists(src))) throw new Error(`${src} is not on the site`);
         for (const src of SCRIPTS) await this.addScript(src);
       } catch {
         throw new EimzoError('library-missing');
@@ -149,6 +153,15 @@ export class RealEimzoProvider extends EimzoProvider {
       ),
     );
     return client;
+  }
+
+  private async exists(src: string): Promise<boolean> {
+    try {
+      const answer = await fetch(src, { method: 'HEAD' });
+      return answer.ok && /javascript|ecmascript/i.test(answer.headers.get('content-type') ?? '');
+    } catch {
+      return false;
+    }
   }
 
   private addScript(src: string): Promise<void> {

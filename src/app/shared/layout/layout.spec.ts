@@ -33,11 +33,18 @@ describe('layout', () => {
     const fixture = TestBed.createComponent(SiteHeader);
     fixture.detectChanges();
     const el: HTMLElement = fixture.nativeElement;
-    const hrefs = Array.from(el.querySelectorAll('nav a')).map((a) => a.getAttribute('href'));
+    const hrefs = Array.from(el.querySelectorAll('nav.nav a')).map((a) => a.getAttribute('href'));
     expect(hrefs).toEqual(['/ru', '/ru/katalog', '/ru/biz-haqida']);
-    const lang = el.querySelector('a.lang');
-    expect(lang?.getAttribute('href')).toBe('/katalog?page=2');
-    expect(lang?.getAttribute('hreflang')).toBe('uz');
+    // A list of all four languages, the current one selected, each value the same page in that language.
+    const select = el.querySelector<HTMLSelectElement>('select.lang-select')!;
+    const langs = Array.from(select.options).map((o) => [o.getAttribute('lang'), o.value]);
+    expect(langs).toEqual([
+      ['uz', '/katalog?page=2'],
+      ['ru', '/ru/katalog?page=2'],
+      ['en', '/en/katalog?page=2'],
+      ['uz-Cyrl', '/cyrl/katalog?page=2'],
+    ]);
+    expect(select.selectedOptions[0].getAttribute('lang')).toBe('ru');
   });
 
   it('header: the phone menu button says its state and every icon button has a name', async () => {

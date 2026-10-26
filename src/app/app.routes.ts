@@ -1,9 +1,10 @@
 import { Routes } from '@angular/router';
 import { environment } from '../environments/environment';
 import { authGuard, guestGuard } from './core/auth/auth.guards';
+import { LANGS, LANG_PREFIX } from './core/i18n/plural';
 
 /**
- * The pages of the site. They are mounted twice: at the root (Uzbek) and under `/ru` (Russian), so every address exists in
+ * The pages of the site. They are mounted once for each language: at the root (Uzbek, Latin) and under `/ru`, `/en` and `/cyrl`, so every address exists in
  * both languages and search engines can pair them (`hreflang`).
  */
 const pages: Routes = [
@@ -109,4 +110,11 @@ const pages: Routes = [
   },
 ];
 
-export const routes: Routes = [{ path: 'ru', children: pages }, ...pages];
+/** The prefixed languages first (`/ru`, `/en`, `/cyrl`), then the main one (Uzbek, Latin) at the root. */
+export const routes: Routes = [
+  ...LANGS.filter((lang) => LANG_PREFIX[lang]).map((lang) => ({
+    path: LANG_PREFIX[lang].slice(1),
+    children: pages,
+  })),
+  ...pages,
+];

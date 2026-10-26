@@ -6,7 +6,15 @@ describe('robots.txt', () => {
   const text = robotsTxt(SITE);
 
   it('keeps crawlers out of personal pages in both languages and names the sitemap', () => {
-    for (const path of ['/kabinet', '/ru/kabinet', '/kirish', '/ru/tolov', '/confirm-email'])
+    for (const path of [
+      '/kabinet',
+      '/ru/kabinet',
+      '/en/kabinet',
+      '/cyrl/kabinet',
+      '/kirish',
+      '/ru/tolov',
+      '/confirm-email',
+    ])
       expect(text).toContain(`Disallow: ${path}\n`);
     expect(text).toContain('Sitemap: https://i-rieltor.uz/sitemap.xml');
     expect(text).not.toMatch(/Disallow: \/\n/);
@@ -25,13 +33,16 @@ describe('sitemap.xml', () => {
     expect(xml).toContain('<loc>https://i-rieltor.uz/ru</loc>');
     expect(xml).toContain('<loc>https://i-rieltor.uz/obyekt/abc</loc>');
     expect(xml).toContain('<loc>https://i-rieltor.uz/ru/obyekt/abc</loc>');
+    expect(xml).toContain('<loc>https://i-rieltor.uz/en/obyekt/abc</loc>');
+    expect(xml).toContain('<loc>https://i-rieltor.uz/cyrl/obyekt/abc</loc>');
+    expect(xml).toContain('hreflang="uz-Cyrl" href="https://i-rieltor.uz/cyrl/obyekt/abc"');
     expect(xml).toContain('hreflang="x-default" href="https://i-rieltor.uz/obyekt/abc"');
-    expect((xml.match(/<url>/g) ?? []).length).toBe(6);
+    expect((xml.match(/<url>/g) ?? []).length).toBe(12);
   });
 
   it('states the last change only when there is a valid date, and escapes text', () => {
     expect(xml).toContain('<lastmod>2026-05-01T10:00:00.000Z</lastmod>');
-    expect((xml.match(/<lastmod>/g) ?? []).length).toBe(2);
+    expect((xml.match(/<lastmod>/g) ?? []).length).toBe(4);
     expect(xml).toContain('a=1&amp;b=2');
     expect(xml).not.toContain('a=1&b=2');
   });

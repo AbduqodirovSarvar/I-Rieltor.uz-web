@@ -4,7 +4,7 @@ import { Meta, Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { I18n, stripLang } from '../i18n/i18n.service';
-import { LANGS } from '../i18n/plural';
+import { HTML_LANG, LANGS } from '../i18n/plural';
 
 export interface PageMeta {
   /** The page's own title; the site name is added after it. Empty for the home page (the site name alone). */
@@ -26,7 +26,7 @@ export interface PageMeta {
 /** Shown in link previews when a page has no picture of its own. */
 export const DEFAULT_SHARE_IMAGE = '/og-default.png';
 
-const LOCALES = { uz: 'uz_UZ', ru: 'ru_RU' } as const;
+const LOCALES = { uz: 'uz_UZ', ru: 'ru_RU', en: 'en_US', cyrl: 'uz_UZ' } as const;
 
 /**
  * Everything a search engine or a link preview reads from the page head: title, description, canonical address, the same
@@ -85,7 +85,11 @@ export class Seo {
   private setAlternates(neutralPath: string): void {
     this.removeAll('link[rel="alternate"][hreflang]');
     for (const lang of LANGS) {
-      this.addLink('alternate', this.absolute(this.i18n.linkIn(lang, neutralPath)), lang);
+      this.addLink(
+        'alternate',
+        this.absolute(this.i18n.linkIn(lang, neutralPath)),
+        HTML_LANG[lang],
+      );
     }
     this.addLink('alternate', this.absolute(this.i18n.linkIn('uz', neutralPath)), 'x-default');
   }

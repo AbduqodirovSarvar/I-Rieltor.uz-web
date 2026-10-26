@@ -94,20 +94,20 @@ describe('the theme', () => {
     document.documentElement.removeAttribute('data-theme');
   });
 
-  it('goes system, light, dark, system; applies it to the page and remembers it', () => {
+  it('switches between day and night, applies it to the page and remembers it', () => {
     const theme = TestBed.inject(Theme);
-    expect(theme.mode()).toBe('system');
-    theme.next();
     TestBed.tick();
-    expect(theme.mode()).toBe('light');
-    expect(document.documentElement.getAttribute('data-theme')).toBe('light');
-    expect(localStorage.getItem('irieltor.web.theme')).toBe('light');
-    theme.next();
-    TestBed.tick();
-    expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
-    theme.next();
-    TestBed.tick();
+    // Nothing chosen yet: the style sheet follows the device, the page carries no attribute.
     expect(document.documentElement.hasAttribute('data-theme')).toBe(false);
+    expect(theme.mode()).toBe('light');
+    theme.next();
+    TestBed.tick();
+    expect(theme.mode()).toBe('dark');
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
+    expect(localStorage.getItem('irieltor.web.theme')).toBe('dark');
+    theme.next();
+    TestBed.tick();
+    expect(document.documentElement.getAttribute('data-theme')).toBe('light');
   });
 
   it('starts from the saved choice, and a blocked storage does not break it', () => {

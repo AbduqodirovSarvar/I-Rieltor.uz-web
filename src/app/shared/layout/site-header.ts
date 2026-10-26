@@ -1,16 +1,17 @@
+import { DOCUMENT } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { filter, map } from 'rxjs';
 import { AuthService } from '../../core/auth/auth.service';
 import { I18n, stripLang } from '../../core/i18n/i18n.service';
+import { HTML_LANG, LANGS, LANG_NAME } from '../../core/i18n/plural';
 import { LinkPipe, TPipe } from '../../core/i18n/t.pipe';
 import { Hydrated } from '../../core/layout/hydrated';
 import { Theme, ThemeMode } from '../../core/layout/theme.service';
 import { TextKey } from '../../core/i18n/uz';
 
 const THEME_KEYS: Record<ThemeMode, TextKey> = {
-  system: 'theme.system',
   light: 'theme.light',
   dark: 'theme.dark',
 };
@@ -25,6 +26,7 @@ const THEME_KEYS: Record<ThemeMode, TextKey> = {
 export class SiteHeader {
   protected readonly i18n = inject(I18n);
   protected readonly theme = inject(Theme);
+  private readonly document = inject(DOCUMENT);
   protected readonly auth = inject(AuthService);
   protected readonly hydrated = inject(Hydrated);
   private readonly router = inject(Router);
@@ -39,15 +41,20 @@ export class SiteHeader {
     { initialValue: this.router.url },
   );
 
-  /** The same page in the other language. */
-  protected readonly otherLanguage = computed(() => {
-    const other = this.i18n.lang() === 'uz' ? 'ru' : 'uz';
-    return {
-      code: other,
-      label: other.toUpperCase(),
-      href: this.i18n.linkIn(other, stripLang(this.url())),
-    };
-  });
+  /** The same page in each language (the current one included, it is the selected entry of the list). */
+  protected readonly languages = computed(() =>
+    LANGS.map((lang) => ({
+      code: HTML_LANG[lang],
+      name: LANG_NAME[lang],
+      selected: lang === this.i18n.lang(),
+      href: this.i18n.linkIn(lang, stripLang(this.url())),
+    })),
+  );
+
+  /** A language is a different address, so choosing one loads that page. */
+  protected changeLanguage(select: HTMLSelectElement): void {
+    if (select.value) this.document.defaultView?.location.assign(select.value);
+  }
 
   protected readonly themeKey = computed<TextKey>(() => THEME_KEYS[this.theme.mode()]);
 

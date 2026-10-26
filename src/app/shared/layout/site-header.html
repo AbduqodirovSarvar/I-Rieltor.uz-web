@@ -36,23 +36,25 @@
       </form>
 
       <div class="tools">
-        <a
-          class="btn btn-ghost lang"
-          [href]="otherLanguage().href"
-          [attr.hreflang]="otherLanguage().code"
-          [attr.lang]="otherLanguage().code"
+        <select
+          #language
+          class="input lang-select"
           [attr.aria-label]="'nav.language' | t"
-          >{{ otherLanguage().label }}</a
+          (change)="changeLanguage(language)"
         >
+          @for (item of languages(); track item.code) {
+            <option [value]="item.href" [selected]="item.selected" [attr.lang]="item.code">
+              {{ item.name }}
+            </option>
+          }
+        </select>
         <button
           type="button"
           class="btn btn-ghost theme"
           [attr.aria-label]="('theme.label' | t) + ': ' + (themeKey() | t)"
           (click)="theme.next()"
         >
-          <span aria-hidden="true">{{
-            theme.mode() === 'dark' ? '☾' : theme.mode() === 'light' ? '☀' : '◐'
-          }}</span>
+          <span aria-hidden="true">{{ theme.mode() === 'dark' ? '☾' : '☀' }}</span>
         </button>
 
         @if (hydrated.ready()) {

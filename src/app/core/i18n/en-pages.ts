@@ -1,0 +1,118 @@
+import type { uzPages } from './uz-pages';
+
+/** Texts of the pages (home, about, rules, catalog), English. The keys must match `uz-pages.ts`. */
+export const enPages: Record<keyof typeof uzPages, string> = {
+  'home.slider': 'Featured listings',
+  'home.play': 'Resume slideshow',
+  'home.pause': 'Pause slideshow',
+  'home.goTo': 'Go to slide {n}',
+  'home.heroTitle': 'Real estate auctions',
+  'home.heroText': 'Browse properties, submit an application and take part in online bidding.',
+  'home.categories': 'Categories',
+  'home.ongoing': 'Bidding now',
+  'home.upcoming': 'Starting soon',
+  'home.newest': 'New properties',
+  'home.viewAll': 'View all',
+  'home.noOngoing': 'There are no active auctions right now.',
+  'home.noUpcoming': 'No auctions are starting soon.',
+  'home.noNewest': 'No properties yet.',
+  'home.loadFailed': 'Could not load the data.',
+
+  'how.title': 'How to participate',
+  'how.1.title': 'Sign up',
+  'how.1.text': 'Create an account and confirm your email.',
+  'how.2.title': 'Connect E-IMZO',
+  'how.2.text': 'Your identity is verified with your E-IMZO key.',
+  'how.3.title': 'Application and deposit',
+  'how.3.text': 'Submit an application for the auction and pay the deposit.',
+  'how.4.title': 'Place a bid',
+  'how.4.text': 'Once bidding starts, raise the price and place your bid.',
+
+  'faq.title': 'Frequently asked questions',
+  'faq.1.q': 'Who can take part in an auction?',
+  'faq.1.a':
+    'Individuals and legal entities verified with an E-IMZO key. You do not need to sign up to browse properties and auctions.',
+  'faq.2.q': 'What is a deposit?',
+  'faq.2.a':
+    'A guarantee amount paid in advance to participate. According to the auction rules, it is returned to participants who do not win.',
+  'faq.3.q': 'How do I place a bid?',
+  'faq.3.a':
+    'Once your application is approved and the deposit is paid, you can bid when the auction starts, raising the current price by at least the set step.',
+  'faq.4.q': 'What does the winner do?',
+  'faq.4.a':
+    'After the auction ends, the winner makes the final payment within the set period. If they do not pay, the property may be offered to the next participant in line.',
+  'faq.5.q': 'How is the auction time calculated?',
+  'faq.5.a':
+    'All times are shown in Tashkent time. If a bid is placed shortly before the end, the end time may be extended.',
+
+  'about.title': 'About us',
+  'contact.title': 'Write to us',
+  'contact.intro': 'Have a question? Leave a message and we will reply soon.',
+  'contact.name': 'Your name',
+  'contact.phone': 'Phone',
+  'contact.message': 'Message',
+  'contact.needContact': 'Enter a phone number or email so we can reply.',
+  'contact.sent': 'Your message has been sent. Thank you! We will contact you soon.',
+  'contact.submit': 'Send',
+  'about.mission': 'Our mission',
+  'about.contacts': 'Contacts',
+  'about.address': 'Address',
+  'about.phone': 'Phone',
+  'about.email': 'Email',
+  'about.empty.title': 'Information has not been added yet',
+  'about.empty.text': 'Information about the company will appear here soon.',
+
+  'legal.rules': 'Rules',
+  'legal.privacy': 'Privacy policy',
+  'legal.updated': 'Sample text. It will be replaced once the final text is approved.',
+  'rules.1.title': 'General rules',
+  'rules.1.text':
+    'To take part in an auction you need an account verified with E-IMZO, an approved application for the auction and a paid deposit.',
+  'rules.2.title': 'Bids',
+  'rules.2.text':
+    'Each new bid must exceed the current price by at least the auction step. A placed bid cannot be withdrawn.',
+  'rules.3.title': 'Outcome',
+  'rules.3.text':
+    'After the auction ends, the participant with the highest bid is the winner and makes the payment within the set period.',
+  'privacy.1.title': 'What data is collected',
+  'privacy.1.text':
+    'Data entered during sign-up (full name, phone, email) and identifiers verified through E-IMZO.',
+  'privacy.2.title': 'Data stored in the browser',
+  'privacy.2.text':
+    'The site stores only the sign-in session, the selected theme and the time of the last viewed message in browser storage. Advertising cookies are not used.',
+  'privacy.3.title': 'Data protection',
+  'privacy.3.text':
+    'Personal data is used only to run the auction and is not shared with third parties.',
+
+  'nav.search': 'Search properties',
+  'nav.searchPlaceholder': 'Search…',
+
+  'catalog.title': 'Catalog',
+  'catalog.found': 'Found: {count}',
+  'catalog.filters': 'Filters',
+  'catalog.search': 'Search',
+  'catalog.searchPlaceholder': 'Name, address or cadastral number',
+  'catalog.category': 'Category',
+  'catalog.anyCategory': 'All categories',
+  'catalog.region': 'Region',
+  'catalog.district': 'District',
+  'catalog.area': 'Area, m²',
+  'catalog.rooms': 'Rooms (at least)',
+  'catalog.anyRooms': 'Any',
+  'catalog.price': 'Price, UZS',
+  'catalog.from': 'from',
+  'catalog.to': 'to',
+  'catalog.onlyAuction': 'Auction properties only',
+  'catalog.includeSold': 'Include sold properties',
+  'catalog.sort': 'Sort by',
+  'catalog.sort.newest': 'Newest first',
+  'catalog.sort.price_asc': 'Price: low to high',
+  'catalog.sort.price_desc': 'Price: high to low',
+  'catalog.sort.area_asc': 'Area: smallest first',
+  'catalog.sort.area_desc': 'Area: largest first',
+  'catalog.sort.auction_soon': 'Auction starting soonest',
+  'catalog.emptyTitle': 'Nothing found',
+  'catalog.emptyText': 'Try changing or clearing the filters.',
+  'catalog.resultsLabel': 'List of properties',
+  'catalog.metaDescription': 'Catalog of real estate properties in auction and for sale.',
+};
