@@ -1,5 +1,14 @@
 .item {
   position: relative;
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-2);
+  }
+
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -9,13 +18,19 @@
   display: block;
   aspect-ratio: 4 / 3;
   background: var(--c-surface-2);
+  overflow: hidden;
 
   img {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.4s;
   }
+}
+
+.item:hover .media img {
+  transform: scale(1.04);
 }
 
 .placeholder {

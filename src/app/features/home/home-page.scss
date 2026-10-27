@@ -18,7 +18,11 @@
 // Without slides the top of the page is a plain banner; while they load it keeps the height, so nothing jumps.
 .hero-fallback {
   padding-block: var(--s-8);
-  background: var(--c-primary);
+  background: linear-gradient(
+    135deg,
+    var(--c-primary),
+    color-mix(in srgb, var(--c-primary) 60%, #7c3aed)
+  );
   color: var(--c-on-primary);
 
   .title {

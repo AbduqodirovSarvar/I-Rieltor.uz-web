@@ -16,6 +16,7 @@ body {
   color: var(--c-text);
   font: var(--fs-md) / var(--lh) var(--font);
   -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.003em;
 }
 
 h1,
@@ -59,7 +60,7 @@ svg {
 :focus-visible {
   outline: 3px solid var(--c-focus);
   outline-offset: 2px;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
 // A link that appears on focus and jumps over the header.

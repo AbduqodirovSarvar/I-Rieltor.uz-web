@@ -11,10 +11,10 @@
   --c-accent: #b45309;
 
   // Surfaces and text (light)
-  --c-bg: #f6f7f9;
+  --c-bg: #f4f6fb;
   --c-surface: #ffffff;
-  --c-surface-2: #eef0f4;
-  --c-border: #d8dce3;
+  --c-surface-2: #eceff7;
+  --c-border: #e1e5ee;
   --c-text: #14181f;
   --c-text-muted: #4b5563;
   --c-link: #1d4ed8;
@@ -32,8 +32,9 @@
   --c-info-bg: #dbeafe;
   --c-neutral-bg: #e5e7eb;
 
-  --shadow-1: 0 1px 2px rgb(16 24 40 / 8%), 0 1px 3px rgb(16 24 40 / 10%);
-  --shadow-2: 0 8px 24px rgb(16 24 40 / 14%);
+  --shadow-1: 0 1px 2px rgb(31 41 90 / 4%), 0 4px 14px rgb(31 41 90 / 6%);
+  --shadow-2: 0 12px 32px rgb(31 41 90 / 14%);
+  --c-header-bg: rgb(255 255 255 / 78%);
 
   // Type
   --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -55,8 +56,8 @@
   --s-7: 3rem;
   --s-8: 4rem;
 
-  --radius: 0.5rem;
-  --radius-lg: 0.875rem;
+  --radius: 0.75rem;
+  --radius-lg: 1.25rem;
   --radius-pill: 999px;
 
   --container: 72rem;
@@ -72,10 +73,10 @@
   --c-primary-hover: #8aa9ff;
   --c-on-primary: #0b1020;
   --c-accent: #f59e0b;
-  --c-bg: #0d1117;
-  --c-surface: #161b22;
-  --c-surface-2: #1f2630;
-  --c-border: #2f3742;
+  --c-bg: #0f131b;
+  --c-surface: #171d27;
+  --c-surface-2: #212937;
+  --c-border: #2a3342;
   --c-text: #e6e9ee;
   --c-text-muted: #a3acb9;
   --c-link: #8aa9ff;
@@ -90,7 +91,8 @@
   --c-info: #8aa9ff;
   --c-info-bg: #14233f;
   --c-neutral-bg: #2a313b;
-  --shadow-1: 0 1px 2px rgb(0 0 0 / 40%);
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 30%), 0 4px 14px rgb(0 0 0 / 22%);
+  --c-header-bg: rgb(23 29 39 / 78%);
   --shadow-2: 0 8px 24px rgb(0 0 0 / 50%);
 }
 
