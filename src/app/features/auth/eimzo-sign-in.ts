@@ -39,7 +39,7 @@ export class EimzoSignIn {
 
   protected readonly key = signal<EimzoKey | null>(null);
   /** E-IMZO is not set up on this site: the card is not shown, the password sign-in is all there is. */
-  protected readonly unavailable = signal(false);
+  readonly unavailable = signal(false);
   protected readonly working = signal(false);
   protected readonly message = signal<TextKey | null>(null);
 

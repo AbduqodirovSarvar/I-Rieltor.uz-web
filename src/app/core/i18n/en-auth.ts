@@ -17,6 +17,9 @@ export const enAuth: Record<keyof typeof uzAuth, string> = {
   'auth.err.min': 'Text is too short.',
 
   'auth.signIn.title': 'Sign in',
+  'auth.signIn.method': 'Sign-in method',
+  'auth.signIn.tabPassword': 'Login and password',
+  'auth.signIn.tabEimzo': 'E-IMZO',
   'auth.signIn.login': 'Login or email',
   'auth.signIn.password': 'Password',
   'auth.signIn.submit': 'Sign in',

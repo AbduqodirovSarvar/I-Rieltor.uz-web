@@ -85,6 +85,26 @@ describe('auth pages', () => {
       type(el, '#si-password', password);
     };
 
+    it('offers login and E-IMZO as two tabs, the password one first, and switches with a click or the arrows', async () => {
+      const harness = await open();
+      const el = harness.routeNativeElement as HTMLElement;
+      const panel = (name: string) => el.querySelector<HTMLElement>(`#panel-${name}`)!;
+      const tab = (name: string) => el.querySelector<HTMLElement>(`[data-tab=${name}]`)!;
+      expect(tab('password').getAttribute('aria-selected')).toBe('true');
+      expect(panel('password').hidden).toBe(false);
+      expect(panel('eimzo').hidden).toBe(true);
+
+      tab('eimzo').click();
+      harness.detectChanges();
+      expect(tab('eimzo').getAttribute('aria-selected')).toBe('true');
+      expect(panel('password').hidden).toBe(true);
+      expect(panel('eimzo').hidden).toBe(false);
+
+      tab('eimzo').dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+      harness.detectChanges();
+      expect(tab('password').getAttribute('aria-selected')).toBe('true');
+    });
+
     it('does not send an empty form and says what is missing', async () => {
       const harness = await open();
       await submit(harness);

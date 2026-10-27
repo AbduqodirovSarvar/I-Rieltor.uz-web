@@ -58,6 +58,7 @@ export class SignInPage {
     }),
   });
 
+  protected readonly tab = signal<'password' | 'eimzo'>('password');
   protected readonly submitting = signal(false);
   protected readonly invalid = signal(false);
   /** Seconds the person still has to wait (after a 429). */
@@ -66,6 +67,18 @@ export class SignInPage {
 
   constructor() {
     inject(Seo).set({ title: this.i18n.t('auth.signIn.title'), noindex: true });
+  }
+
+  /** The arrow keys move between the two tabs, as in any tab list. */
+  protected onTabKey(event: KeyboardEvent): void {
+    const keys = ['ArrowLeft', 'ArrowRight', 'Home', 'End'];
+    if (!keys.includes(event.key)) return;
+    event.preventDefault();
+    const next = this.tab() === 'password' ? 'eimzo' : 'password';
+    this.tab.set(next);
+    (event.currentTarget as HTMLElement).parentElement
+      ?.querySelector<HTMLElement>(`[data-tab=${next}]`)
+      ?.focus();
   }
 
   protected error(name: 'login'): string | null {

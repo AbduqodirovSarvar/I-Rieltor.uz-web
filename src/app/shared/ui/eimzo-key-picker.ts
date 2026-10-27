@@ -7,6 +7,7 @@ import { TextKey } from '../../core/i18n/uz';
 const ERROR_TEXT: Record<EimzoErrorCode, TextKey> = {
   'library-missing': 'eimzo.err.library-missing',
   'not-installed': 'eimzo.err.not-installed',
+  outdated: 'eimzo.err.outdated',
   'no-keys': 'eimzo.err.no-keys',
   cancelled: 'eimzo.err.cancelled',
   'bad-password': 'eimzo.err.bad-password',

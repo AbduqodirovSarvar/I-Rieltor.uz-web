@@ -14,6 +14,8 @@ export const enEimzo: Record<keyof typeof uzEimzo, string> = {
     'E-IMZO is not connected to this site yet. Please try again later or contact us.',
   'eimzo.err.not-installed':
     'The E-IMZO application was not found on your computer. Install and launch it, then click “Search again”.',
+  'eimzo.err.outdated':
+    'The E-IMZO application on your computer is out of date. Download and install the new version from e-imzo.uz.',
   'eimzo.err.no-keys':
     'No E-IMZO key was found on your computer. Connect a key file or an ID card and search again.',
   'eimzo.err.cancelled': 'Signing was cancelled.',

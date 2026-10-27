@@ -26,8 +26,12 @@ test.beforeEach(async ({ page }) => {
   }, pinfl);
 });
 
-const press = (page: Page, text: string) =>
-  page.locator(`button:has-text("${text}")`).first().click();
+/** The E-IMZO buttons are on their own tab of the sign-in page. */
+const press = async (page: Page, text: string) => {
+  const tab = page.locator('button[role=tab][data-tab=eimzo]');
+  if (await tab.count()) await tab.click();
+  await page.locator(`button:has-text("${text}")`).first().click();
+};
 
 /** A new account made with the key the page offers first (this test's own person), landing in the cabinet. */
 async function registerWithKey(page: Page) {
@@ -41,6 +45,7 @@ test.describe('E-IMZO', () => {
     page,
   }) => {
     await page.goto('/kirish');
+    await page.locator('button[role=tab][data-tab=eimzo]').click();
     await expect(page.locator('.notice-warning').first()).toContainText('Sinov rejimi');
     await expect(page.locator('#eimzo-signin-key option')).toHaveCount(3);
 

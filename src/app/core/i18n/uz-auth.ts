@@ -16,6 +16,9 @@ export const uzAuth = {
   'auth.err.min': 'Matn juda qisqa.',
 
   'auth.signIn.title': 'Kirish',
+  'auth.signIn.method': 'Kirish usuli',
+  'auth.signIn.tabPassword': 'Login va parol',
+  'auth.signIn.tabEimzo': 'E-IMZO',
   'auth.signIn.login': 'Login yoki elektron pochta',
   'auth.signIn.password': 'Parol',
   'auth.signIn.submit': 'Kirish',

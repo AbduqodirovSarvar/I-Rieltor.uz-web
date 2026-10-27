@@ -2,8 +2,8 @@ import { EimzoError, EimzoKey, EimzoProvider, EimzoSignInput } from './eimzo.pro
 
 /**
  * The parts of the E-IMZO web library (`e-imzo.js` and `e-imzo-client.js`, from the E-IMZO developers) that this site uses.
- * Written from the library's public documentation; to be checked against the real files when they are added to
- * `public/eimzo/` (see the README there).
+ * Checked against the demo of the E-IMZO developers (`e-imzo-doc`): the calls and their order are the ones of its
+ * `e-imzo-init.js` and `e-imzo-client.js`.
  */
 interface LibraryItem {
   serialNumber?: string;
@@ -49,6 +49,16 @@ declare global {
   }
 }
 
+/** The oldest E-IMZO program the library works with (3.37), as major * 100 + minor. */
+const MIN_VERSION = 337;
+
+/** A date of the library as `yyyy-mm-dd`; `null` when the certificate has none (the library gives an invalid date then). */
+function isoDay(value: string | Date | undefined): string | null {
+  if (!value) return null;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date.toISOString().slice(0, 10);
+}
+
 const SCRIPTS = ['/eimzo/e-imzo.js', '/eimzo/e-imzo-client.js'];
 
 /** What the library says when it fails, in one line. */
@@ -87,7 +97,7 @@ export class RealEimzoProvider extends EimzoProvider {
       id: String(item['id'] ?? item.serialNumber),
       owner: String(item.CN ?? ''),
       organisation: item.O ? String(item.O) : null,
-      validTo: item.validTo ? new Date(item.validTo).toISOString().slice(0, 10) : null,
+      validTo: isoDay(item.validTo),
       handle: item,
     }));
   }
@@ -99,7 +109,8 @@ export class RealEimzoProvider extends EimzoProvider {
         key.handle as LibraryItem,
         resolve,
         (error, reason) => reject(this.failure(error, reason)),
-        true,
+        // Not `true`: checking the password first opens the window twice and switches off "remember for 6 hours".
+        false,
       ),
     );
     const data = input.kind === 'challenge' ? input.challenge : input.textBase64;
@@ -142,16 +153,21 @@ export class RealEimzoProvider extends EimzoProvider {
     client.API_KEYS = [...this.apiKeys];
     await new Promise<void>((resolve, reject) =>
       client.checkVersion(
-        () => resolve(),
+        (major, minor) =>
+          Number(major) * 100 + Number(minor) < MIN_VERSION
+            ? reject(new EimzoError('outdated'))
+            : resolve(),
         () => reject(new EimzoError('not-installed')),
       ),
     );
-    await new Promise<void>((resolve, reject) =>
-      client.installApiKeys(
-        () => resolve(),
-        (error, reason) => reject(new EimzoError('failed', reasonOf(error, reason))),
-      ),
-    );
+    // With no keys of ours (a test address, "developer mode" of E-IMZO) E-IMZO v6 finds the key of the address itself.
+    if (this.apiKeys.length > 0)
+      await new Promise<void>((resolve, reject) =>
+        client.installApiKeys(
+          () => resolve(),
+          (error, reason) => reject(new EimzoError('failed', reasonOf(error, reason))),
+        ),
+      );
     return client;
   }
 

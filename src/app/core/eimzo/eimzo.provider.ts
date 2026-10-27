@@ -20,6 +20,7 @@ export type EimzoSignInput =
 export type EimzoErrorCode =
   | 'library-missing' // e-imzo.js is not on the site
   | 'not-installed' // the E-IMZO program does not answer on this computer
+  | 'outdated' // the E-IMZO program is older than the library works with
   | 'no-keys'
   | 'cancelled'
   | 'bad-password'

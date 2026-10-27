@@ -17,6 +17,9 @@ export const ruAuth: Record<keyof typeof uzAuth, string> = {
   'auth.err.min': 'Слишком короткий текст.',
 
   'auth.signIn.title': 'Вход',
+  'auth.signIn.method': 'Способ входа',
+  'auth.signIn.tabPassword': 'Логин и пароль',
+  'auth.signIn.tabEimzo': 'E-IMZO',
   'auth.signIn.login': 'Логин или электронная почта',
   'auth.signIn.password': 'Пароль',
   'auth.signIn.submit': 'Войти',

@@ -62,7 +62,7 @@ test.describe('in every browser', () => {
     await form.locator('button[type=submit]').click();
     await expect(form.locator('.error').first()).toBeVisible();
     await form.locator('#si-password').fill('secret');
-    await form.locator('button:has-text("Ko‘rsatish")').click();
+    await form.locator('button[aria-label="Ko‘rsatish"]').click();
     await expect(form.locator('#si-password')).toHaveAttribute('type', 'text');
   });
 

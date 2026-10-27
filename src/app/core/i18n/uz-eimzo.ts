@@ -12,6 +12,8 @@ export const uzEimzo = {
     'E-IMZO bu saytga hali ulanmagan. Iltimos, keyinroq urinib ko‘ring yoki biz bilan bog‘laning.',
   'eimzo.err.not-installed':
     'Kompyuteringizda E-IMZO dasturi topilmadi. Dasturni o‘rnating va ishga tushiring, so‘ng “Qayta qidirish” tugmasini bosing.',
+  'eimzo.err.outdated':
+    'Kompyuteringizdagi E-IMZO dasturi eskirgan. Yangi versiyasini e-imzo.uz saytidan yuklab o‘rnating.',
   'eimzo.err.no-keys':
     'Kompyuteringizda E-IMZO kaliti topilmadi. Kalit fayli yoki ID-kartani ulang va qayta qidiring.',
   'eimzo.err.cancelled': 'Imzolash bekor qilindi.',
