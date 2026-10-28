@@ -88,7 +88,7 @@ describe('E-IMZO pages', () => {
     it('lists the keys of this computer and says it is a stand-in', async () => {
       setup();
       const h = await open('/kirish');
-      expect(el(h).querySelectorAll('input[name="eimzo-signin-key"]')).toHaveLength(2);
+      expect(el(h).querySelectorAll('#eimzo-signin-key option')).toHaveLength(2);
       expect(el(h).textContent).toContain('Sinov rejimi');
     });
 

@@ -47,7 +47,7 @@ test.describe('E-IMZO', () => {
     await page.goto('/kirish');
     await page.locator('button[role=tab][data-tab=eimzo]').click();
     await expect(page.locator('.notice-warning').first()).toContainText('Sinov rejimi');
-    await expect(page.locator('input[name="eimzo-signin-key"]')).toHaveCount(3);
+    await expect(page.locator('#eimzo-signin-key option')).toHaveCount(3);
 
     await registerWithKey(page);
     await expect(page.locator('.who .state.ok')).toBeVisible();

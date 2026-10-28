@@ -3,71 +3,8 @@
   gap: var(--s-3);
 }
 
-// Each key is a card with a round radio; the chosen one gets a blue border and a soft ring.
-.keys {
-  display: grid;
-  gap: 0.625rem;
-  margin: 0;
-  padding: 0;
-  border: 0;
-
-  legend {
-    margin-bottom: 0.625rem;
-    padding: 0;
-    font-size: 0.8125rem;
-    font-weight: 600;
-  }
-}
-
-.key {
-  display: flex;
-  align-items: center;
-  gap: var(--s-3);
-  padding: 0.875rem;
-  border: 1px solid var(--c-border);
-  border-radius: 1rem;
-  background: var(--c-surface);
-  cursor: pointer;
-  transition:
-    border-color 0.15s,
-    box-shadow 0.15s;
-
-  &:hover {
-    border-color: var(--c-text-faint);
-  }
-
-  &.on {
-    border: 1.5px solid var(--c-primary);
-    box-shadow: 0 0 0 4px var(--c-info-bg);
-  }
-
-  input {
-    flex: none;
-    width: 1.25rem;
-    height: 1.25rem;
-    margin: 0;
-    accent-color: var(--c-primary);
-  }
-
-  &:has(input:focus-visible) {
-    outline: 3px solid var(--c-focus);
-    outline-offset: 2px;
-  }
-}
-
-.text {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-
-  strong {
-    font-size: 0.875rem;
-    font-weight: 600;
-    overflow-wrap: anywhere;
-  }
-
-  .meta {
-    color: var(--c-text-muted);
-    font-size: 0.75rem;
-  }
+// The key list: a tall rounded field, the one choice on the page.
+.select {
+  min-height: 3.125rem;
+  font-weight: 500;
 }
