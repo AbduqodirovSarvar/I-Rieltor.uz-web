@@ -2,12 +2,13 @@
   <nav class="pagination" [attr.aria-label]="'pagination.label' | t">
     @if (page() > 1) {
       <a
-        class="btn btn-secondary"
+        class="pg arrow"
         [routerLink]="[]"
         [queryParams]="query(page() - 1)"
         queryParamsHandling="merge"
         rel="prev"
-        >{{ 'common.previous' | t }}</a
+        ><span aria-hidden="true">‹</span
+        ><span class="visually-hidden">{{ 'common.previous' | t }}</span></a
       >
     }
     <ul class="numbers">
@@ -17,14 +18,14 @@
             <span class="gap" aria-hidden="true">…</span>
           } @else if (n === page()) {
             <span
-              class="btn current"
+              class="pg current"
               aria-current="page"
               [attr.aria-label]="'pagination.current' | t: { page: n }"
               >{{ n }}</span
             >
           } @else {
             <a
-              class="btn btn-ghost"
+              class="pg"
               [routerLink]="[]"
               [queryParams]="query(n)"
               queryParamsHandling="merge"
@@ -37,12 +38,13 @@
     </ul>
     @if (page() < pages()) {
       <a
-        class="btn btn-secondary"
+        class="pg arrow"
         [routerLink]="[]"
         [queryParams]="query(page() + 1)"
         queryParamsHandling="merge"
         rel="next"
-        >{{ 'common.next' | t }}</a
+        ><span aria-hidden="true">›</span
+        ><span class="visually-hidden">{{ 'common.next' | t }}</span></a
       >
     }
   </nav>

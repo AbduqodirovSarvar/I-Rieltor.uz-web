@@ -1,5 +1,5 @@
 .main {
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 10;
   background: var(--c-surface-2);
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -25,8 +25,8 @@
 
 .strip {
   display: flex;
-  gap: var(--s-2);
-  margin: var(--s-2) 0 0;
+  gap: 0.625rem;
+  margin: 0.625rem 0 0;
   padding: 0 0 var(--s-1);
   list-style: none;
   overflow-x: auto;
@@ -34,11 +34,11 @@
 
 .thumb {
   display: block;
-  width: 5.5rem;
+  width: 6.5rem;
   aspect-ratio: 4 / 3;
   padding: 0;
   border: 2px solid transparent;
-  border-radius: var(--radius);
+  border-radius: 0.875rem;
   background: var(--c-surface-2);
   color: var(--c-text);
   cursor: pointer;

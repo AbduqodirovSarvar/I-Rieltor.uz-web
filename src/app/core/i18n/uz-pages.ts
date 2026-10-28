@@ -15,6 +15,12 @@ export const uzPages = {
   'home.noUpcoming': 'Yaqin vaqtda boshlanadigan savdolar yo‘q.',
   'home.noNewest': 'Hozircha obyektlar yo‘q.',
   'home.loadFailed': 'Ma’lumotni yuklab bo‘lmadi.',
+  'home.liveNow': 'Jonli auksion · {n}',
+  'home.toCatalog': 'Katalogni ko‘rish',
+  'home.howLink': 'Qanday ishlaydi?',
+  'home.anyRegion': 'Barcha hududlar',
+  'home.find': 'Topish',
+  'home.searchLabel': 'Obyekt qidirish',
 
   'how.title': 'Qanday ishtirok etiladi',
   'how.1.title': 'Ro‘yxatdan o‘ting',

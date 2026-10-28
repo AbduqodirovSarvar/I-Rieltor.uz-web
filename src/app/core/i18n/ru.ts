@@ -23,6 +23,7 @@ const ruBase = {
   'nav.main': 'Главное меню',
   'nav.skip': 'Перейти к содержимому',
   'nav.top': 'Наверх',
+  'nav.breadcrumb': 'Вы здесь',
   'nav.language': 'Язык',
 
   'theme.label': 'Тема',

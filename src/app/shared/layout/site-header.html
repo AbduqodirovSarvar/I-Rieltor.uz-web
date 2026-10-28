@@ -1,10 +1,13 @@
 <header class="header">
   <div class="container bar">
-    <a class="logo" [routerLink]="'/' | link">{{ 'site.name' | t }}</a>
+    <a class="logo" [routerLink]="'/' | link"
+      ><span class="mark" aria-hidden="true">iR</span
+      ><span>{{ 'site.name' | t }}<span class="tld">.uz</span></span></a
+    >
 
     <button
       type="button"
-      class="btn btn-ghost btn-icon burger"
+      class="icon-btn burger"
       [attr.aria-label]="(menuOpen() ? 'nav.closeMenu' : 'nav.menu') | t"
       [attr.aria-expanded]="menuOpen()"
       aria-controls="main-nav"
@@ -25,49 +28,53 @@
         }
       </nav>
 
-      <form class="search" role="search" (submit)="search($event, q)">
-        <input
-          #q
-          class="input"
-          type="search"
-          [attr.aria-label]="'nav.search' | t"
-          [placeholder]="'nav.searchPlaceholder' | t"
-        />
-      </form>
-
       <div class="tools">
-        <select
-          #language
-          class="input lang-select"
-          [attr.aria-label]="'nav.language' | t"
-          (change)="changeLanguage(language)"
-        >
-          @for (item of languages(); track item.code) {
-            <option [value]="item.href" [selected]="item.selected" [attr.lang]="item.code">
-              {{ item.name }}
-            </option>
-          }
-        </select>
+        <span class="lang">
+          <select
+            #language
+            class="lang-select"
+            [attr.aria-label]="'nav.language' | t"
+            (change)="changeLanguage(language)"
+          >
+            @for (item of languages(); track item.code) {
+              <option [value]="item.href" [selected]="item.selected" [attr.lang]="item.code">
+                {{ item.name }}
+              </option>
+            }
+          </select>
+          <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+        </span>
         <button
           type="button"
-          class="btn btn-ghost theme"
+          class="icon-btn theme"
           [attr.aria-label]="('theme.label' | t) + ': ' + (themeKey() | t)"
           (click)="theme.next()"
         >
-          <span aria-hidden="true">{{ theme.mode() === 'dark' ? '☾' : '☀' }}</span>
+          @if (theme.mode() === 'dark') {
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path
+                d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5"
+              />
+            </svg>
+          } @else {
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+            </svg>
+          }
         </button>
 
         @if (hydrated.ready()) {
           @if (auth.isAuthenticated()) {
-            <a class="btn btn-secondary" [routerLink]="'/kabinet' | link">{{
-              'nav.cabinet' | t
-            }}</a>
-            <button type="button" class="btn btn-ghost" (click)="signOut()">
+            <a class="user" [routerLink]="'/kabinet' | link" [attr.aria-label]="'nav.cabinet' | t">
+              <span class="avatar" aria-hidden="true">{{ initials() }}</span>
+              <span class="name">{{ auth.displayName() }}</span>
+            </a>
+            <button type="button" class="btn btn-ghost out" (click)="signOut()">
               {{ 'nav.signOut' | t }}
             </button>
           } @else {
-            <a class="btn btn-ghost" [routerLink]="'/kirish' | link">{{ 'nav.signIn' | t }}</a>
-            <a class="btn" [routerLink]="'/royxatdan-otish' | link">{{ 'nav.signUp' | t }}</a>
+            <a class="btn sign-in" [routerLink]="'/kirish' | link">{{ 'nav.signIn' | t }}</a>
           }
         }
       </div>

@@ -1,32 +1,38 @@
 <div class="container page">
-  <header class="head">
-    <h1>{{ 'cabinet.title' | t }}</h1>
-    <p class="who muted">
-      <strong>{{ auth.displayName() }}</strong>
-      ·
-      <span class="badge" [class.badge-success]="auth.isVerified()">{{
-        (auth.isVerified() ? 'cabinet.verified' : 'cabinet.notVerified') | t
-      }}</span>
-    </p>
-  </header>
+  <h1 class="visually-hidden">{{ 'cabinet.title' | t }}</h1>
 
   <app-email-banner />
 
   <div class="layout">
-    <nav class="menu" [attr.aria-label]="'cabinet.nav' | t">
-      @for (s of sections; track s.path) {
-        <a [routerLink]="s.path | link" routerLinkActive="active"
-          >{{ s.text | t }}
-          @if (s.path === '/kabinet/bildirishnomalar' && notifications.unread() > 0) {
-            <span
-              class="badge badge-warning"
-              [attr.aria-label]="'notifications.unread' | t: { n: notifications.unread() }"
-              >{{ notifications.unread() }}</span
-            >
-          }
-        </a>
-      }
-    </nav>
+    <aside class="menu-card">
+      <div class="who">
+        <span class="avatar" aria-hidden="true">{{ initials() }}</span>
+        <div>
+          <strong class="name">{{ auth.displayName() }}</strong>
+          <span class="state" [class.ok]="auth.isVerified()">
+            @if (auth.isVerified()) {
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" /></svg>
+            }
+            {{ (auth.isVerified() ? 'cabinet.verified' : 'cabinet.notVerified') | t }}
+          </span>
+        </div>
+      </div>
+      <nav class="menu" [attr.aria-label]="'cabinet.nav' | t">
+        @for (s of sections; track s.path) {
+          <a [routerLink]="s.path | link" routerLinkActive="active"
+            >{{ s.text | t }}
+            @if (s.path === '/kabinet/bildirishnomalar' && notifications.unread() > 0) {
+              <span
+                class="count"
+                [attr.aria-label]="'notifications.unread' | t: { n: notifications.unread() }"
+                >{{ notifications.unread() }}</span
+              >
+            }
+          </a>
+        }
+        <button type="button" class="out" (click)="signOut()">{{ 'nav.signOut' | t }}</button>
+      </nav>
+    </aside>
     <section class="content">
       <router-outlet />
     </section>

@@ -1,86 +1,142 @@
 @if (auction(); as a) {
   <article class="container page">
-    <header class="head">
-      <div>
-        @if (a.lotNumber) {
-          <p class="muted lot">{{ 'auction.lot' | t: { number: a.lotNumber } }}</p>
-        }
-        <h1>{{ a.propertyTitle || a.title }}</h1>
-      </div>
-      <app-status-badge enum="AuctionStatus" [value]="a.status" />
-    </header>
-
-    <p class="state">{{ statusText() }}</p>
-
-    @if (showLive()) {
-      <p class="live" [attr.data-state]="live.state()" role="status">
-        <span class="dot" aria-hidden="true"></span>
-        <span class="visually-hidden">{{ 'auction.live.label' | t }}: </span>{{ liveText() }}
-      </p>
-    }
-    <p class="visually-hidden" aria-live="polite">{{ announcement() }}</p>
-    @if (extended()) {
-      <p class="notice notice-warning">{{ 'auction.extended' | t }}</p>
-    }
-
     <div class="layout">
       <div class="main">
-        @if (headline(); as h) {
-          <section class="card card-body headline" [attr.aria-label]="'auction.prices' | t">
-            <app-price [label]="h.key | t" [amount]="h.amount" [large]="true" />
-            @if (a.status === 'ONGOING') {
-              <app-price [label]="'auction.minNextBid' | t" [amount]="a.minNextBid" />
-            }
-          </section>
-        }
+        <nav class="crumbs" [attr.aria-label]="'nav.breadcrumb' | t">
+          <a [routerLink]="'/katalog' | link">{{ 'catalog.title' | t }}</a>
+          <span aria-hidden="true">/</span>
+          <a [routerLink]="'/obyekt/' + a.propertyId | link">{{ 'auction.property' | t }}</a>
+          @if (a.lotNumber) {
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">{{ 'auction.lot' | t: { number: a.lotNumber } }}</span>
+          }
+        </nav>
 
-        @if (timers().length > 0) {
-          <section class="card card-body timers" [attr.aria-label]="'auction.timeLeft' | t">
-            @for (timer of timers(); track timer.label) {
-              <p class="timer">
-                <span class="muted">{{ timer.label | t }}</span>
-                <app-countdown [target]="timer.at" (finished)="onZero()" />
-              </p>
+        <header class="head">
+          <div class="tags">
+            <app-status-badge enum="AuctionStatus" [value]="a.status" />
+            @if (a.lotNumber) {
+              <span class="muted lot">{{ 'auction.lot' | t: { number: a.lotNumber } }}</span>
             }
-          </section>
+          </div>
+          <h1>{{ a.propertyTitle || a.title }}</h1>
+          <p class="state">{{ statusText() }}</p>
+          @if (showLive()) {
+            <p class="live" [attr.data-state]="live.state()" role="status">
+              <span class="dot" aria-hidden="true"></span>
+              <span class="visually-hidden">{{ 'auction.live.label' | t }}: </span>{{ liveText() }}
+            </p>
+          }
+        </header>
+
+        <p class="visually-hidden" aria-live="polite">{{ announcement() }}</p>
+        @if (extended()) {
+          <p class="notice notice-warning">{{ 'auction.extended' | t }}</p>
         }
 
         <section aria-labelledby="terms-title">
-          <h2 id="terms-title">{{ 'auction.prices' | t }}</h2>
+          <h2 id="terms-title" class="sub">{{ 'auction.prices' | t }}</h2>
           <dl class="facts">
-            <dt>{{ 'auction.startingPrice' | t }}</dt>
-            <dd class="num">{{ a.startingPrice | money }}</dd>
-            <dt>{{ 'auction.step' | t }}</dt>
-            <dd class="num">{{ a.minBidStep | money }}</dd>
-            <dt>{{ 'auction.deposit' | t }}</dt>
-            <dd class="num">{{ a.depositAmount | money }}</dd>
-            <dt>{{ 'auction.participants' | t }}</dt>
-            <dd class="num">{{ a.participantCount }}</dd>
-            <dt>{{ 'auction.bids' | t }}</dt>
-            <dd class="num">{{ a.bidCount }}</dd>
+            <div class="tile">
+              <dt>{{ 'auction.startingPrice' | t }}</dt>
+              <dd class="num">{{ a.startingPrice | money }}</dd>
+            </div>
+            <div class="tile">
+              <dt>{{ 'auction.step' | t }}</dt>
+              <dd class="num">{{ a.minBidStep | money }}</dd>
+            </div>
+            <div class="tile">
+              <dt>{{ 'auction.deposit' | t }}</dt>
+              <dd class="num">{{ a.depositAmount | money }}</dd>
+            </div>
+            <div class="tile">
+              <dt>{{ 'auction.participants' | t }}</dt>
+              <dd class="num">{{ a.participantCount }}</dd>
+            </div>
+            <div class="tile">
+              <dt>{{ 'auction.bids' | t }}</dt>
+              <dd class="num">{{ a.bidCount }}</dd>
+            </div>
           </dl>
         </section>
 
         <section aria-labelledby="dates-title">
-          <h2 id="dates-title">{{ 'auction.dates' | t }}</h2>
-          <dl class="facts">
-            <dt>{{ 'auction.deadline' | t }}</dt>
-            <dd>{{ a.applicationDeadline | dateTime }}</dd>
-            <dt>{{ 'auction.starts' | t }}</dt>
-            <dd>{{ a.startsAt | dateTime }}</dd>
-            <dt>{{ 'auction.ends' | t }}</dt>
-            <dd>{{ a.endsAt | dateTime }}</dd>
+          <h2 id="dates-title" class="sub">{{ 'auction.dates' | t }}</h2>
+          <dl class="facts dates">
+            <div class="tile">
+              <dt>{{ 'auction.deadline' | t }}</dt>
+              <dd>{{ a.applicationDeadline | dateTime }}</dd>
+            </div>
+            <div class="tile">
+              <dt>{{ 'auction.starts' | t }}</dt>
+              <dd>{{ a.startsAt | dateTime }}</dd>
+            </div>
+            <div class="tile">
+              <dt>{{ 'auction.ends' | t }}</dt>
+              <dd>{{ a.endsAt | dateTime }}</dd>
+            </div>
           </dl>
           <p class="muted small">{{ 'auction.extension' | t: { minutes: a.extensionMinutes } }}</p>
         </section>
 
-        <section aria-labelledby="bids-title">
+        @if (a.description) {
+          <p class="text">{{ a.description }}</p>
+        }
+      </div>
+
+      <aside class="side">
+        @if (headline() || timers().length > 0) {
+          <section class="card clock" [attr.aria-label]="'auction.timeLeft' | t">
+            @if (timers().length > 0) {
+              <div class="timers">
+                @for (timer of timers(); track timer.label; let first = $first) {
+                  <p class="timer" [class.main-timer]="first">
+                    <span class="label">{{ timer.label | t }}</span>
+                    <app-countdown [target]="timer.at" (finished)="onZero()" />
+                  </p>
+                }
+              </div>
+            }
+            @if (headline(); as h) {
+              <div class="headline" [attr.aria-label]="'auction.prices' | t">
+                <app-price [label]="h.key | t" [amount]="h.amount" [large]="true" />
+                @if (a.status === 'ONGOING') {
+                  <app-price [label]="'auction.minNextBid' | t" [amount]="a.minNextBid" />
+                }
+              </div>
+            }
+          </section>
+        }
+
+        @if (a.status === 'ONGOING') {
+          <app-bid-panel
+            [auction]="a"
+            [participation]="participation()"
+            [bids]="bids()"
+            (placed)="onPlaced($event)"
+            (stale)="reload()"
+          />
+        }
+
+        <div class="card card-body stack actions">
+          <app-apply-cta
+            [auctionId]="a.id"
+            [status]="a.status"
+            [deadline]="a.applicationDeadline"
+            [participation]="participation()"
+          />
+          <a class="btn btn-light btn-block" [routerLink]="'/obyekt/' + a.propertyId | link">{{
+            'auction.property' | t
+          }}</a>
+        </div>
+
+        <section class="card history" aria-labelledby="bids-title">
           <h2 id="bids-title">{{ 'auction.bidHistory' | t }}</h2>
           @if (bids().length === 0) {
             <p class="muted">{{ 'auction.noBids' | t }}</p>
           } @else {
             <table class="bids">
-              <thead>
+              <thead class="visually-hidden">
                 <tr>
                   <th scope="col">{{ 'auction.bidderCol' | t }}</th>
                   <th scope="col" class="right">{{ 'auction.bidAmount' | t }}</th>
@@ -94,7 +150,9 @@
                   let first = $first
                 ) {
                   <tr [class.top]="first">
-                    <td>№ {{ b.participantNumber }}</td>
+                    <td class="who" [attr.data-n]="b.participantNumber">
+                      № {{ b.participantNumber }}
+                    </td>
                     <td class="right num">{{ b.amount | money }}</td>
                     <td class="right num muted">{{ b.placedAt | timeSeconds }}</td>
                   </tr>
@@ -103,33 +161,6 @@
             </table>
           }
         </section>
-
-        @if (a.description) {
-          <p class="text">{{ a.description }}</p>
-        }
-      </div>
-
-      <aside class="side">
-        @if (a.status === 'ONGOING') {
-          <app-bid-panel
-            [auction]="a"
-            [participation]="participation()"
-            [bids]="bids()"
-            (placed)="onPlaced($event)"
-            (stale)="reload()"
-          />
-        }
-        <div class="card card-body stack">
-          <app-apply-cta
-            [auctionId]="a.id"
-            [status]="a.status"
-            [deadline]="a.applicationDeadline"
-            [participation]="participation()"
-          />
-          <a class="btn btn-secondary btn-block" [routerLink]="'/obyekt/' + a.propertyId | link">{{
-            'auction.property' | t
-          }}</a>
-        </div>
       </aside>
     </div>
   </article>

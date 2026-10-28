@@ -1,6 +1,6 @@
 import { Component, computed, effect, inject } from '@angular/core';
 import { rxResource, takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subject, debounceTime, map } from 'rxjs';
 import {
   CatalogFilter,
@@ -15,7 +15,7 @@ import { CatalogService } from '../../core/catalog/catalog.service';
 import { kindOfError } from '../../shared/ui/error-state';
 import { ApiError } from '../../core/http/api-error';
 import { I18n } from '../../core/i18n/i18n.service';
-import { TPipe } from '../../core/i18n/t.pipe';
+import { LinkPipe, TPipe } from '../../core/i18n/t.pipe';
 import { TextKey } from '../../core/i18n/uz';
 import { Seo } from '../../core/seo/seo.service';
 import { injectResponseStatus } from '../../core/util/response-status';
@@ -44,7 +44,17 @@ export function numberOrUndefined(value: string): number | undefined {
  */
 @Component({
   selector: 'app-catalog-page',
-  imports: [EmptyState, ErrorState, FilterPanel, Pagination, PropertyCard, SkeletonCards, TPipe],
+  imports: [
+    EmptyState,
+    ErrorState,
+    FilterPanel,
+    Pagination,
+    PropertyCard,
+    SkeletonCards,
+    RouterLink,
+    LinkPipe,
+    TPipe,
+  ],
   templateUrl: './catalog-page.html',
   styleUrl: './catalog-page.scss',
 })

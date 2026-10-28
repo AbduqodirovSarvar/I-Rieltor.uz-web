@@ -5,7 +5,7 @@
   width: 100%;
   max-width: var(--container);
   margin-inline: auto;
-  padding-inline: var(--s-4);
+  padding-inline: var(--gutter);
 }
 
 .stack {
@@ -98,6 +98,24 @@
     width: 100%;
   }
 
+  &.btn-lg {
+    min-height: 3rem;
+    padding-inline: var(--s-5);
+    font-size: 0.9375rem;
+  }
+
+  // White button with a border, for a second action next to a primary one.
+  &.btn-light {
+    background: var(--c-surface);
+    border-color: var(--c-border);
+    box-shadow: none;
+    color: var(--c-text);
+    &:hover:not(:disabled, [aria-disabled='true']) {
+      background: var(--c-surface-2);
+      border-color: var(--c-border);
+    }
+  }
+
   &.btn-icon {
     width: var(--control-h);
     padding: 0;
@@ -135,13 +153,17 @@
   min-height: var(--control-h);
   padding: var(--s-2) var(--s-3);
   border: 1px solid var(--c-border);
-  border-radius: var(--radius);
+  border-radius: 0.875rem;
   background: var(--c-surface);
   color: var(--c-text);
   font: inherit;
   transition:
     border-color 0.15s,
     box-shadow 0.15s;
+
+  &:focus-visible {
+    border-color: var(--c-primary);
+  }
 
   &:hover {
     border-color: var(--c-text-muted);
@@ -182,12 +204,14 @@
 .badge {
   display: inline-flex;
   align-items: center;
-  padding: 0.125rem var(--s-3);
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
   border-radius: var(--radius-pill);
   background: var(--c-neutral-bg);
-  color: var(--c-text);
-  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+  font-size: 0.75rem;
   font-weight: 600;
+  line-height: 1.3;
   white-space: nowrap;
 
   &.badge-success {
@@ -205,6 +229,19 @@
   &.badge-info {
     background: var(--c-info-bg);
     color: var(--c-info);
+  }
+  // A running auction: red with a dot, the one status that asks to look now.
+  &.badge-live {
+    background: var(--c-danger-bg);
+    color: var(--c-danger);
+
+    &::before {
+      content: '';
+      width: 0.4375rem;
+      height: 0.4375rem;
+      border-radius: 50%;
+      background: currentColor;
+    }
   }
 }
 
@@ -234,4 +271,65 @@
 // Prices and numbers stay aligned.
 .num {
   font-variant-numeric: tabular-nums;
+}
+
+// "Home / Catalog": where the page sits, small and quiet above the title.
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-1) var(--s-2);
+  margin-bottom: 0.375rem;
+  color: var(--c-text-muted);
+  font-size: 0.8125rem;
+
+  a {
+    color: var(--c-text-muted);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--c-primary);
+      text-decoration: underline;
+    }
+  }
+}
+
+// A rounded white field with an icon or arrow: the search and sort boxes above lists.
+.pill-field {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+
+  svg {
+    position: absolute;
+    left: var(--s-4);
+    width: 1rem;
+    height: 1rem;
+    fill: none;
+    stroke: var(--c-text-faint);
+    stroke-width: 2;
+    pointer-events: none;
+  }
+
+  .input,
+  .select {
+    min-height: 2.625rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.875rem;
+  }
+
+  svg + .input {
+    padding-left: 2.625rem;
+  }
+
+  .select {
+    padding-inline: var(--s-4) 2.25rem;
+    font-weight: 500;
+  }
+}
+
+// Sign-in and the other short forms: taller fields, easy to hit on a phone.
+.narrow .input,
+.narrow .select {
+  min-height: 3.125rem;
 }

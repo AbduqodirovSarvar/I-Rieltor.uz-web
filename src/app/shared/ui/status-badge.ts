@@ -1,12 +1,12 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { I18n } from '../../core/i18n/i18n.service';
 
-type Tone = '' | 'badge-info' | 'badge-success' | 'badge-warning' | 'badge-danger';
+type Tone = '' | 'badge-info' | 'badge-success' | 'badge-warning' | 'badge-danger' | 'badge-live';
 
 const TONES: Record<string, Record<string, Tone>> = {
   AuctionStatus: {
     SCHEDULED: 'badge-info',
-    ONGOING: 'badge-success',
+    ONGOING: 'badge-live',
     FAILED: 'badge-danger',
     CANCELLED: 'badge-warning',
   },

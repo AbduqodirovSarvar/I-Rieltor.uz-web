@@ -1,28 +1,66 @@
 <h1 class="visually-hidden">{{ 'home.heroTitle' | t }}</h1>
 
-@if (slideList(); as list) {
-  @if (list.length > 0) {
-    <app-hero-slider [slides]="list" />
+<div class="container top">
+  @if (slideList(); as list) {
+    @if (list.length > 0) {
+      <app-hero-slider [slides]="list" [live]="ongoing().length" />
+    } @else {
+      <ng-container [ngTemplateOutlet]="fallback" />
+    }
+  } @else if (!slides.isLoading()) {
+    <ng-container [ngTemplateOutlet]="fallback" />
   } @else {
-    <section class="hero-fallback">
-      <div class="container">
-        <p class="title">{{ 'home.heroTitle' | t }}</p>
-        <p>{{ 'home.heroText' | t }}</p>
-        <a class="btn" [routerLink]="catalogLink()">{{ 'nav.catalog' | t }}</a>
-      </div>
-    </section>
+    <div class="hero-placeholder" aria-hidden="true"></div>
   }
-} @else if (!slides.isLoading()) {
+
+  <form
+    class="finder"
+    role="search"
+    [attr.aria-label]="'home.searchLabel' | t"
+    (submit)="find($event, q.value, region.value, category.value)"
+  >
+    <label class="cell grow">
+      <span class="lbl">{{ 'catalog.search' | t }}</span>
+      <input #q type="search" [placeholder]="'catalog.searchPlaceholder' | t" />
+    </label>
+    <label class="cell">
+      <span class="lbl">{{ 'catalog.region' | t }}</span>
+      <input #region type="text" [placeholder]="'home.anyRegion' | t" />
+    </label>
+    <label class="cell">
+      <span class="lbl">{{ 'catalog.category' | t }}</span>
+      <select #category>
+        <option value="">{{ 'catalog.anyCategory' | t }}</option>
+        @for (c of categoryOptions(); track c.id) {
+          <option [value]="c.id">{{ c.label }}</option>
+        }
+      </select>
+    </label>
+    <button type="submit" class="btn find">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" />
+        <path d="m20 20-3.5-3.5" />
+      </svg>
+      {{ 'home.find' | t }}
+    </button>
+  </form>
+</div>
+
+<ng-template #fallback>
   <section class="hero-fallback">
-    <div class="container">
+    <div class="caption">
+      @if (ongoing().length > 0) {
+        <span class="badge badge-live">{{ 'home.liveNow' | t: { n: ongoing().length } }}</span>
+      }
       <p class="title">{{ 'home.heroTitle' | t }}</p>
-      <p>{{ 'home.heroText' | t }}</p>
-      <a class="btn" [routerLink]="catalogLink()">{{ 'nav.catalog' | t }}</a>
+      <p class="text">{{ 'home.heroText' | t }}</p>
+      <div class="actions">
+        <a class="btn btn-lg" [routerLink]="catalogLink()">{{ 'home.toCatalog' | t }}</a>
+        <a class="btn btn-lg btn-light" href="#how-title">{{ 'home.howLink' | t }}</a>
+      </div>
     </div>
   </section>
-} @else {
-  <div class="hero-placeholder" aria-hidden="true"></div>
-}
+</ng-template>
 
 @if (tree(); as tree) {
   @if (tree.length > 0) {
@@ -30,7 +68,7 @@
       <h2 id="cat-title">{{ 'home.categories' | t }}</h2>
       <ul class="categories">
         @for (node of tree; track node.category.id) {
-          <li class="card card-body">
+          <li class="cat">
             <a
               class="cat-link"
               [routerLink]="catalogLink()"

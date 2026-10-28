@@ -9,9 +9,15 @@ h3 {
   margin: 0;
 }
 
+// The section title is the page title in the design: large, next to the menu card.
+:host > h2:first-child {
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 1.875rem);
+}
+
 .facts {
   display: grid;
   grid-template-columns: max-content 1fr;
+  font-size: 0.875rem;
   gap: var(--s-2) var(--s-5);
   margin: var(--s-3) 0 0;
 

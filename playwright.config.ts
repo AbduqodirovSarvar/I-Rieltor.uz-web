@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 /**
  * End-to-end tests against the running local stack: backend `deploy/local/up.ps1` (it builds and starts this site too).
- *   E2E_BASE_URL (default http://localhost:8080, the Nginx in front of the site and the API)
+ *   E2E_BASE_URL (default http://localhost:8081, the Nginx in front of the site and the API)
  *   E2E_EIMZO_FAKE=1 also runs the E-IMZO scenarios (needs docker-compose.eimzo-fake.yml, see README)
  *   npm run e2e                       everything in Chromium, and the browser smoke tests in the other browsers
  *   npx playwright install firefox webkit    once, for the other browsers
@@ -16,7 +16,7 @@ export default defineConfig({
   workers: 1,
   reporter: [['list']],
   use: {
-    baseURL: process.env['E2E_BASE_URL'] ?? 'http://localhost:8080',
+    baseURL: process.env['E2E_BASE_URL'] ?? 'http://localhost:8081',
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     locale: 'uz-UZ',

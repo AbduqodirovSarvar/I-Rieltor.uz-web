@@ -1,21 +1,21 @@
+// A rounded box with the picture; the text sits on a frosted card in the bottom-left corner, so it reads on any picture
+// and follows the day/night colours.
 .hero {
   position: relative;
-  background: #0d1117;
-  color: #fff;
   overflow: hidden;
-
-  @media (min-width: 56rem) {
-    width: min(calc(100% - 2 * var(--s-4)), var(--container));
-    margin: var(--s-4) auto 0;
-    border-radius: calc(var(--radius-lg) + 0.5rem);
-    box-shadow: var(--shadow-2);
-  }
+  border-radius: 1.75rem;
+  background: repeating-linear-gradient(
+    135deg,
+    var(--c-surface-2) 0 14px,
+    color-mix(in srgb, var(--c-surface-2) 55%, var(--c-bg)) 14px 28px
+  );
 }
 
 .slide {
   position: relative;
-  min-height: 22rem;
-  height: clamp(22rem, 50vw, 36rem);
+  display: flex;
+  align-items: flex-end;
+  min-height: 27.5rem;
 
   img {
     position: absolute;
@@ -26,72 +26,124 @@
   }
 }
 
-// A dark gradient keeps the white text readable on any picture.
 .caption {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: flex-end;
-  padding-bottom: var(--s-8);
-  background: linear-gradient(to top, rgb(0 0 0 / 72%), rgb(0 0 0 / 10%) 70%);
+  position: relative;
+  width: min(35rem, 100% - 2 * var(--s-4));
+  margin: var(--s-4) var(--s-4) 4.5rem;
+  padding: var(--s-5);
+  border-radius: 1.5rem;
+  background: color-mix(in srgb, var(--c-surface) 90%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 20px 50px rgb(15 23 42 / 12%);
+  color: var(--c-text);
 
   h2 {
-    font-size: var(--fs-3xl);
-    max-width: 40rem;
+    margin: var(--s-4) 0 0.625rem;
+    font-size: clamp(1.75rem, 1.1rem + 2.2vw, 2.75rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+
+  .badge + h2,
+  > h2:first-child {
+    margin-top: 0;
+  }
+
+  .badge + h2 {
+    margin-top: var(--s-4);
   }
 
   .subtitle {
-    font-size: var(--fs-xl);
-    margin-bottom: var(--s-2);
+    margin: 0 0 var(--s-2);
+    font-size: var(--fs-lg);
+    font-weight: 600;
   }
 
   .content {
-    max-width: 40rem;
+    margin: 0;
+    color: var(--c-text-muted);
+    line-height: 1.5;
+    text-wrap: pretty;
   }
 }
 
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  margin-top: var(--s-5);
+}
+
+@media (min-width: 48rem) {
+  .caption {
+    margin: var(--s-6) var(--s-6) 4.5rem 2.5rem;
+    padding: var(--s-6);
+  }
+}
+
+// Bottom-right: arrows, the dots (the current one is a bar) and pause.
 .controls {
   position: absolute;
   right: var(--s-4);
-  bottom: var(--s-3);
+  bottom: var(--s-4);
   display: flex;
   align-items: center;
-  gap: var(--s-2);
+  gap: var(--s-1);
+  padding: 0.25rem;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--c-surface) 85%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
 
 .ctl {
-  background: rgb(0 0 0 / 45%);
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
-  border-color: rgb(255 255 255 / 60%);
-  color: #fff;
-  min-height: 2.5rem;
-  width: 2.5rem;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--c-text);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--c-surface-2);
+  }
 }
 
 .dots {
   display: flex;
-  gap: var(--s-1);
+  align-items: center;
+  gap: 0.375rem;
+  padding-inline: var(--s-1);
 }
 
-// A dot is small to look at, but its tap area is the full 44px.
+// A dot is small to look at, but its tap area is larger.
 .dot {
   position: relative;
-  width: 0.875rem;
-  height: 0.875rem;
+  width: 0.375rem;
+  height: 0.375rem;
   padding: 0;
-  border: 2px solid #fff;
-  border-radius: 50%;
-  background: transparent;
+  border: 0;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--c-text) 25%, transparent);
   cursor: pointer;
+  transition: width 0.2s;
 
   &::after {
     content: '';
     position: absolute;
-    inset: -0.75rem;
+    inset: -0.75rem -0.25rem;
   }
 
   &.active {
-    background: #fff;
+    width: 1.75rem;
+    background: var(--c-primary);
   }
 }

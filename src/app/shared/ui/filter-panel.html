@@ -11,12 +11,15 @@
       <span class="badge badge-info">{{ active() }}</span>
     }
   </button>
-  <div class="card-body body" id="filter-body" [class.open]="open()">
+  <div class="body" id="filter-body" [class.open]="open()">
+    <div class="head">
+      <h2 class="title">{{ title() }}</h2>
+      @if (active() > 0) {
+        <button type="button" class="clear" (click)="clear.emit()">
+          {{ 'common.clear' | t }}
+        </button>
+      }
+    </div>
     <ng-content />
-    @if (active() > 0) {
-      <button type="button" class="btn btn-ghost" (click)="clear.emit()">
-        {{ 'common.clear' | t }}
-      </button>
-    }
   </div>
 </section>

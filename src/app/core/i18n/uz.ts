@@ -27,6 +27,7 @@ export const uzBase = {
   'nav.main': 'Asosiy menyu',
   'nav.skip': 'Asosiy mazmunga o‘tish',
   'nav.top': 'Tepaga',
+  'nav.breadcrumb': 'Siz turgan joy',
   'nav.language': 'Til',
 
   'theme.label': 'Mavzu',

@@ -1,12 +1,16 @@
 .block {
-  margin-top: var(--s-7);
+  margin-top: 3.5rem;
+
+  > h2 {
+    margin-bottom: 1.25rem;
+  }
 }
 
 // Each step shows its number from the list counter, so the order is also in the markup.
 .steps {
   display: grid;
-  gap: var(--s-4);
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--s-3);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
   margin: 0;
   padding: 0;
   list-style: none;
@@ -15,18 +19,34 @@
 
 .step {
   counter-increment: step;
+  padding: 1.375rem;
+  box-shadow: none;
+
+  h3 {
+    margin: 0 0 var(--s-2);
+    font-size: var(--fs-md);
+    font-weight: 600;
+    letter-spacing: -0.005em;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
 
   h3::before {
     content: counter(step);
-    display: inline-grid;
+    display: grid;
     place-items: center;
-    width: 2rem;
-    height: 2rem;
-    margin-right: var(--s-2);
+    width: 2.125rem;
+    height: 2.125rem;
+    margin-bottom: var(--s-3);
     border-radius: 50%;
-    background: var(--c-primary);
-    color: var(--c-on-primary);
+    background: var(--c-info-bg);
+    color: var(--c-primary);
     font-size: var(--fs-md);
+    font-weight: 700;
   }
 }
 

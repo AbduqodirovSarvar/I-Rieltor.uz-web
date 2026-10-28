@@ -1,6 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { RouterLink } from '@angular/router';
+import { NgTemplateOutlet } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { PublicPropertyListItem, PublicSlide } from '../../api/models';
 import { CatalogService } from '../../core/catalog/catalog.service';
@@ -32,7 +33,15 @@ export function withAuctionStatus(
  */
 @Component({
   selector: 'app-home-page',
-  imports: [HeroSlider, HowToJoin, PropertyCard, SkeletonCards, RouterLink, TPipe],
+  imports: [
+    HeroSlider,
+    HowToJoin,
+    PropertyCard,
+    SkeletonCards,
+    RouterLink,
+    NgTemplateOutlet,
+    TPipe,
+  ],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
 })
@@ -41,6 +50,7 @@ export class HomePage {
   private readonly catalog = inject(CatalogService);
   private readonly i18n = inject(I18n);
   private readonly seo = inject(Seo);
+  private readonly router = inject(Router);
 
   protected readonly slides = rxResource({
     stream: () => this.api.get<PublicSlide[]>('api/Slide/public'),
@@ -66,6 +76,14 @@ export class HomePage {
   protected readonly upcoming = computed(() => withAuctionStatus(this.auctionItems(), 'SCHEDULED'));
   protected readonly catalogLink = computed(() => this.i18n.link('/katalog'));
 
+  /** The categories for the search box: each top category, then its children indented under it. */
+  protected readonly categoryOptions = computed(() =>
+    (this.tree() ?? []).flatMap((node) => [
+      { id: node.category.id, label: node.category.name ?? '' },
+      ...node.children.map((child) => ({ id: child.id, label: `— ${child.name ?? ''}` })),
+    ]),
+  );
+
   constructor() {
     this.seo.set({
       title: '',
@@ -81,6 +99,18 @@ export class HomePage {
           'query-input': 'required name=search_term_string',
         },
       },
+    });
+  }
+
+  /** The search box under the slides opens the catalog with what was filled in; empty fields are left out. */
+  protected find(event: Event, q: string, region: string, category: string): void {
+    event.preventDefault();
+    void this.router.navigate([this.catalogLink()], {
+      queryParams: toQuery({
+        q: q.trim() || undefined,
+        region: region.trim() || undefined,
+        category: category || undefined,
+      }),
     });
   }
 

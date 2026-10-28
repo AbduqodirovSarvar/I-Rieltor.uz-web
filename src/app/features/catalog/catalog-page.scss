@@ -1,5 +1,48 @@
 .page {
-  padding-block: var(--s-6);
+  padding-block: var(--s-6) var(--s-7);
+}
+
+// Title with the number of objects on the left, search and sort on the right.
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s-3) var(--s-4);
+  margin-bottom: var(--s-5);
+
+  h1 {
+    margin: 0;
+    font-size: clamp(1.75rem, 1.3rem + 1.4vw, 2.125rem);
+  }
+
+  .total {
+    color: var(--c-text-faint);
+    font-weight: 500;
+  }
+}
+
+.top-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  width: 100%;
+
+  .search {
+    flex: 1 1 14rem;
+  }
+
+  .search .input {
+    width: 100%;
+  }
+
+  @media (min-width: 48rem) {
+    width: auto;
+
+    .search {
+      width: 20rem;
+    }
+  }
 }
 
 .layout {
@@ -8,21 +51,14 @@
   align-items: start;
 }
 
-.bar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: var(--s-3);
-  margin-bottom: var(--s-4);
-}
-
-.count {
-  margin: 0;
-}
-
-.sort {
-  min-width: 14rem;
+// Labels inside the filter card: small capitals, as in the design.
+.side .field > label,
+.range legend {
+  color: var(--c-text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
 .range {
@@ -36,9 +72,7 @@
   legend {
     grid-column: 1 / -1;
     padding: 0;
-    margin-bottom: var(--s-1);
-    font-size: var(--fs-sm);
-    font-weight: 600;
+    margin-bottom: var(--s-2);
   }
 }
 
@@ -46,11 +80,13 @@
   display: flex;
   align-items: center;
   gap: var(--s-2);
-  min-height: var(--control-h);
+  min-height: 2rem;
+  font-size: 0.875rem;
 
   input {
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 1.125rem;
+    height: 1.125rem;
+    accent-color: var(--c-primary);
   }
 }
 
@@ -62,11 +98,16 @@
 
 @media (min-width: 56rem) {
   .layout {
-    grid-template-columns: 17rem 1fr;
+    grid-template-columns: 16.75rem minmax(0, 1fr);
   }
 
   .side {
     position: sticky;
     top: calc(var(--header-h) + var(--s-4));
   }
+}
+
+.grid {
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
 }

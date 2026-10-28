@@ -30,17 +30,21 @@
           />
         }
         <div class="caption">
-          <div class="container">
-            @if (slide.title) {
-              <h2>{{ slide.title }}</h2>
-            }
-            @if (slide.subtitle) {
-              <p class="subtitle">{{ slide.subtitle }}</p>
-            }
-            @if (slide.content) {
-              <p class="content">{{ slide.content }}</p>
-            }
-            <a class="btn" [routerLink]="'/katalog' | link">{{ 'nav.catalog' | t }}</a>
+          @if (live() > 0) {
+            <span class="badge badge-live">{{ 'home.liveNow' | t: { n: live() } }}</span>
+          }
+          @if (slide.title) {
+            <h2>{{ slide.title }}</h2>
+          }
+          @if (slide.subtitle) {
+            <p class="subtitle">{{ slide.subtitle }}</p>
+          }
+          @if (slide.content) {
+            <p class="content">{{ slide.content }}</p>
+          }
+          <div class="actions">
+            <a class="btn btn-lg" [routerLink]="'/katalog' | link">{{ 'home.toCatalog' | t }}</a>
+            <a class="btn btn-lg btn-light" href="#how-title">{{ 'home.howLink' | t }}</a>
           </div>
         </div>
       </div>
@@ -51,27 +55,11 @@
     <div class="controls">
       <button
         type="button"
-        class="btn btn-icon ctl"
+        class="ctl"
         [attr.aria-label]="'gallery.previous' | t"
         (click)="go(current() - 1)"
       >
         <span aria-hidden="true">‹</span>
-      </button>
-      <button
-        type="button"
-        class="btn btn-icon ctl"
-        [attr.aria-label]="(stopped() ? 'home.play' : 'home.pause') | t"
-        (click)="toggle()"
-      >
-        <span aria-hidden="true">{{ stopped() ? '▶' : '❚❚' }}</span>
-      </button>
-      <button
-        type="button"
-        class="btn btn-icon ctl"
-        [attr.aria-label]="'gallery.next' | t"
-        (click)="go(current() + 1)"
-      >
-        <span aria-hidden="true">›</span>
       </button>
       <div class="dots">
         @for (slide of slides(); track slide.id; let i = $index) {
@@ -85,6 +73,22 @@
           ></button>
         }
       </div>
+      <button
+        type="button"
+        class="ctl"
+        [attr.aria-label]="'gallery.next' | t"
+        (click)="go(current() + 1)"
+      >
+        <span aria-hidden="true">›</span>
+      </button>
+      <button
+        type="button"
+        class="ctl"
+        [attr.aria-label]="(stopped() ? 'home.play' : 'home.pause') | t"
+        (click)="toggle()"
+      >
+        <span aria-hidden="true">{{ stopped() ? '▶' : '❚❚' }}</span>
+      </button>
     </div>
   }
 </section>

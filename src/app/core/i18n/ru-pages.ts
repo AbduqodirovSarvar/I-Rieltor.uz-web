@@ -17,6 +17,12 @@ export const ruPages: Record<keyof typeof uzPages, string> = {
   'home.noUpcoming': 'В ближайшее время торгов не запланировано.',
   'home.noNewest': 'Пока объектов нет.',
   'home.loadFailed': 'Не удалось загрузить данные.',
+  'home.liveNow': 'Идут торги · {n}',
+  'home.toCatalog': 'Смотреть каталог',
+  'home.howLink': 'Как это работает?',
+  'home.anyRegion': 'Все регионы',
+  'home.find': 'Найти',
+  'home.searchLabel': 'Поиск объектов',
 
   'how.title': 'Как участвовать',
   'how.1.title': 'Зарегистрируйтесь',

@@ -1,24 +1,50 @@
 <div class="container page">
-  <h1>{{ 'catalog.title' | t }}</h1>
+  <nav class="crumbs" [attr.aria-label]="'nav.breadcrumb' | t">
+    <a [routerLink]="'/' | link">{{ 'nav.home' | t }}</a>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">{{ 'catalog.title' | t }}</span>
+  </nav>
+
+  <div class="top">
+    <h1>
+      {{ 'catalog.title' | t }}
+      @if (data(); as r) {
+        <span class="total num">{{ r.totalCount }}</span>
+      }
+    </h1>
+    <div class="top-tools">
+      <form class="pill-field search" role="search" (submit)="onSearch($event, q)">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" />
+          <path d="m20 20-3.5-3.5" />
+        </svg>
+        <input
+          #q
+          id="f-q"
+          class="input"
+          type="search"
+          [attr.aria-label]="'catalog.search' | t"
+          [value]="filter().q ?? ''"
+          [placeholder]="'catalog.searchPlaceholder' | t"
+          (input)="onType($event)"
+        />
+      </form>
+      <label class="visually-hidden" for="f-sort">{{ 'catalog.sort' | t }}</label>
+      <span class="pill-field">
+        <select id="f-sort" class="select" (change)="onSort($event)">
+          @for (s of sorts; track s.value) {
+            <option [value]="s.value" [selected]="s.value === (filter().sort ?? 'newest')">
+              {{ 'catalog.sort' | t }}: {{ s.label | t }}
+            </option>
+          }
+        </select>
+      </span>
+    </div>
+  </div>
 
   <div class="layout">
     <aside class="side">
       <app-filter-panel [title]="'catalog.filters' | t" [active]="active()" (clear)="clear()">
-        <form class="stack" role="search" (submit)="onSearch($event, q)">
-          <div class="field">
-            <label for="f-q">{{ 'catalog.search' | t }}</label>
-            <input
-              #q
-              id="f-q"
-              class="input"
-              type="search"
-              [value]="filter().q ?? ''"
-              [placeholder]="'catalog.searchPlaceholder' | t"
-              (input)="onType($event)"
-            />
-          </div>
-        </form>
-
         <div class="field">
           <label for="f-category">{{ 'catalog.category' | t }}</label>
           <select id="f-category" class="select" (change)="onCategory($event)">
@@ -115,23 +141,11 @@
     </aside>
 
     <section class="results" [attr.aria-label]="'catalog.resultsLabel' | t">
-      <div class="bar">
-        <p class="muted count" role="status">
-          @if (data(); as r) {
-            {{ 'catalog.found' | t: { count: r.totalCount } }}
-          }
-        </p>
-        <div class="field sort">
-          <label for="f-sort">{{ 'catalog.sort' | t }}</label>
-          <select id="f-sort" class="select" (change)="onSort($event)">
-            @for (s of sorts; track s.value) {
-              <option [value]="s.value" [selected]="s.value === (filter().sort ?? 'newest')">
-                {{ s.label | t }}
-              </option>
-            }
-          </select>
-        </div>
-      </div>
+      <p class="visually-hidden count" role="status">
+        @if (data(); as r) {
+          {{ 'catalog.found' | t: { count: r.totalCount } }}
+        }
+      </p>
 
       @if (results.isLoading() && !data()) {
         <app-skeleton-cards [count]="6" />

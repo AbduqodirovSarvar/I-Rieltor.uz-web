@@ -19,6 +19,7 @@ export const enBase: Record<keyof typeof uzBase, string> = {
   'nav.main': 'Main menu',
   'nav.skip': 'Skip to main content',
   'nav.top': 'Back to top',
+  'nav.breadcrumb': 'You are here',
   'nav.language': 'Language',
 
   'theme.label': 'Theme',

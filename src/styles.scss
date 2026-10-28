@@ -1,3 +1,5 @@
+// Self-hosted (the CSP allows fonts only from this origin); the variable font has Latin and Cyrillic.
+@use '@fontsource-variable/onest/index.css';
 @use './styles/tokens';
 @use './styles/base';
 @use './styles/components';

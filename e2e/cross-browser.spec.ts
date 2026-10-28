@@ -40,8 +40,8 @@ test.describe('in every browser', () => {
     };
     await page.goto('/', { waitUntil: 'networkidle' });
 
-    await reveal('header input[type=search]');
-    await page.locator('header input[type=search]').fill('uy');
+    // The search box under the slides on the home page.
+    await page.locator('form.finder input[type=search]').fill('uy');
     await page.keyboard.press('Enter');
     await expect(page).toHaveURL(/\/katalog\?q=uy/);
 

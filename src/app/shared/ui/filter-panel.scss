@@ -1,3 +1,7 @@
+.panel {
+  box-shadow: none;
+}
+
 .toggle {
   width: 100%;
   border: 0;
@@ -7,10 +11,40 @@
 .body {
   display: none;
   flex-direction: column;
-  gap: var(--s-3);
+  gap: 1.375rem;
+  padding: 1.375rem;
 
   &.open {
     display: flex;
+  }
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--fs-md);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.clear {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--c-primary);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
   }
 }
 

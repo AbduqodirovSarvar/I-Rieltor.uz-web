@@ -37,6 +37,8 @@ export function slideDelay(durationMs: number | null | undefined): number {
 })
 export class HeroSlider {
   readonly slides = input.required<PublicSlide[]>();
+  /** How many auctions run now; shown as a red "live" badge on the card when there are some. */
+  readonly live = input(0);
 
   private readonly document = inject(DOCUMENT);
   private readonly fileUrl = injectFileUrl();

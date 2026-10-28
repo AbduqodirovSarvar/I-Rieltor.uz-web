@@ -1,55 +1,38 @@
 <footer class="footer">
-  <div class="container grid-footer">
-    <section>
-      <p class="brand">{{ company()?.name || ('site.name' | t) }}</p>
-      <p class="muted">{{ 'site.tagline' | t }}</p>
-    </section>
-
-    <nav [attr.aria-label]="'footer.pages' | t">
-      <h2 class="title">{{ 'footer.pages' | t }}</h2>
+  @if (company(); as c) {
+    <section class="container contacts" [attr.aria-label]="'footer.contacts' | t">
+      <p class="brand">{{ c.name || ('site.name' | t) }}</p>
       <ul>
-        <li>
-          <a [routerLink]="'/katalog' | link">{{ 'nav.catalog' | t }}</a>
-        </li>
-        <li>
-          <a [routerLink]="'/biz-haqida' | link">{{ 'nav.about' | t }}</a>
-        </li>
-        <li>
-          <a [routerLink]="'/qoidalar' | link">{{ 'legal.rules' | t }}</a>
-        </li>
-        <li>
-          <a [routerLink]="'/maxfiylik' | link">{{ 'legal.privacy' | t }}</a>
-        </li>
+        @if (c.address) {
+          <li>{{ c.address }}</li>
+        }
+        @if (c.phoneNumber) {
+          <li>
+            <a [href]="phoneHref(c.phoneNumber)">{{ formatPhone(c.phoneNumber) }}</a>
+          </li>
+        }
+        @if (c.phoneNumber2) {
+          <li>
+            <a [href]="phoneHref(c.phoneNumber2)">{{ formatPhone(c.phoneNumber2) }}</a>
+          </li>
+        }
+        @if (c.email) {
+          <li>
+            <a [href]="'mailto:' + c.email">{{ c.email }}</a>
+          </li>
+        }
       </ul>
+    </section>
+  }
+  <div class="container bottom">
+    <span class="copy">
+      © {{ year }} {{ company()?.name || ('site.name' | t) + '.uz' }}. {{ 'footer.rights' | t }}
+    </span>
+    <nav [attr.aria-label]="'footer.pages' | t">
+      <a [routerLink]="'/katalog' | link">{{ 'nav.catalog' | t }}</a>
+      <a [routerLink]="'/biz-haqida' | link">{{ 'nav.about' | t }}</a>
+      <a [routerLink]="'/qoidalar' | link">{{ 'legal.rules' | t }}</a>
+      <a [routerLink]="'/maxfiylik' | link">{{ 'legal.privacy' | t }}</a>
     </nav>
-
-    @if (company(); as c) {
-      <section>
-        <h2 class="title">{{ 'footer.contacts' | t }}</h2>
-        <ul>
-          @if (c.address) {
-            <li>{{ c.address }}</li>
-          }
-          @if (c.phoneNumber) {
-            <li>
-              <a [href]="phoneHref(c.phoneNumber)">{{ formatPhone(c.phoneNumber) }}</a>
-            </li>
-          }
-          @if (c.phoneNumber2) {
-            <li>
-              <a [href]="phoneHref(c.phoneNumber2)">{{ formatPhone(c.phoneNumber2) }}</a>
-            </li>
-          }
-          @if (c.email) {
-            <li>
-              <a [href]="'mailto:' + c.email">{{ c.email }}</a>
-            </li>
-          }
-        </ul>
-      </section>
-    }
-  </div>
-  <div class="container copy muted">
-    © {{ year }} {{ company()?.name || ('site.name' | t) }}. {{ 'footer.rights' | t }}
   </div>
 </footer>

@@ -17,6 +17,12 @@ export const enPages: Record<keyof typeof uzPages, string> = {
   'home.noUpcoming': 'No auctions are starting soon.',
   'home.noNewest': 'No properties yet.',
   'home.loadFailed': 'Could not load the data.',
+  'home.liveNow': 'Live auctions · {n}',
+  'home.toCatalog': 'Browse the catalog',
+  'home.howLink': 'How it works',
+  'home.anyRegion': 'Any region',
+  'home.find': 'Find',
+  'home.searchLabel': 'Find an object',
 
   'how.title': 'How to participate',
   'how.1.title': 'Sign up',

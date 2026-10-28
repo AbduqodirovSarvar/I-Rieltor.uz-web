@@ -47,16 +47,16 @@ test.describe('E-IMZO', () => {
     await page.goto('/kirish');
     await page.locator('button[role=tab][data-tab=eimzo]').click();
     await expect(page.locator('.notice-warning').first()).toContainText('Sinov rejimi');
-    await expect(page.locator('#eimzo-signin-key option')).toHaveCount(3);
+    await expect(page.locator('input[name="eimzo-signin-key"]')).toHaveCount(3);
 
     await registerWithKey(page);
-    await expect(page.locator('.who .badge-success')).toBeVisible();
+    await expect(page.locator('.who .state.ok')).toBeVisible();
 
     await page.locator('header button:has-text("Chiqish")').click();
     await page.goto('/kirish');
     await press(page, 'E-IMZO bilan kirish');
     await expect(page).toHaveURL(/\/kabinet/, { timeout: 20_000 });
-    await expect(page.locator('.who .badge-success')).toBeVisible();
+    await expect(page.locator('.who .state.ok')).toBeVisible();
   });
 
   test('a key that has no account is told so on sign-in', async ({ page }) => {
@@ -69,13 +69,13 @@ test.describe('E-IMZO', () => {
     page,
   }) => {
     await signUp(page);
-    await expect(page.locator('.who .badge-success')).toHaveCount(0);
+    await expect(page.locator('.who .state.ok')).toHaveCount(0);
     await page.goto('/kabinet/e-imzo');
     await press(page, 'Kalitni ulash');
     await expect(page.locator('.notice-success').first()).toContainText('Tasdiqlangan', {
       timeout: 20_000,
     });
-    await expect(page.locator('.who .badge-success')).toBeVisible();
+    await expect(page.locator('.who .state.ok')).toBeVisible();
   });
 
   test('applying: the text is shown, agreement is needed, then the signed application is accepted', async ({

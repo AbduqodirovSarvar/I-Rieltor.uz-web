@@ -34,7 +34,7 @@ describe('layout', () => {
     fixture.detectChanges();
     const el: HTMLElement = fixture.nativeElement;
     const hrefs = Array.from(el.querySelectorAll('nav.nav a')).map((a) => a.getAttribute('href'));
-    expect(hrefs).toEqual(['/ru', '/ru/katalog', '/ru/biz-haqida']);
+    expect(hrefs).toEqual(['/ru', '/ru/katalog', '/ru/biz-haqida', '/ru/qoidalar']);
     // A list of all four languages, the current one selected, each value the same page in that language.
     const select = el.querySelector<HTMLSelectElement>('select.lang-select')!;
     const langs = Array.from(select.options).map((o) => [o.getAttribute('lang'), o.value]);
@@ -65,14 +65,13 @@ describe('layout', () => {
     const fixture = TestBed.createComponent(SiteHeader);
     fixture.detectChanges();
     const el: HTMLElement = fixture.nativeElement;
-    // After the first render (hydration finished) the guest sees sign in and sign up.
+    // After the first render (hydration finished) the guest sees the sign-in button (sign-up is on the sign-in page).
     await fixture.whenStable();
     fixture.detectChanges();
     const labels = Array.from(el.querySelectorAll('.tools a.btn')).map((a) =>
       a.textContent?.trim(),
     );
-    expect(labels).toContain('Kirish');
-    expect(labels).toContain('Ro‘yxatdan o‘tish');
+    expect(labels).toEqual(['Kirish']);
   });
 
   it('footer: shows the company contacts when there are some', async () => {

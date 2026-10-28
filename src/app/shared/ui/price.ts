@@ -18,7 +18,8 @@ import { MoneyPipe } from '../../core/format/format';
       font-size: var(--fs-sm);
     }
     .amount {
-      font-size: var(--fs-lg);
+      font-size: var(--fs-md);
+      font-weight: 700;
     }
     .amount.large {
       font-size: var(--fs-2xl);

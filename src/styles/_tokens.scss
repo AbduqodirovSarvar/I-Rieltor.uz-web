@@ -15,35 +15,41 @@
   --c-surface: #ffffff;
   --c-surface-2: #eceff7;
   --c-border: #e1e5ee;
-  --c-text: #14181f;
-  --c-text-muted: #4b5563;
+  --c-text: #0f172a;
+  --c-text-muted: #5b6475;
+  --c-text-2: #3b4456; // secondary text: menu links, descriptions
+  --c-text-faint: #8a93a6; // placeholders, counts (not for body text)
+  --c-line: #eef1f6; // thin dividers inside cards
+  --c-head-bg: #f9fafc; // table header rows
   --c-link: #1d4ed8;
   --c-focus: #1d4ed8;
 
   // Status
   --c-success: #15803d;
-  --c-success-bg: #dcfce7;
-  --c-warning: #92400e;
-  --c-warning-bg: #fef3c7;
+  --c-success-bg: #e7f6ec;
+  --c-warning: #b45309;
+  --c-warning-bg: #fdf3e3;
   --c-danger: #b91c1c;
   --c-on-danger: #ffffff;
-  --c-danger-bg: #fee2e2;
+  --c-danger-bg: #fdecec;
   --c-info: #1d4ed8;
-  --c-info-bg: #dbeafe;
-  --c-neutral-bg: #e5e7eb;
+  --c-info-bg: #e8eefc;
+  --c-neutral-bg: #eef1f6;
 
   --shadow-1: 0 1px 2px rgb(31 41 90 / 4%), 0 4px 14px rgb(31 41 90 / 6%);
   --shadow-2: 0 12px 32px rgb(31 41 90 / 14%);
   --c-header-bg: rgb(255 255 255 / 78%);
 
   // Type
-  --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font:
+    'Onest Variable', 'Onest', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
   --fs-sm: 0.875rem;
   --fs-md: 1rem;
   --fs-lg: 1.125rem;
   --fs-xl: 1.375rem;
   --fs-2xl: 1.75rem;
-  --fs-3xl: clamp(1.75rem, 1.2rem + 2.4vw, 2.5rem);
+  --fs-3xl: clamp(1.75rem, 1.2rem + 1.8vw, 2.25rem);
   --lh: 1.5;
 
   // Space (4px grid)
@@ -60,8 +66,9 @@
   --radius-lg: 1.25rem;
   --radius-pill: 999px;
 
-  --container: 72rem;
-  --header-h: 3.75rem;
+  --container: 80rem;
+  --gutter: clamp(1rem, 3.75vw, 3rem);
+  --header-h: 4.25rem;
   --control-h: 2.75rem; // 44px: a comfortable touch target
   --z-header: 50;
   --z-overlay: 100;
@@ -79,6 +86,10 @@
   --c-border: #2a3342;
   --c-text: #e6e9ee;
   --c-text-muted: #a3acb9;
+  --c-text-2: #cbd5e1;
+  --c-text-faint: #7c8aa5;
+  --c-line: #232b39;
+  --c-head-bg: #1c2330;
   --c-link: #8aa9ff;
   --c-focus: #8aa9ff;
   --c-success: #4ade80;

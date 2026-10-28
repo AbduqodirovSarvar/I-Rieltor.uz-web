@@ -16,11 +16,24 @@
         decoding="async"
       />
     } @else {
-      <span class="placeholder muted">{{ 'card.noPhoto' | t }}</span>
+      <span class="placeholder">{{ 'card.noPhoto' | t }}</span>
     }
   </a>
-  <div class="card-body body">
-    <p class="muted category">{{ property().categoryName }}</p>
+  <div class="tags">
+    @if (property().auction; as auction) {
+      <app-status-badge enum="AuctionStatus" [value]="auction.status" />
+    } @else {
+      <app-status-badge enum="PropertyStatus" [value]="property().status" />
+    }
+  </div>
+  @if (property().auction?.lotNumber; as lot) {
+    <span class="lot">{{ 'card.lot' | t: { number: lot } }}</span>
+  }
+
+  <div class="body">
+    @if (property().categoryName) {
+      <p class="category">{{ property().categoryName }}</p>
+    }
     @if (level() === 2) {
       <h2 class="title">
         <a [routerLink]="'/obyekt/' + property().id | link">{{ property().title }}</a>
@@ -30,24 +43,23 @@
         <a [routerLink]="'/obyekt/' + property().id | link">{{ property().title }}</a>
       </h3>
     }
-    @if (location()) {
-      <p class="muted place">{{ location() }}</p>
+    @if (details()) {
+      <p class="place">{{ details() }}</p>
     }
-    <ul class="facts">
-      @if (property().areaSqm) {
-        <li>{{ property().areaSqm | area }}</li>
-      }
-      @if (property().landAreaSotix) {
-        <li>{{ property().landAreaSotix | area: 'sotix' }}</li>
-      }
-      @if (property().rooms) {
-        <li>{{ property().rooms | rooms }}</li>
-      }
-    </ul>
+
     @if (property().auction; as auction) {
-      <app-auction-summary [auction]="auction" />
-    } @else {
-      <app-status-badge enum="PropertyStatus" [value]="property().status" />
+      <div class="foot">
+        <div class="price">
+          <span class="label">{{ priceLabel() | t }}</span>
+          <strong class="num">{{ price() | money }}</strong>
+        </div>
+        @if (timer(); as t) {
+          <span class="when" [attr.title]="(t.key | t) + ': ' + (t.at | dateTime)">
+            <span class="visually-hidden">{{ t.key | t }}:</span>
+            <app-countdown [target]="t.at" />
+          </span>
+        }
+      </div>
     }
   </div>
 </article>

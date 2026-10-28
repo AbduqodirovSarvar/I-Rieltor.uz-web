@@ -11,16 +11,27 @@
       {{ 'eimzo.retry' | t }}
     </button>
   } @else if (keys().length > 0) {
-    <div class="field">
-      <label [attr.for]="controlId()">{{ 'eimzo.key' | t }}</label>
-      <select [id]="controlId()" class="select" (change)="choose($event)">
-        @for (k of keys(); track k.id) {
-          <option [value]="k.id" [selected]="k.id === key()?.id">
-            {{ k.owner }}{{ k.organisation ? ' · ' + k.organisation : ''
-            }}{{ k.validTo ? ' · ' + ('eimzo.until' | t: { date: k.validTo }) : '' }}
-          </option>
-        }
-      </select>
-    </div>
+    <fieldset class="keys">
+      <legend>{{ 'eimzo.key' | t }}</legend>
+      @for (k of keys(); track k.id) {
+        <label class="key" [class.on]="k.id === key()?.id">
+          <input
+            type="radio"
+            [name]="controlId()"
+            [value]="k.id"
+            [checked]="k.id === key()?.id"
+            (change)="choose($event)"
+          />
+          <span class="text">
+            <strong>{{ k.owner }}</strong>
+            <span class="meta"
+              >{{ k.organisation ? k.organisation : ''
+              }}{{ k.organisation && k.validTo ? ' · ' : ''
+              }}{{ k.validTo ? ('eimzo.until' | t: { date: k.validTo }) : '' }}</span
+            >
+          </span>
+        </label>
+      }
+    </fieldset>
   }
 </div>

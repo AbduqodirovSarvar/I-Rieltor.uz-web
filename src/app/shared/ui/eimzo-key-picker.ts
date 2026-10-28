@@ -68,7 +68,7 @@ export class EimzoKeyPicker {
   }
 
   protected choose(event: Event): void {
-    const id = (event.target as HTMLSelectElement).value;
+    const id = (event.target as HTMLInputElement).value;
     this.key.set(this.keys().find((k) => k.id === id) ?? null);
   }
 }

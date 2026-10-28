@@ -1,8 +1,8 @@
 @if (property(); as p) {
   <article class="container page">
-    <nav class="crumbs" [attr.aria-label]="'nav.main' | t">
+    <nav class="crumbs" [attr.aria-label]="'nav.breadcrumb' | t">
       <a [routerLink]="'/katalog' | link">{{ 'catalog.title' | t }}</a>
-      <span aria-hidden="true">›</span>
+      <span aria-hidden="true">/</span>
       <a [routerLink]="'/katalog' | link" [queryParams]="{ category: p.categoryId }">{{
         p.categoryName
       }}</a>
@@ -22,49 +22,73 @@
         <section aria-labelledby="facts-title">
           <h2 id="facts-title">{{ 'object.details' | t }}</h2>
           <dl class="facts">
-            <dt>{{ 'object.category' | t }}</dt>
-            <dd>{{ p.categoryName }}</dd>
-            <dt>{{ 'object.region' | t }}</dt>
-            <dd>{{ p.region }}</dd>
+            <div class="tile">
+              <dt>{{ 'object.category' | t }}</dt>
+              <dd>{{ p.categoryName }}</dd>
+            </div>
+            <div class="tile">
+              <dt>{{ 'object.region' | t }}</dt>
+              <dd>{{ p.region }}</dd>
+            </div>
             @if (p.district) {
-              <dt>{{ 'object.district' | t }}</dt>
-              <dd>{{ p.district }}</dd>
+              <div class="tile">
+                <dt>{{ 'object.district' | t }}</dt>
+                <dd>{{ p.district }}</dd>
+              </div>
             }
             @if (p.address) {
-              <dt>{{ 'object.address' | t }}</dt>
-              <dd>{{ p.address }}</dd>
+              <div class="tile">
+                <dt>{{ 'object.address' | t }}</dt>
+                <dd>{{ p.address }}</dd>
+              </div>
             }
             @if (p.areaSqm) {
-              <dt>{{ 'object.area' | t }}</dt>
-              <dd class="num">{{ p.areaSqm | area }}</dd>
+              <div class="tile">
+                <dt>{{ 'object.area' | t }}</dt>
+                <dd class="num">{{ p.areaSqm | area }}</dd>
+              </div>
             }
             @if (p.landAreaSotix) {
-              <dt>{{ 'object.landArea' | t }}</dt>
-              <dd class="num">{{ p.landAreaSotix | area: 'sotix' }}</dd>
+              <div class="tile">
+                <dt>{{ 'object.landArea' | t }}</dt>
+                <dd class="num">{{ p.landAreaSotix | area: 'sotix' }}</dd>
+              </div>
             }
             @if (p.rooms) {
-              <dt>{{ 'object.rooms' | t }}</dt>
-              <dd>{{ p.rooms | rooms }}</dd>
+              <div class="tile">
+                <dt>{{ 'object.rooms' | t }}</dt>
+                <dd>{{ p.rooms | rooms }}</dd>
+              </div>
             }
             @if (floorText()) {
-              <dt>{{ 'object.floor' | t }}</dt>
-              <dd>{{ floorText() }}</dd>
+              <div class="tile">
+                <dt>{{ 'object.floor' | t }}</dt>
+                <dd>{{ floorText() }}</dd>
+              </div>
             }
             @if (p.buildYear) {
-              <dt>{{ 'object.buildYear' | t }}</dt>
-              <dd>{{ p.buildYear }}</dd>
+              <div class="tile">
+                <dt>{{ 'object.buildYear' | t }}</dt>
+                <dd>{{ p.buildYear }}</dd>
+              </div>
             }
             @if (p.cadastralNumber) {
-              <dt>{{ 'object.cadastral' | t }}</dt>
-              <dd class="num">{{ p.cadastralNumber }}</dd>
+              <div class="tile">
+                <dt>{{ 'object.cadastral' | t }}</dt>
+                <dd class="num">{{ p.cadastralNumber }}</dd>
+              </div>
             }
             @if (p.estimatedValue) {
-              <dt>{{ 'object.estimated' | t }}</dt>
-              <dd class="num">{{ p.estimatedValue | money }}</dd>
+              <div class="tile">
+                <dt>{{ 'object.estimated' | t }}</dt>
+                <dd class="num">{{ p.estimatedValue | money }}</dd>
+              </div>
             }
             @if (p.sellerName) {
-              <dt>{{ 'object.seller' | t }}</dt>
-              <dd>{{ p.sellerName }}</dd>
+              <div class="tile">
+                <dt>{{ 'object.seller' | t }}</dt>
+                <dd>{{ p.sellerName }}</dd>
+              </div>
             }
           </dl>
         </section>
@@ -100,7 +124,7 @@
       </div>
 
       <aside class="side">
-        <div class="card card-body stack">
+        <div class="card card-body stack deal">
           @if (p.auction; as auction) {
             <app-auction-summary [auction]="auction" />
             <app-apply-cta
@@ -108,7 +132,7 @@
               [status]="auction.status"
               [deadline]="auction.applicationDeadline"
             />
-            <a class="btn btn-secondary btn-block" [routerLink]="'/auksion/' + auction.id | link">{{
+            <a class="btn btn-light btn-block" [routerLink]="'/auksion/' + auction.id | link">{{
               'cta.viewAuction' | t
             }}</a>
           } @else {

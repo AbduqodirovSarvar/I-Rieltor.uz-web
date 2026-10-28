@@ -62,7 +62,19 @@ export class SiteHeader {
     { path: '/', text: 'nav.home' as const, exact: true },
     { path: '/katalog', text: 'nav.catalog' as const, exact: false },
     { path: '/biz-haqida', text: 'nav.about' as const, exact: false },
+    { path: '/qoidalar', text: 'legal.rules' as const, exact: false },
   ];
+
+  /** The first letters of the visitor's name, for the round avatar next to it. */
+  protected readonly initials = computed(() =>
+    this.auth
+      .displayName()
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((word) => word[0].toUpperCase())
+      .join(''),
+  );
 
   constructor() {
     // A tap on a link (or any navigation) closes the phone menu.
@@ -73,15 +85,6 @@ export class SiteHeader {
 
   protected toggleMenu(): void {
     this.menuOpen.update((open) => !open);
-  }
-
-  /** The header search opens the catalog with the words typed; an empty search opens the plain catalog. */
-  protected search(event: Event, input: HTMLInputElement): void {
-    event.preventDefault();
-    const q = input.value.trim();
-    void this.router.navigate([this.i18n.link('/katalog')], { queryParams: q ? { q } : {} });
-    input.value = '';
-    this.menuOpen.set(false);
   }
 
   protected signOut(): void {

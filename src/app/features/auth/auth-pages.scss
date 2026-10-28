@@ -1,11 +1,37 @@
 .narrow {
-  max-width: 30rem;
+  max-width: 28rem;
   padding-block: var(--s-7);
+
+  h1 {
+    margin-bottom: var(--s-5);
+    font-size: 1.75rem;
+  }
+
+  .btn-block {
+    min-height: 3.25rem;
+    font-size: var(--fs-md);
+  }
+
+  .card {
+    padding: var(--s-5);
+    border-radius: 1.5rem;
+  }
 }
 
 .alt {
   margin-top: var(--s-4);
+  color: var(--c-text-muted);
+  font-size: 0.875rem;
   text-align: center;
+
+  a {
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .two {
@@ -57,7 +83,7 @@
 
   &[aria-selected='true'] {
     background: var(--c-surface);
-    color: var(--c-primary);
-    box-shadow: var(--shadow-1);
+    color: var(--c-text);
+    box-shadow: 0 2px 8px rgb(15 23 42 / 10%);
   }
 }
